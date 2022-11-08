@@ -6,9 +6,10 @@ export class Block extends Entity {
     super(id);
   }
   name: string = '';
-  durability: number = 0;
+  description: string = '';
   stackable: boolean = false;
-  stackSize: number = 0;
-  toolLevelNeeded: number = 0;
+  stackSize: number = 0; // 1 - 64
+  hardness: number = 0; // 0 - 4
   tool: Tool = new Tool('');
+  creationDate: Date = new Date();
 }

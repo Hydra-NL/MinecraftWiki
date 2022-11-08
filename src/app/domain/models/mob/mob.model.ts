@@ -5,9 +5,11 @@ export class Mob extends Entity {
     super(id);
   }
   name: string = '';
+  description: string = '';
   health: number = 0;
   attack: number = 0;
-  armor: number = 0;
-  biome: string = '';
+  armor: number = 0; 
+  dimension: string = ''; // overworld, nether, end
+  isPassive: boolean = false;
   creationDate: Date = new Date();
 }
