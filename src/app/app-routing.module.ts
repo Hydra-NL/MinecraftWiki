@@ -3,6 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import { HomeComponent } from './domain/pages/home/home.component';
 import { AboutComponent } from './domain/pages/about/about.component';
+import { BlockComponent } from './domain/pages/block/block.component';
+import { MobComponent } from './domain/pages/mob/mob.component';
+import { ToolComponent } from './domain/pages/tool/tool.component';
 
 const routes: Routes = [
   {
@@ -19,6 +22,9 @@ const routes: Routes = [
         component: HomeComponent,
       },
       { path: 'about', component: AboutComponent },
+      { path: 'blocks', component: BlockComponent },
+      { path: 'mobs', component: MobComponent },
+      { path: 'tools', component: ToolComponent },
     ],
   },
   { path: '**', redirectTo: '/home' },

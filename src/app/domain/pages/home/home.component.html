@@ -1,33 +1,62 @@
-<div class="feed-container">
-  <div class="feed">
-    <div class="feed-title">
-      <h1>Feed</h1>
-    </div>
-
-    <div class="col-md-12" *ngFor="let card of cards">
-      <div class="card">
-        <div class="card-header">
-          <h3>{{ card.title }}</h3>
-          <div class="card-date">
-            <p class="text-muted">07-11-2022 12:00</p>
-            <p *ngIf="card.title == 'Card 1'" class="text-muted">
-              New<i class="fa fa-leaf"></i>
-            </p>
+<div class="home">
+  <div class="feed-container">
+    <div class="feed">
+      <div class="feed-title">
+        <h1>Feed</h1>
+      </div>
+      <div class="content">
+        <div *ngFor="let card of feed">
+          <div class="card">
+            <div class="card-header">
+              <h3>
+                <i *ngIf="card.hardness >= 0" class="fa fa-cube"></i>
+                <i *ngIf="card.durability >= 0" class="fa-solid fa-hammer"></i>
+                <i *ngIf="card.health >= 0" class="fa-solid fa-skull"></i>
+                {{ card.name }}
+              </h3>
+              <div class="card-date">
+                <p class="text-muted">{{ card.creationDate.toDateString() }}</p>
+                <p
+                  *ngIf="
+                    card.creationDate.toDateString() >= this.date.toDateString()
+                  "
+                  class="text-muted"
+                >
+                  New <i class="fa-solid fa-meteor"></i>
+                </p>
+              </div>
+            </div>
+            <div class="card-body">
+              <p>
+                {{ card.description }}
+              </p>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-success">
+                <i class="fa fa-arrow-right"></i>
+              </button>
+              <button class="btn btn-danger">
+                <i class="fa fa-trash"></i>
+              </button>
+            </div>
           </div>
         </div>
-        <!-- <div ngIf="">[title]</div> -->
-        <div class="card-body">
-          <p>
-            {{ card.description }}
-          </p>
-        </div>
-        <div class="card-footer">
-          <button class="btn btn-success">
-            <i class="fa fa-arrow-right"></i>
-          </button>
-          <button class="btn btn-danger">
-            <i class="fa fa-trash"></i>
-          </button>
+      </div>
+    </div>
+  </div>
+  <div class="subscriptions-container">
+    <div class="subscriptions">
+      <div class="subscriptions-title">
+        <h1>Subscriptions</h1>
+      </div>
+      <div class="content">
+        <div *ngFor="let user of users">
+          <div class="card">
+            <div class="card-header">
+              <h5>{{ user.firstName }} {{ user.lastName }}</h5>
+              <a href="#"><i class="fa-solid fa-user-minus"></i></a>
+            </div>
+          </div>
         </div>
       </div>
     </div>

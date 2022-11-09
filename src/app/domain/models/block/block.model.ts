@@ -1,5 +1,5 @@
 import { Entity } from '../entity/entity.model';
-import { Tool } from '../tool/tool.model';
+import { ToolType } from '../tool/tool.model';
 
 export class Block extends Entity {
   constructor(id: string) {
@@ -10,6 +10,6 @@ export class Block extends Entity {
   stackable: boolean = false;
   stackSize: number = 0; // 1 - 64
   hardness: number = 0; // 0 - 4
-  tool: Tool = new Tool('');
+  tool: ToolType = ToolType.pickaxe;
   creationDate: Date = new Date();
 }

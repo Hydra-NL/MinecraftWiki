@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { MobService } from '../../models/mob/mob.service';
+import { ToolService } from '../../models/tool/tool.service';
+import { BlockService } from '../../models/block/block.service';
+import { UserService } from '../../models/user/user.service';
 
 @Component({
   selector: 'app-home',
@@ -6,34 +10,33 @@ import { Component } from '@angular/core';
 })
 export class HomeComponent {
   title = 'ClientSide-Project';
-  card = { title: '', description: '' };
-  card2 = { title: '', description: '' };
-  card3 = { title: '', description: '' };
-  card4 = { title: '', description: '' };
-  cards = [this.card, this.card2, this.card3, this.card4];
+  tools: any[] = [];
+  mobs: any[] = [];
+  blocks: any[] = [];
+  users: any[] = [];
+  feed: any[] = [];
+  date: Date = new Date();
 
-  constructor() {
+  constructor(
+    private mobService: MobService,
+    private toolService: ToolService,
+    private blockService: BlockService,
+    private userService: UserService
+  ) {
     console.log('HomeComponent constructor');
   }
 
   ngOnInit() {
-    this.card = {
-      title: 'Card 1',
-      description: 'This is the content of card 1',
-    };
-    this.card2 = {
-      title: 'Card 2',
-      description: 'This is the content of card 2',
-    };
-    this.card3 = {
-      title: 'Card 3',
-      description: 'This is the content of card 3',
-    };
-    this.card4 = {
-      title: 'Card 4',
-      description: 'This is the content of card 4',
-    };
-    this.cards = [this.card, this.card2, this.card3, this.card4];
-    console.log(this.cards);
+    console.log(this.date.toLocaleString());
+    this.mobs = this.mobService.getMobs();
+    this.tools = this.toolService.getTools();
+    this.blocks = this.blockService.getBlocks();
+    this.users = this.userService.getUsers();
+    
+    this.feed = [...this.mobs, ...this.tools, ...this.blocks];
+    this.feed.sort((a, b) => {
+      return b.creationDate.getTime() - a.creationDate.getTime();
+    }
+    );
   }
 }

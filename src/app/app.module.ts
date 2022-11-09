@@ -10,6 +10,9 @@ import { LayoutComponent } from './layout/layout.component';
 import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './domain/pages/home/home.component';
 import { AboutComponent } from './domain/pages/about/about.component';
+import { BlockComponent } from './domain/pages/block/block.component';
+import { MobComponent } from './domain/pages/mob/mob.component';
+import { ToolComponent } from './domain/pages/tool/tool.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +22,9 @@ import { AboutComponent } from './domain/pages/about/about.component';
     FooterComponent,
     HomeComponent,
     AboutComponent,
+    BlockComponent,
+    MobComponent,
+    ToolComponent,
   ],
   imports: [AppRoutingModule, NgbModule, RouterModule, BrowserModule],
   providers: [],

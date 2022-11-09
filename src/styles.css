@@ -86,15 +86,16 @@ body {
 }
 
 /* Footer */
+footer {
+  border-top: 1px solid #686868;
+  margin-inline: 10%;
+  margin-bottom: 10px;
+}
 footer a {
   text-decoration: none;
 }
 
 /* Text */
-.text-muted {
-  color: #a5a5a5;
-}
-
 .totext {
   text-decoration: none;
 }
@@ -104,15 +105,61 @@ footer a {
   color: #0a54c3;
 }
 
+/* Home */
+.home {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Subscription feed */
+.subscriptions-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.subscriptions-title {
+  border-bottom: 1px solid #a5a5a5;
+  margin-bottom: 8px;
+}
+
+.subscriptions {
+  display: flex;
+  flex-direction: column;
+  background-color: #e6eff4;
+  border: 1px solid #e5e5e5;
+  border-radius: 3px;
+  padding: 10px;
+  margin-bottom: 10px;
+  width: 350px;
+  height: 500px;
+}
+.subscriptions .content {
+  height: fit-content;
+  overflow-y: scroll;
+}
+.subscriptions .card-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.subscriptions .card-header a {
+  text-decoration: none;
+  color: rgb(171, 2, 2);
+}
+
 /* Entity feed */
 .feed-container {
   display: flex;
   justify-content: center;
+  margin-top: 40px;
 }
 
 .feed-title {
   border-bottom: 1px solid #a5a5a5;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
 }
 
 .feed {
@@ -123,8 +170,13 @@ footer a {
   border-radius: 3px;
   padding: 10px;
   margin-bottom: 10px;
-  width: 75%;
-  margin-top: 50px;
+  width: 700px;
+  height: 900px;
+}
+
+.feed .content {
+  height: fit-content;
+  overflow-y: scroll;
 }
 
 .feed .card-header {
