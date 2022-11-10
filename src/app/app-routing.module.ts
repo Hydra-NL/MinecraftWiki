@@ -6,6 +6,7 @@ import { AboutComponent } from './domain/pages/about/about.component';
 import { BlockComponent } from './domain/pages/block/block.component';
 import { MobComponent } from './domain/pages/mob/mob.component';
 import { ToolComponent } from './domain/pages/tool/tool.component';
+import { BlockDetailComponent } from './domain/pages/block/blockdetail.component';
 
 const routes: Routes = [
   {
@@ -23,8 +24,20 @@ const routes: Routes = [
       },
       { path: 'about', component: AboutComponent },
       { path: 'blocks', component: BlockComponent },
+      {
+        path: 'blocks',
+        children: [{ path: ':id', component: BlockDetailComponent }],
+      },
       { path: 'mobs', component: MobComponent },
+      {
+        path: 'mobs',
+        children: [{ path: ':id', component: MobComponent }],
+      },
       { path: 'tools', component: ToolComponent },
+      {
+        path: 'tools',
+        children: [{ path: ':id', component: ToolComponent }],
+      },
     ],
   },
   { path: '**', redirectTo: '/home' },

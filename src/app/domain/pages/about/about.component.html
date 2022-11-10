@@ -1,100 +1,128 @@
-<div class="about-container">
-  <div class="about-content">
-    <div class="about-title col-md-12">
-      <h1>About</h1>
-    </div>
-    <div class="about col-md-9">
-      <p>
-        Het project is bedoeld om een soort wikipedia voor het spel Minecraft™
-        neer te zetten. De gebruiker kan deze wiki aanvullen met de volgende
-        <a class="totext" href="/about#entiteiten">entiteiten</a>: Tools, Blocks
-        en Mobs.<br />
-        Tools kunnen wapens zijn die gebruikt kunnen worden om Mobs (vaak
-        vijandelijke monsters) te verslaan of gereedschappen om bepaalde blokken
-        te breken.<br />
-        Blocks zijn letterlijk de bouwstenen van het spel en kunnen
-        verschillende "levels" hebben, deste hoger het level deste sterker de
-        tool moet zijn om het blok te kunnen breken.<br />
-        Mobs zijn de dieren of monsters van het spel, hiervoor zijn wapens nodig
-        om door de bepantsering heen te kunnen komen. Ook hiervoor geldt: deste
-        hoger het pantser-level deste sterker de tool moet zijn.
-      </p>
-      <h5 class="subtitle" id="entiteiten">Entiteiten</h5>
-      <p>
-        Zoals in het
-        <a class="totext" href="/about#datamodel">datamodel</a> staat aangegeven
-        kunnen enkele entiteiten relaties met elkaar hebben. Zo heeft de Tool
-        eigenschappen zoals "toolLevel" en "isWeapon", afhankelijk van het level
-        en of de tool een wapen is of niet, kan deze bepaalde blokken juist wel
-        of niet breken. Ook als een tool een wapen is moet deze een bepaald
-        niveau van 'Attack' hebben om schade aan te kunnen richten op Mobs.
-        Bijvoorbeeld: Tool.attack = 3, Mob.armor = 1, dan kan de tool 2 'health'
-        schade aanrichten.
-      </p>
-      <table>
-        <thead>
-          <th>Entiteit 1: Tool</th>
-          <th>Entiteit 2: Block</th>
-          <th>Entiteit 3: Mob</th>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <ul>
-                <li>name: string</li>
-                <li>description: string</li>
-                <li>durability: number</li>
-                <li>isWeapon: boolean</li>
-                <li>attack: number</li>
-                <li>toolLevel: number</li>
-                <li>toolType: ToolType</li>
-                <li>creationDate: Date</li>
-              </ul>
-            </td>
-            <td>
-              <ul>
-                <li>name: string</li>
-                <li>description: string</li>
-                <li>stackable: boolean</li>
-                <li>stackSize: number</li>
-                <li>hardness: number</li>
-                <li>tool: ToolType</li>
-                <li>creationDate: Date</li>
-              </ul>
-            </td>
-            <td>
-              <ul>
-                <li>name: string</li>
-                <li>description: string</li>
-                <li>health: number</li>
-                <li>attack: number</li>
-                <li>armor: number</li>
-                <li>dimension: string</li>
-                <li>isPassive: boolean</li>
-                <li>creationDate: Date</li>
-              </ul>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <h5 class="subtitle" id="datamodel">Datamodel</h5>
-      <img src="assets/images/datamodel.png" alt="Datamodel" />
-    </div>
-    <div class="col-md-1"></div>
-    <div class="col-md-2">
-      <div class="card">
-        <div class="card-header">
-          <p class="about-img-title">Pascal van de Keere</p>
-          <p class="about-img-subtitle">2175279</p>
-        </div>
-        <div class="card-body about-img-card">
-          <img
-            src="../../assets/images/pascal.png"
-            alt="Pascal van de Keere"
-            class="about-img"
-          />
+<div class="page" id="about">
+  <div class="custom-container">
+    <content class="about-content">
+      <div class="big-title col-md-12">
+        <h1>About</h1>
+      </div>
+      <div class="about-intro row col-md-9">
+        <p>
+          Het project is bedoeld om een soort wikipedia voor het spel Minecraft™
+          neer te zetten. De gebruiker kan deze wiki aanvullen met de volgende
+          <a class="totext" href="/about#entiteiten">entiteiten</a>: Tools,
+          Blocks en Mobs.<br />
+          Tools kunnen wapens zijn die gebruikt kunnen worden om Mobs (vaak
+          vijandelijke monsters) te verslaan of gereedschappen om bepaalde
+          blokken te breken.<br />
+          Blocks zijn letterlijk de bouwstenen van het spel en kunnen
+          verschillende "levels" hebben, deste hoger het level deste sterker de
+          tool moet zijn om het blok te kunnen breken.<br />
+          Mobs zijn de dieren of monsters van het spel, hiervoor zijn wapens
+          nodig om door de bepantsering heen te kunnen komen. Ook hiervoor
+          geldt: deste hoger het pantser-level deste sterker de tool moet zijn.
+        </p>
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header">
+              <p class="about-img-title">Pascal van de Keere</p>
+              <p class="about-img-subtitle">2175279</p>
+            </div>
+            <div class="card-body about-img-card">
+              <img
+                src="../../assets/images/pascal.png"
+                alt="Pascal van de Keere"
+                class="about-img"
+              />
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+      <div class="about col-md-12">
+        <h5 class="subtitle" id="entiteiten">Entiteiten</h5>
+        <p>
+          Zoals in het
+          <a class="totext" href="/about#datamodel">datamodel</a> staat
+          aangegeven kunnen enkele entiteiten relaties met elkaar hebben. Zo
+          heeft de Tool eigenschappen zoals "toolLevel" en "toolType",
+          afhankelijk van het level en van het type tool, kan deze bepaalde
+          blokken juist wel of niet breken. Tooltypes zijn bepaald aan de hand
+          van een enum die de volgende types bevat: Pickaxe, Shovel, Axe,
+          Sword.<br />
+          Ook als een tool een wapen is moet deze een bepaald niveau van
+          'Attack' hebben om schade aan te kunnen richten op Mobs. <br />
+        </p>
+        <table>
+          <thead>
+            <th>Entiteit 1: Tool</th>
+            <th>Entiteit 2: Block</th>
+            <th>Entiteit 3: Mob</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <ul>
+                  <li>name: string</li>
+                  <li>description: string</li>
+                  <li>durability: number</li>
+                  <li>isWeapon: boolean</li>
+                  <li>attack: number</li>
+                  <li>toolLevel: number</li>
+                  <li>toolType: ToolType</li>
+                  <li>createdBy: User</li>
+                  <li>creationDate: Date</li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li>name: string</li>
+                  <li>description: string</li>
+                  <li>stackable: boolean</li>
+                  <li>stackSize: number</li>
+                  <li>hardness: number</li>
+                  <li>tool: ToolType</li>
+                  <li>createdBy: User</li>
+                  <li>creationDate: Date</li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li>name: string</li>
+                  <li>description: string</li>
+                  <li>health: number</li>
+                  <li>attack: number</li>
+                  <li>armor: number</li>
+                  <li>dimension: string</li>
+                  <li>isPassive: boolean</li>
+                  <li>createdBy: User</li>
+                  <li>creationDate: Date</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h5 class="subtitle" id="datamodel">Datamodel</h5>
+        <img src="assets/images/datamodel.png" alt="Datamodel" /><br />
+        <p>
+          <b>Voorbeelden:</b><br />
+          <i
+            >Tool.attack = 3; Mob.armor = 1; Kan 2 'health' schade
+            aanrichten.</i
+          ><br />
+          <i>Tool.attack = 1; Mob.armor = 3; Kan geen 'schade aanrichten.</i
+          ><br />
+          <i>
+            Tool.typeTool = "Pickaxe"; Block.tool = "Shovel"; Kan het block niet
+            breken. </i
+          ><br />
+          <i>
+            Tool.typeTool = "Shovel", Tool.typeLevel = 3; Block.tool = "Shovel",
+            Block.hardness = 5; Kan het block niet breken. </i
+          ><br />
+          <i
+            >Tool.typeTool = "Axe", Tool.typeLevel = 2; Block.tool = "Axe",
+            Block.hardness = 1; Kan het block breken.</i
+          ><br />
+        </p>
+      </div>
+    </content>
   </div>
 </div>

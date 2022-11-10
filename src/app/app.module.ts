@@ -13,6 +13,7 @@ import { AboutComponent } from './domain/pages/about/about.component';
 import { BlockComponent } from './domain/pages/block/block.component';
 import { MobComponent } from './domain/pages/mob/mob.component';
 import { ToolComponent } from './domain/pages/tool/tool.component';
+import { BlockDetailComponent } from './domain/pages/block/blockdetail.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { ToolComponent } from './domain/pages/tool/tool.component';
     BlockComponent,
     MobComponent,
     ToolComponent,
+    BlockDetailComponent,
   ],
   imports: [AppRoutingModule, NgbModule, RouterModule, BrowserModule],
   providers: [],

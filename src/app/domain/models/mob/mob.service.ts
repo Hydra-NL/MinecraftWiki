@@ -12,7 +12,8 @@ export class MobService extends EntityService<Mob> {
     {
       _id: '1',
       name: 'Zombie',
-      description: 'This is the content of card 1',
+      description:
+        'Zombies are common undead hostile mobs that deal melee damage and attack in groups.',
       health: 20,
       attack: 3,
       armor: 2,
@@ -23,7 +24,8 @@ export class MobService extends EntityService<Mob> {
     {
       _id: '2',
       name: 'Skeleton',
-      description: 'This is the content of card 2',
+      description:
+        'A skeleton is a common undead hostile mob equipped with a bow.',
       health: 20,
       attack: 2,
       armor: 0,
@@ -34,7 +36,8 @@ export class MobService extends EntityService<Mob> {
     {
       _id: '3',
       name: 'Creeper',
-      description: 'This is the content of card 3',
+      description:
+        'A creeper is a common hostile mob that silently approaches players and explodes. Due to their distinctive appearance and a high potential for killing unwary players as well as damaging the environment and players’ constructions, creepers have become one of the icons of Minecraft, both among players and non-players. \n\nCreepers are a major source of gunpowder as well as the only way to obtain most music discs. When struck by lightning, a creeper becomes charged, which amplifies its explosion power and enables mob heads to be obtained.',
       health: 10,
       attack: 3,
       armor: 0,
@@ -45,7 +48,8 @@ export class MobService extends EntityService<Mob> {
     {
       _id: '4',
       name: 'Spider',
-      description: 'This is the content of card 4',
+      description:
+        'Spiders are common neutral mobs that have the unique ability to climb walls.',
       health: 16,
       attack: 2,
       armor: 1,
@@ -56,12 +60,13 @@ export class MobService extends EntityService<Mob> {
     {
       _id: '5',
       name: 'Enderman',
-      description: 'This is the content of card 5',
+      description:
+        'An enderman is a neutral mob found in all three dimensions. Endermen can teleport and pick up blocks.',
       health: 40,
       attack: 7,
       armor: 3,
       dimension: 'The End',
-      isPassive: false,
+      isPassive: true,
       creationDate: new Date(),
     },
   ];

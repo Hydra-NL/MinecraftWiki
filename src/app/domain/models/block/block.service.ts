@@ -13,7 +13,8 @@ export class BlockService extends EntityService<Block> {
     {
       _id: '1',
       name: 'Stone',
-      description: 'This is the content of card 1',
+      description:
+        'Stone is a block found underground in the Overworld or on the surface of mountains.',
       hardness: 1,
       stackable: true,
       stackSize: 64,
@@ -23,7 +24,8 @@ export class BlockService extends EntityService<Block> {
     {
       _id: '2',
       name: 'Dirt',
-      description: 'This is the content of card 2',
+      description:
+        'Dirt is a block found abundantly in most biomes under a layer of grass blocks at the top of the Overworld.',
       hardness: 0,
       stackable: true,
       stackSize: 64,
@@ -32,8 +34,9 @@ export class BlockService extends EntityService<Block> {
     },
     {
       _id: '3',
-      name: 'Grass',
-      description: 'This is the content of card 3',
+      name: 'Grass Block',
+      description:
+        'A grass block is a natural block that generates abundantly across the surface of the Overworld.',
       hardness: 0,
       stackable: true,
       stackSize: 64,
@@ -43,7 +46,8 @@ export class BlockService extends EntityService<Block> {
     {
       _id: '4',
       name: 'Cobblestone',
-      description: 'This is the content of card 4',
+      description:
+        'Cobblestone is a common block, obtained from mining stone. It is mainly used for crafting or as a building block.',
       hardness: 1,
       stackable: true,
       stackSize: 64,
@@ -53,7 +57,8 @@ export class BlockService extends EntityService<Block> {
     {
       _id: '5',
       name: 'Oak Wood',
-      description: 'This is the content of card 5',
+      description:
+        'A log or stem is a naturally occurring block found in trees or huge fungi, primarily used as a building block, and to create planks, a versatile crafting ingredient. It comes in nine types: oak, spruce, birch, jungle, acacia, dark oak, mangrove, crimson and warped. \n\nA stripped log or stripped stem is a variant obtained by using an axe on a log or a stem respectively. Once stripped, it cannot be reversed.',
       hardness: 0,
       stackable: true,
       stackSize: 64,

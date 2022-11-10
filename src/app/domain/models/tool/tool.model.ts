@@ -1,10 +1,10 @@
 import { Entity } from '../entity/entity.model';
 
 export enum ToolType {
-  pickaxe = 'pickaxe',
-  axe = 'axe',
-  shovel = 'shovel',
-  sword = 'sword',
+  pickaxe = 'Pickaxe',
+  axe = 'Axe',
+  shovel = 'Shovel',
+  sword = 'Sword',
 }
 
 export class Tool extends Entity {

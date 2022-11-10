@@ -1,19 +1,50 @@
-<div class="home">
-  <div class="feed-container">
-    <div class="feed">
-      <div class="feed-title">
+<div class="page">
+  <div class="custom-container">
+    <content class="feed">
+      <div class="big-title">
         <h1>Feed</h1>
+        <a class="btn add-btn custom-btn">
+          <img class="btn-icon" src="../../../../assets/images/add-icon.png" />
+          New Page
+        </a>
       </div>
-      <div class="content">
+      <div class="content scroll">
         <div *ngFor="let card of feed">
           <div class="card">
             <div class="card-header">
-              <h3>
-                <i *ngIf="card.hardness >= 0" class="fa fa-cube"></i>
-                <i *ngIf="card.durability >= 0" class="fa-solid fa-hammer"></i>
-                <i *ngIf="card.health >= 0" class="fa-solid fa-skull"></i>
+              <a
+                *ngIf="card.health >= 0"
+                class="entity-title"
+                href="/mobs/{{ card._id }}"
+              >
+                <i class="fa-solid fa-skull"></i>
                 {{ card.name }}
-              </h3>
+                <i
+                  class="fa-solid fa-up-right-from-square reference-entity-icon"
+                ></i>
+              </a>
+              <a
+                *ngIf="card.hardness >= 0"
+                class="entity-title"
+                href="/blocks/{{ card._id }}"
+              >
+                <i class="fa fa-cube"></i>
+                {{ card.name }}
+                <i
+                  class="fa-solid fa-up-right-from-square reference-entity-icon"
+                ></i>
+              </a>
+              <a
+                *ngIf="card.durability >= 0"
+                class="entity-title"
+                href="/tools/{{ card._id }}"
+              >
+                <i class="fa-solid fa-hammer"></i>
+                {{ card.name }}
+                <i
+                  class="fa-solid fa-up-right-from-square reference-entity-icon"
+                ></i>
+              </a>
               <div class="card-date">
                 <p class="text-muted">{{ card.creationDate.toDateString() }}</p>
                 <p
@@ -28,37 +59,51 @@
             </div>
             <div class="card-body">
               <p>
-                {{ card.description }}
+                {{ card.description | slice: 0:200
+                }}{{ card.description.length > 200 ? "..." : "" }}
               </p>
             </div>
             <div class="card-footer">
-              <button class="btn btn-success">
-                <i class="fa fa-arrow-right"></i>
+              <button class="btn edit-btn custom-btn">
+                <img
+                  class="btn-icon"
+                  src="../../../../assets/images/edit-icon.png"
+                />
+                Edit
               </button>
-              <button class="btn btn-danger">
-                <i class="fa fa-trash"></i>
+              <button class="btn delete-btn custom-btn">
+                <img
+                  class="btn-icon"
+                  src="../../../../assets/images/delete-icon.png"
+                />
+                Delete
               </button>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </content>
   </div>
-  <div class="subscriptions-container">
-    <div class="subscriptions">
-      <div class="subscriptions-title">
+  <div class="custom-container">
+    <content class="subscriptions">
+      <div class="big-title">
         <h1>Subscriptions</h1>
       </div>
-      <div class="content">
+      <div class="content scroll">
         <div *ngFor="let user of users">
           <div class="card">
             <div class="card-header">
               <h5>{{ user.firstName }} {{ user.lastName }}</h5>
-              <a href="#"><i class="fa-solid fa-user-minus"></i></a>
+              <a href="#" title="Unsubscribe">
+                <img
+                  class="unsubscribe-icon"
+                  src="../../../../assets/images/cancel-icon.png"
+                />
+              </a>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </content>
   </div>
 </div>

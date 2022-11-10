@@ -12,7 +12,8 @@ export class ToolService extends EntityService<Tool> {
     {
       _id: '1',
       name: 'Wooden Pickaxe',
-      description: 'This is the content of card 1',
+      description:
+        'A pickaxe is one of the most commonly used tools in the game, being required to mine all ores, rock, rock-based blocks and metal-based blocks. A pickaxe allows the player to mine blocks at faster speeds, depending on the material it is made from. Specific pickaxe materials are also required to harvest certain types of blocks.',
       isWeapon: false,
       durability: 129,
       attack: 2,
@@ -23,7 +24,8 @@ export class ToolService extends EntityService<Tool> {
     {
       _id: '2',
       name: 'Stone Pickaxe',
-      description: 'This is the content of card 2',
+      description:
+        'A pickaxe is one of the most commonly used tools in the game, being required to mine all ores, rock, rock-based blocks and metal-based blocks. A pickaxe allows the player to mine blocks at faster speeds, depending on the material it is made from. Specific pickaxe materials are also required to harvest certain types of blocks.',
       isWeapon: false,
       durability: 250,
       attack: 3,
@@ -34,7 +36,8 @@ export class ToolService extends EntityService<Tool> {
     {
       _id: '3',
       name: 'Iron Sword',
-      description: 'This is the content of card 3',
+      description:
+        'A sword is a melee weapon that is mainly used to damage entities and for cutting cobwebs or bamboo (resulting in twice the normal damage being taken). A sword is made from one of six materials, in order of increasing quality and expense: wood, gold, stone, iron, diamond and netherite.',
       isWeapon: true,
       durability: 250,
       attack: 7,
@@ -45,7 +48,8 @@ export class ToolService extends EntityService<Tool> {
     {
       _id: '4',
       name: 'Diamond Shovel',
-      description: 'This is the content of card 4',
+      description:
+        'Shovels are tools used to ease the process of collecting dirt, sand and other blocks with silk touch mining the complete block.',
       isWeapon: false,
       durability: 1561,
       attack: 1,
@@ -56,7 +60,8 @@ export class ToolService extends EntityService<Tool> {
     {
       _id: '5',
       name: 'Netherite Axe',
-      description: 'This is the content of card 5',
+      description:
+        'An axe is a tool mainly used to hasten the breaking of wood-based blocks, remove the surface layer of certain blocks, and as a melee weapon.',
       isWeapon: false,
       durability: 2031,
       attack: 9,
