@@ -37,6 +37,9 @@ export class BlockDetailComponent implements OnInit {
     this.user = this.userService.getUserById(this.userBlockId);
     this.biome = this.block?.biome;
     this.userBlocks = this.blockService.getBlocksByUser(this.userBlockId);
+    this.userBlocks = this.userBlocks.filter(
+      (block) => block._id !== this.block?._id
+    );
     this.userBlocks.sort((a, b) => {
       return a.creationDate.getTime() - b.creationDate.getTime();
     });

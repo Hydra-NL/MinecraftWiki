@@ -112,11 +112,11 @@
               </div>
             </div>
           </div>
-          <div class="edit-field">
+          <div class="edit-textbox">
             <label for="hardness">Hardness: </label>
             <input
-              type="number"
-              class="form-control"
+              type="range"
+              class="slider"
               id="hardness"
               [(ngModel)]="block.hardness"
               #blockhardness="ngModel"
@@ -128,8 +128,46 @@
               }"
               required
               min="0"
-              max="5"
-            />(0 - 5)
+              max="6"
+            />
+            <div class="slider-images-row">
+              <img
+                class="slider-img"
+                title="No tool"
+                src="../../../../../assets/images/breakable.png"
+              />
+              <img
+                class="slider-img"
+                title="Wooden tool"
+                src="../../../../../assets/images/wooden-pickaxe.png"
+              />
+              <img
+                class="slider-img"
+                title="Stone tool"
+                src="../../../../../assets/images/stone-pickaxe.png"
+              />
+              <img
+                class="slider-img"
+                title="Iron tool"
+                src="../../../../../assets/images/iron-pickaxe.png"
+              />
+              <img
+                class="slider-img"
+                title="Diamond tool"
+                src="../../../../../assets/images/diamond-pickaxe.png"
+              />
+              <img
+                class="slider-img"
+                title="Netherite tool"
+                src="../../../../../assets/images/netherite-pickaxe.png"
+              />
+              <img
+                class="slider-img"
+                title="Unbreakable"
+                src="../../../../../assets/images/unbreakable.png"
+              />
+            </div>
+
             <div *ngIf="blockhardness.invalid" class="invalid-feedback">
               <div *ngIf="blockhardness.errors?.['required']">
                 A hardness is required

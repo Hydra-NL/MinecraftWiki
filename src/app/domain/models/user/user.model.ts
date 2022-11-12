@@ -1,8 +1,7 @@
 import { Entity } from '../entity/entity.model';
 
 export class User extends Entity {
-  firstName: string = '';
-  lastName: string = '';
+  username: string = '';
   email: string = '';
   password: string = '';
   subscriptions: Array<User> = [];

@@ -54,7 +54,49 @@
         <span *ngIf="block?.stackable"
           >Stacksize: {{ block?.stackSize }}<br
         /></span>
-        Hardness: {{ block?.hardness }}
+        Hardness:
+        <img
+          *ngIf="block?.hardness == 0"
+          class="slider-img"
+          title="No tool"
+          src="../../../../../assets/images/breakable.png"
+        />
+        <img
+          *ngIf="block?.hardness == 1"
+          class="slider-img"
+          title="Wooden tool"
+          src="../../../../../assets/images/wooden-pickaxe.png"
+        />
+        <img
+          *ngIf="block?.hardness == 2"
+          class="slider-img"
+          title="Stone tool"
+          src="../../../../../assets/images/stone-pickaxe.png"
+        />
+        <img
+          *ngIf="block?.hardness == 3"
+          class="slider-img"
+          title="Iron tool"
+          src="../../../../../assets/images/iron-pickaxe.png"
+        />
+        <img
+          *ngIf="block?.hardness == 4"
+          class="slider-img"
+          title="Diamond tool"
+          src="../../../../../assets/images/diamond-pickaxe.png"
+        />
+        <img
+          *ngIf="block?.hardness == 5"
+          class="slider-img"
+          title="Netherite tool"
+          src="../../../../../assets/images/netherite-pickaxe.png"
+        />
+        <img
+          *ngIf="block?.hardness == 6"
+          class="slider-img"
+          title="Unbreakable"
+          src="../../../../../assets/images/unbreakable.png"
+        />
       </p>
       <h5 class="subtitle" id="tools">Tools</h5>
       <p>
@@ -85,7 +127,7 @@
     <div class="card">
       <div class="card-header">
         <span>Creator</span>
-        <p class="editor-title">{{ user?.firstName }} {{ user?.lastName }}</p>
+        <p class="editor-title">{{ user?.username }}</p>
         <a>
           <img
             class="subscribe-icon"
@@ -104,34 +146,30 @@
     </div>
     <content class="see-also">
       <div class="big-title">
-        <h5>More from this creator:</h5>
+        <h5>More from {{ user?.username }}:</h5>
       </div>
       <div class="content scroll">
         <div *ngFor="let blocks of userBlocks">
-          <div class="card">
-            <div class="card-header">
-              <a routerLink="/blocks/{{ blocks?._id }}" class="entity-title">{{
-                blocks?.name
-              }}</a>
-            </div>
+          <div class="sub-feed-box">
+            <a routerLink="/blocks/{{ blocks?._id }}" class="entity-title">{{
+              blocks?.name
+            }}</a>
           </div>
         </div>
       </div>
     </content>
     <content class="see-also">
       <div class="big-title">
-        <h3>See also:</h3>
+        <h5>See also:</h5>
       </div>
       <div class="content scroll">
         <div *ngFor="let blockOther of blocks">
-          <div class="card">
-            <div class="card-header">
-              <a
-                routerLink="/blocks/{{ blockOther?._id }}"
-                class="entity-title"
-                >{{ blockOther?.name }}</a
-              >
-            </div>
+          <div class="sub-feed-box">
+            <a
+              routerLink="/blocks/{{ blockOther?._id }}"
+              class="entity-title"
+              >{{ blockOther?.name }}</a
+            >
           </div>
         </div>
       </div>

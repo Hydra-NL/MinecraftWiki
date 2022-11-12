@@ -11,8 +11,7 @@ export class UserService extends EntityService<User> {
   readonly users: User[] = [
     {
       _id: '1',
-      firstName: 'Steve',
-      lastName: 'Miner',
+      username: 'SteveTheMiner',
       email: 'steve@mc.com',
       password: 'secret',
       subscriptions: [],
@@ -20,8 +19,7 @@ export class UserService extends EntityService<User> {
     },
     {
       _id: '2',
-      firstName: 'Alex',
-      lastName: 'Builder',
+      username: 'AlexTheBuilder',
       email: 'alex@mc.com',
       password: 'secret',
       subscriptions: [],
@@ -29,8 +27,7 @@ export class UserService extends EntityService<User> {
     },
     {
       _id: '3',
-      firstName: 'Ender',
-      lastName: 'Dragon',
+      username: 'EnderDragon',
       email: 'ender@mc.com',
       password: 'secret',
       subscriptions: [],
@@ -38,8 +35,7 @@ export class UserService extends EntityService<User> {
     },
     {
       _id: '4',
-      firstName: 'Herobrine',
-      lastName: 'Ghost',
+      username: 'Herobrine',
       email: 'herobrine@mc.com',
       password: 'secret',
       subscriptions: [],
@@ -47,8 +43,7 @@ export class UserService extends EntityService<User> {
     },
     {
       _id: '5',
-      firstName: 'Notch',
-      lastName: 'Creator',
+      username: 'Notch',
       email: 'notch@mc.com',
       password: 'secret',
       subscriptions: [],
@@ -56,8 +51,7 @@ export class UserService extends EntityService<User> {
     },
     {
       _id: '6',
-      firstName: 'Wither',
-      lastName: 'Boss',
+      username: 'WitherBoss',
       email: 'wither@mc.com',
       password: 'secret',
       subscriptions: [],
@@ -65,8 +59,7 @@ export class UserService extends EntityService<User> {
     },
     {
       _id: '7',
-      firstName: 'Jesse',
-      lastName: 'Pigman',
+      username: 'JessePigman',
       email: 'jesse@mc.com',
       password: 'secret',
       subscriptions: [],
@@ -74,16 +67,14 @@ export class UserService extends EntityService<User> {
     },
     {
       _id: '8',
-      firstName: 'Ferdinand',
-      lastName: 'Pierre',
+      username: 'FerdinandPierre',
       email: 'ferdinand@mc.com',
       password: 'secret',
       subscriptions: [],
       subscribers: [
         {
           _id: '1',
-          firstName: 'Steve',
-          lastName: 'Miner',
+          username: 'SteveTheMiner',
           email: 'steve@mc.com',
           password: 'secret',
           subscriptions: [],
