@@ -6,7 +6,9 @@ import { AboutComponent } from './domain/pages/about/about.component';
 import { BlockComponent } from './domain/pages/block/block.component';
 import { MobComponent } from './domain/pages/mob/mob.component';
 import { ToolComponent } from './domain/pages/tool/tool.component';
-import { BlockDetailComponent } from './domain/pages/block/blockdetail.component';
+import { BlockDetailComponent } from './domain/pages/block/detail/blockdetail.component';
+import { BlockEditComponent } from './domain/pages/block/edit/blockedit.component';
+import { BlockAddComponent } from './domain/pages/block/add/blockadd.component';
 
 const routes: Routes = [
   {
@@ -26,7 +28,11 @@ const routes: Routes = [
       { path: 'blocks', component: BlockComponent },
       {
         path: 'blocks',
-        children: [{ path: ':id', component: BlockDetailComponent }],
+        children: [
+          { path: 'add', component: BlockAddComponent },
+          { path: ':id', component: BlockDetailComponent },
+          { path: ':id/edit', component: BlockEditComponent },
+        ],
       },
       { path: 'mobs', component: MobComponent },
       {

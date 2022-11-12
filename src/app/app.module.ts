@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AppRoutingModule } from './app-routing.module';
+import { FormsModule } from '@angular/forms';
+
+import { AppComponent } from './app.component';
 import { NavComponent } from './navbar/nav.component';
 import { LayoutComponent } from './layout/layout.component';
 import { FooterComponent } from './footer/footer.component';
@@ -13,7 +14,10 @@ import { AboutComponent } from './domain/pages/about/about.component';
 import { BlockComponent } from './domain/pages/block/block.component';
 import { MobComponent } from './domain/pages/mob/mob.component';
 import { ToolComponent } from './domain/pages/tool/tool.component';
-import { BlockDetailComponent } from './domain/pages/block/blockdetail.component';
+import { BlockDetailComponent } from './domain/pages/block/detail/blockdetail.component';
+import { BlockEditComponent } from './domain/pages/block/edit/blockedit.component';
+import { BlockAddComponent } from './domain/pages/block/add/blockadd.component';
+import { BiomeAddComponent } from './domain/pages/biome/add/biomeadd.component';
 
 @NgModule({
   declarations: [
@@ -27,8 +31,17 @@ import { BlockDetailComponent } from './domain/pages/block/blockdetail.component
     MobComponent,
     ToolComponent,
     BlockDetailComponent,
+    BlockEditComponent,
+    BlockAddComponent,
+    BiomeAddComponent,
   ],
-  imports: [AppRoutingModule, NgbModule, RouterModule, BrowserModule],
+  imports: [
+    AppRoutingModule,
+    NgbModule,
+    RouterModule,
+    BrowserModule,
+    FormsModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

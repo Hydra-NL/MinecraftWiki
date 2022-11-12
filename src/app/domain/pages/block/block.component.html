@@ -4,11 +4,11 @@
       <div class="big-title">
         <h1><i class="fa fa-cube"></i> Blocks</h1>
         <div class="page-btns">
-          <a class="btn add-btn custom-btn">
+          <a class="btn add-btn custom-btn" routerLink="/blocks/add">
             <i class="fa fa-plus"></i>
             Add Block
           </a>
-          <a class="btn custom-btn" href="/home">
+          <a class="btn custom-btn" routerLink="..">
             <i class="fa-regular fa-square-caret-left"></i>
             Back
           </a>
@@ -18,7 +18,7 @@
         <div *ngFor="let block of blocks">
           <div class="card">
             <div class="card-header">
-              <a href="/blocks/{{ block._id }}" class="entity-title">
+              <a routerLink="/blocks/{{ block._id }}" class="entity-title">
                 {{ block.name }}
                 <i class="fa-solid fa-up-right-from-square"></i>
               </a>

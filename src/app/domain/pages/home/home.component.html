@@ -15,7 +15,7 @@
               <a
                 *ngIf="card.health >= 0"
                 class="entity-title"
-                href="/mobs/{{ card._id }}"
+                routerLink="/mobs/{{ card._id }}"
               >
                 <i class="fa-solid fa-skull"></i>
                 {{ card.name }}
@@ -26,7 +26,7 @@
               <a
                 *ngIf="card.hardness >= 0"
                 class="entity-title"
-                href="/blocks/{{ card._id }}"
+                routerLink="/blocks/{{ card._id }}"
               >
                 <i class="fa fa-cube"></i>
                 {{ card.name }}
@@ -37,7 +37,7 @@
               <a
                 *ngIf="card.durability >= 0"
                 class="entity-title"
-                href="/tools/{{ card._id }}"
+                routerLink="/tools/{{ card._id }}"
               >
                 <i class="fa-solid fa-hammer"></i>
                 {{ card.name }}
@@ -94,7 +94,7 @@
           <div class="card">
             <div class="card-header">
               <h5>{{ user.firstName }} {{ user.lastName }}</h5>
-              <a href="#" title="Unsubscribe">
+              <a routerLink="#" title="Unsubscribe">
                 <img
                   class="unsubscribe-icon"
                   src="../../../../assets/images/cancel-icon.png"

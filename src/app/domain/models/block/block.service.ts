@@ -4,6 +4,7 @@ import { EntityService } from 'src/app/domain/models/entity/entity.service';
 import { environment } from 'src/environments/environment';
 import { Block } from './block.model';
 import { ToolType } from '../tool/tool.model';
+import { Dimension } from '../biome/biome.model';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,25 @@ export class BlockService extends EntityService<Block> {
       stackable: true,
       stackSize: 64,
       tool: ToolType.pickaxe,
+      biome: {
+        _id: '1',
+        name: 'Plains',
+        description:
+          'Plains are the most common biome in the Overworld. They are characterized by rolling hills and grassy plains.',
+        temperature: 16,
+        dimension: Dimension.overworld,
+      },
+      createdBy: {
+        _id: '1',
+        firstName: 'Steve',
+        lastName: 'Miner',
+        email: 'steve@mc.com',
+        password: 'secret',
+        subscriptions: [],
+        subscribers: [],
+      },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 1)),
+      lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 1)),
     },
     {
       _id: '2',
@@ -30,7 +49,25 @@ export class BlockService extends EntityService<Block> {
       stackable: true,
       stackSize: 64,
       tool: ToolType.shovel,
+      biome: {
+        _id: '1',
+        name: 'Plains',
+        description:
+          'Plains are the most common biome in the Overworld. They are characterized by rolling hills and grassy plains.',
+        temperature: 16,
+        dimension: Dimension.overworld,
+      },
+      createdBy: {
+        _id: '1',
+        firstName: 'Steve',
+        lastName: 'Miner',
+        email: 'steve@mc.com',
+        password: 'secret',
+        subscriptions: [],
+        subscribers: [],
+      },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 2)),
+      lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 2)),
     },
     {
       _id: '3',
@@ -38,10 +75,28 @@ export class BlockService extends EntityService<Block> {
       description:
         'A grass block is a natural block that generates abundantly across the surface of the Overworld.',
       hardness: 0,
-      stackable: true,
+      stackable: false,
       stackSize: 64,
       tool: ToolType.shovel,
+      biome: {
+        _id: '1',
+        name: 'Plains',
+        description:
+          'Plains are the most common biome in the Overworld. They are characterized by rolling hills and grassy plains.',
+        temperature: 16,
+        dimension: Dimension.overworld,
+      },
+      createdBy: {
+        _id: '1',
+        firstName: 'Steve',
+        lastName: 'Miner',
+        email: 'steve@mc.com',
+        password: 'secret',
+        subscriptions: [],
+        subscribers: [],
+      },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 3)),
+      lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 3)),
     },
     {
       _id: '4',
@@ -52,7 +107,25 @@ export class BlockService extends EntityService<Block> {
       stackable: true,
       stackSize: 64,
       tool: ToolType.pickaxe,
+      biome: {
+        _id: '4',
+        name: 'Mountains',
+        description:
+          'Mountains are a biome found in the Overworld. They are characterized by tall mountains and steep cliffs.',
+        temperature: 10,
+        dimension: Dimension.overworld,
+      },
+      createdBy: {
+        _id: '1',
+        firstName: 'Steve',
+        lastName: 'Miner',
+        email: 'steve@mc.com',
+        password: 'secret',
+        subscriptions: [],
+        subscribers: [],
+      },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 4)),
+      lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 4)),
     },
     {
       _id: '5',
@@ -63,7 +136,25 @@ export class BlockService extends EntityService<Block> {
       stackable: true,
       stackSize: 64,
       tool: ToolType.axe,
+      biome: {
+        _id: '3',
+        name: 'Forest',
+        description:
+          'Forests are a biome found in the Overworld. They are characterized by tall trees and a variety of plants.',
+        temperature: 12,
+        dimension: Dimension.overworld,
+      },
+      createdBy: {
+        _id: '1',
+        firstName: 'Steve',
+        lastName: 'Miner',
+        email: 'steve@mc.com',
+        password: 'secret',
+        subscriptions: [],
+        subscribers: [],
+      },
       creationDate: new Date(),
+      lastUpdateDate: new Date(),
     },
   ];
 
@@ -83,12 +174,23 @@ export class BlockService extends EntityService<Block> {
     return this.blocks.find((block) => block.hardness === hardness);
   }
 
+  getBlocksByUser(id: string) {
+    return this.blocks.filter((block) => block.createdBy._id === id);
+  }
+
   addBlock(block: Block) {
+    let newId = this.blocks.length + 1;
+    while (
+      this.blocks.find((block) => block._id === `${newId}`) !== undefined
+    ) {
+      newId++;
+    }
+    block._id = `${newId}`;
     this.blocks.push(block);
   }
 
-  updateBlock(id: string, block: Block) {
-    const index = this.blocks.findIndex((block) => block._id === id);
+  updateBlock(block: Block) {
+    const index = this.blocks.findIndex((b) => b._id === block._id);
     this.blocks[index] = block;
   }
 
