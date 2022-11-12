@@ -1,0 +1,178 @@
+<div class="page">
+  <div class="custom-container">
+    <content class="blocks">
+      <div class="big-title">
+        <h1>
+          <i class="fa fa-cube"></i> {{ block?.name
+          }}<a
+            class="edit-entity-link"
+            routerLink="/blocks/{{ block?._id }}/edit"
+            ><img
+              class="edit-icon"
+              src="../../../../assets/images/edit-icon.png"
+            />Edit</a
+          >
+        </h1>
+        <a class="btn custom-btn" routerLink="/blocks">
+          <i class="fa-regular fa-square-caret-left"></i>
+          Back
+        </a>
+      </div>
+      <div class="entity-intro">
+        <div class="col-md-9">
+          <p>{{ block?.description }}</p>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card">
+            <div class="card-header">
+              <p class="editor-title" id="content">Contents</p>
+            </div>
+            <div class="card-body" id="content-box">
+              <li>
+                <a class="totext" href="/blocks/{{ block?._id }}#stats"
+                  >Stats</a
+                >
+              </li>
+              <li>
+                <a class="totext" href="/blocks/{{ block?._id }}#tools"
+                  >Tools</a
+                >
+              </li>
+              <li>
+                <a class="totext" href="/blocks/{{ block?._id }}#biome"
+                  >Biome</a
+                >
+              </li>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h5 class="subtitle" id="stats">Stats</h5>
+      <p>
+        Stackable: {{ block?.stackable }}<br />
+        <span *ngIf="block?.stackable"
+          >Stacksize: {{ block?.stackSize }}<br
+        /></span>
+        Hardness:
+        <img
+          *ngIf="block?.hardness == 0"
+          class="slider-img"
+          title="No tool"
+          src="../../../../../assets/images/breakable.png"
+        />
+        <img
+          *ngIf="block?.hardness == 1"
+          class="slider-img"
+          title="Wooden tool"
+          src="../../../../../assets/images/wooden-pickaxe.png"
+        />
+        <img
+          *ngIf="block?.hardness == 2"
+          class="slider-img"
+          title="Stone tool"
+          src="../../../../../assets/images/stone-pickaxe.png"
+        />
+        <img
+          *ngIf="block?.hardness == 3"
+          class="slider-img"
+          title="Iron tool"
+          src="../../../../../assets/images/iron-pickaxe.png"
+        />
+        <img
+          *ngIf="block?.hardness == 4"
+          class="slider-img"
+          title="Diamond tool"
+          src="../../../../../assets/images/diamond-pickaxe.png"
+        />
+        <img
+          *ngIf="block?.hardness == 5"
+          class="slider-img"
+          title="Netherite tool"
+          src="../../../../../assets/images/netherite-pickaxe.png"
+        />
+        <img
+          *ngIf="block?.hardness == 6"
+          class="slider-img"
+          title="Unbreakable"
+          src="../../../../../assets/images/unbreakable.png"
+        />
+      </p>
+      <h5 class="subtitle" id="tools">Tools</h5>
+      <p>
+        {{ block?.name }} can be mined by {{ block?.tool }}s that have a Tool
+        Level of {{ block?.hardness }} or higher.<br />
+        Tools that can mine {{ block?.name }}:
+        <a
+          class="reference-entity-list"
+          *ngFor="let tool of tools"
+          routerLink="/tools/{{ tool._id }}"
+        >
+          {{ tool.name
+          }}<i
+            class="fa-solid fa-up-right-from-square reference-entity-icon"
+          ></i
+          ><span *ngIf="tool !== tools[tools.length - 1]">, </span>
+        </a>
+      </p>
+      <h5 class="subtitle" id="biome">Biome</h5>
+      <p>{{ block?.name }} can be found in the {{ biome?.name }} biome.</p>
+      <p>{{ biome?.description }}</p>
+      <p>Average temperatures: {{ biome?.temperature }}°C</p>
+      <p>Dimension: {{ biome?.dimension }}</p>
+    </content>
+  </div>
+
+  <div class="custom-container">
+    <div class="card">
+      <div class="card-header">
+        <span>Creator</span>
+        <p class="editor-title">{{ user?.username }}</p>
+        <a>
+          <img
+            class="subscribe-icon"
+            src="../../../../assets/images/subscribe-icon.png"
+            id="subscribe-detail-page"
+            title="Subscribe"
+          />
+        </a>
+      </div>
+      <div class="card-body">
+        <p class="card-date">
+          <b>Created: </b>{{ block?.creationDate | date: "medium" }}<br />
+          <b>Last updated: </b>{{ block?.lastUpdateDate | date: "medium" }}
+        </p>
+      </div>
+    </div>
+    <content class="see-also">
+      <div class="big-title">
+        <h5>More from {{ user?.username }}:</h5>
+      </div>
+      <div class="content scroll">
+        <div *ngFor="let blocks of userBlocks">
+          <div class="sub-feed-box">
+            <a routerLink="/blocks/{{ blocks?._id }}" class="entity-title">{{
+              blocks?.name
+            }}</a>
+          </div>
+        </div>
+      </div>
+    </content>
+    <content class="see-also">
+      <div class="big-title">
+        <h5>See also:</h5>
+      </div>
+      <div class="content scroll">
+        <div *ngFor="let blockOther of blocks">
+          <div class="sub-feed-box">
+            <a
+              routerLink="/blocks/{{ blockOther?._id }}"
+              class="entity-title"
+              >{{ blockOther?.name }}</a
+            >
+          </div>
+        </div>
+      </div>
+    </content>
+  </div>
+</div>

@@ -1,4 +1,5 @@
 import { Entity } from '../entity/entity.model';
+import { User } from '../user/user.model';
 
 export enum ToolType {
   pickaxe = 'Pickaxe',
@@ -18,5 +19,7 @@ export class Tool extends Entity {
   attack: number = 0;
   toolLevel: number = 0; // 0 = hand, 1 = wood, 2 = stone, 3 = iron, 4 = diamond, 5 = netherite
   toolType: ToolType = ToolType.pickaxe;
+  createdBy: User = new User('');
   creationDate: Date = new Date();
+  lastUpdateDate: Date = new Date();
 }

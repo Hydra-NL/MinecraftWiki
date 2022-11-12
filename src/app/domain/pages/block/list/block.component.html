@@ -1,32 +1,32 @@
 <div class="page">
   <div class="custom-container">
-    <content class="mobs">
+    <content class="blocks">
       <div class="big-title">
-        <h1><i class="fa-solid fa-skull"></i> Mobs</h1>
+        <h1><i class="fa fa-cube"></i> Blocks</h1>
         <div class="page-btns">
-          <a class="btn add-btn custom-btn">
+          <a class="btn add-btn custom-btn" routerLink="/blocks/add">
             <i class="fa fa-plus"></i>
-            Add Mob
+            Add Block
           </a>
-          <a class="btn custom-btn" href="/home">
+          <a class="btn custom-btn" routerLink="..">
             <i class="fa-regular fa-square-caret-left"></i>
             Back
           </a>
         </div>
       </div>
       <div class="content">
-        <div *ngFor="let mob of mobs">
+        <div *ngFor="let block of blocks">
           <div class="card">
             <div class="card-header">
-              <a href="/mobs/{{ mob._id }}" class="entity-title">
-                {{ mob.name }}
+              <a routerLink="/blocks/{{ block._id }}" class="entity-title">
+                {{ block.name }}
                 <i class="fa-solid fa-up-right-from-square"></i>
               </a>
             </div>
             <div class="card-body">
               <p>
-                {{ mob.description | slice: 0:200
-                }}{{ mob.description.length > 200 ? "..." : "" }}
+                {{ block.description | slice: 0:200
+                }}{{ block.description.length > 200 ? "..." : "" }}
               </p>
             </div>
           </div>

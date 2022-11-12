@@ -15,7 +15,7 @@
               <a
                 *ngIf="card.health >= 0"
                 class="entity-title"
-                href="/mobs/{{ card._id }}"
+                routerLink="/mobs/{{ card._id }}"
               >
                 <i class="fa-solid fa-skull"></i>
                 {{ card.name }}
@@ -26,7 +26,7 @@
               <a
                 *ngIf="card.hardness >= 0"
                 class="entity-title"
-                href="/blocks/{{ card._id }}"
+                routerLink="/blocks/{{ card._id }}"
               >
                 <i class="fa fa-cube"></i>
                 {{ card.name }}
@@ -37,7 +37,7 @@
               <a
                 *ngIf="card.durability >= 0"
                 class="entity-title"
-                href="/tools/{{ card._id }}"
+                routerLink="/tools/{{ card._id }}"
               >
                 <i class="fa-solid fa-hammer"></i>
                 {{ card.name }}
@@ -49,7 +49,7 @@
                 <p class="text-muted">{{ card.creationDate.toDateString() }}</p>
                 <p
                   *ngIf="
-                    card.creationDate.toDateString() >= this.date.toDateString()
+                    card.creationDate.toDateString() == this.date.toDateString()
                   "
                   class="text-muted"
                 >
@@ -59,25 +59,11 @@
             </div>
             <div class="card-body">
               <p>
-                {{ card.description | slice: 0:200
-                }}{{ card.description.length > 200 ? "..." : "" }}
+                Posted by:
+                <a class="reference-entity-list">{{
+                  card.createdBy.username
+                }}</a>
               </p>
-            </div>
-            <div class="card-footer">
-              <button class="btn edit-btn custom-btn">
-                <img
-                  class="btn-icon"
-                  src="../../../../assets/images/edit-icon.png"
-                />
-                Edit
-              </button>
-              <button class="btn delete-btn custom-btn">
-                <img
-                  class="btn-icon"
-                  src="../../../../assets/images/delete-icon.png"
-                />
-                Delete
-              </button>
             </div>
           </div>
         </div>
@@ -89,17 +75,22 @@
       <div class="big-title">
         <h1>Subscriptions</h1>
       </div>
+      <div class="search">
+        <i class="fa-solid fa-search"></i>
+        <input
+          type="text"
+          id="search"
+          class="form-control"
+          (keyup)="search()"
+          placeholder="Search"
+        />
+      </div>
       <div class="content scroll">
         <div *ngFor="let user of users">
-          <div class="card">
-            <div class="card-header">
-              <h5>{{ user.firstName }} {{ user.lastName }}</h5>
-              <a href="#" title="Unsubscribe">
-                <img
-                  class="unsubscribe-icon"
-                  src="../../../../assets/images/cancel-icon.png"
-                />
-              </a>
+          <div class="sub-feed-box">
+            <p>{{ user.username }}</p>
+            <div class="slide-in unsubscribe" id="unsubscribe">
+              <a routerLink="#" title="Unsubscribe"> Unsubscribe </a>
             </div>
           </div>
         </div>

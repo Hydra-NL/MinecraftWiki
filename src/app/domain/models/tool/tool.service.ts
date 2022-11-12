@@ -19,7 +19,16 @@ export class ToolService extends EntityService<Tool> {
       attack: 2,
       toolLevel: 1,
       toolType: ToolType.pickaxe,
+      createdBy: {
+        _id: '8',
+        username: 'FerdinandPierre',
+        email: 'ender@mc.com',
+        password: 'secret',
+        subscriptions: [],
+        subscribers: [],
+      },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 1)),
+      lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 1)),
     },
     {
       _id: '2',
@@ -31,7 +40,16 @@ export class ToolService extends EntityService<Tool> {
       attack: 3,
       toolLevel: 2,
       toolType: ToolType.pickaxe,
+      createdBy: {
+        _id: '8',
+        username: 'FerdinandPierre',
+        email: 'ender@mc.com',
+        password: 'secret',
+        subscriptions: [],
+        subscribers: [],
+      },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 2)),
+      lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 2)),
     },
     {
       _id: '3',
@@ -43,7 +61,16 @@ export class ToolService extends EntityService<Tool> {
       attack: 7,
       toolLevel: 3,
       toolType: ToolType.sword,
+      createdBy: {
+        _id: '8',
+        username: 'FerdinandPierre',
+        email: 'ender@mc.com',
+        password: 'secret',
+        subscriptions: [],
+        subscribers: [],
+      },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 3)),
+      lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 3)),
     },
     {
       _id: '4',
@@ -55,7 +82,16 @@ export class ToolService extends EntityService<Tool> {
       attack: 1,
       toolLevel: 4,
       toolType: ToolType.shovel,
+      createdBy: {
+        _id: '4',
+        username: 'Herobrine',
+        email: 'ender@mc.com',
+        password: 'secret',
+        subscriptions: [],
+        subscribers: [],
+      },
       creationDate: new Date(),
+      lastUpdateDate: new Date(),
     },
     {
       _id: '5',
@@ -67,7 +103,16 @@ export class ToolService extends EntityService<Tool> {
       attack: 9,
       toolLevel: 5,
       toolType: ToolType.axe,
+      createdBy: {
+        _id: '4',
+        username: 'Herobrine',
+        email: 'ender@mc.com',
+        password: 'secret',
+        subscriptions: [],
+        subscribers: [],
+      },
       creationDate: new Date(),
+      lastUpdateDate: new Date(),
     },
   ];
 
@@ -88,11 +133,16 @@ export class ToolService extends EntityService<Tool> {
   }
 
   addTool(tool: Tool) {
+    let newId = this.tools.length + 1;
+    while (this.tools.find((tool) => tool._id === `${newId}`) !== undefined) {
+      newId++;
+    }
+    tool._id = `${newId}`;
     this.tools.push(tool);
   }
 
-  updateTool(id: string, tool: Tool) {
-    const index = this.tools.findIndex((tool) => tool._id === id);
+  updateTool(tool: Tool) {
+    const index = this.tools.findIndex((t) => t._id === tool._id);
     this.tools[index] = tool;
   }
 

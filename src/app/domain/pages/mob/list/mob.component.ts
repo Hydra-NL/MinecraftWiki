@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MobService } from '../../models/mob/mob.service';
+import { MobService } from '../../../models/mob/mob.service';
 
 @Component({
   selector: 'app-mob',

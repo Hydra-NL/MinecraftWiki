@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ToolService } from '../../models/tool/tool.service';
+import { ToolService } from '../../../models/tool/tool.service';
 
 @Component({
   selector: 'app-tool',

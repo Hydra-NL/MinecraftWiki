@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { EntityService } from 'src/app/domain/models/entity/entity.service';
 import { environment } from 'src/environments/environment';
 import { Mob } from './mob.model';
+import { Dimension } from '../biome/biome.model';
 
 @Injectable({
   providedIn: 'root',
@@ -17,9 +18,25 @@ export class MobService extends EntityService<Mob> {
       health: 20,
       attack: 3,
       armor: 2,
-      dimension: 'Overworld',
       isPassive: false,
+      biome: {
+        _id: '1',
+        name: 'Plains',
+        description:
+          'Plains are the most common biome in the Overworld. They are characterized by rolling hills and grassy plains.',
+        temperature: 16,
+        dimension: Dimension.overworld,
+      },
+      createdBy: {
+        _id: '2',
+        username: 'AlexTheBuilder',
+        email: 'alex@mc.com',
+        password: 'secret',
+        subscriptions: [],
+        subscribers: [],
+      },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 1)),
+      lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 1)),
     },
     {
       _id: '2',
@@ -29,9 +46,25 @@ export class MobService extends EntityService<Mob> {
       health: 20,
       attack: 2,
       armor: 0,
-      dimension: 'Overworld',
       isPassive: false,
+      biome: {
+        _id: '1',
+        name: 'Plains',
+        description:
+          'Plains are the most common biome in the Overworld. They are characterized by rolling hills and grassy plains.',
+        temperature: 16,
+        dimension: Dimension.overworld,
+      },
+      createdBy: {
+        _id: '2',
+        username: 'AlexTheBuilder',
+        email: 'alex@mc.com',
+        password: 'secret',
+        subscriptions: [],
+        subscribers: [],
+      },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 2)),
+      lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 2)),
     },
     {
       _id: '3',
@@ -41,9 +74,25 @@ export class MobService extends EntityService<Mob> {
       health: 10,
       attack: 3,
       armor: 0,
-      dimension: 'Overworld',
       isPassive: false,
+      biome: {
+        _id: '1',
+        name: 'Plains',
+        description:
+          'Plains are the most common biome in the Overworld. They are characterized by rolling hills and grassy plains.',
+        temperature: 16,
+        dimension: Dimension.overworld,
+      },
+      createdBy: {
+        _id: '3',
+        username: 'EnderDragon',
+        email: 'ender@mc.com',
+        password: 'secret',
+        subscriptions: [],
+        subscribers: [],
+      },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 3)),
+      lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 3)),
     },
     {
       _id: '4',
@@ -53,9 +102,25 @@ export class MobService extends EntityService<Mob> {
       health: 16,
       attack: 2,
       armor: 1,
-      dimension: 'Overworld',
       isPassive: false,
+      biome: {
+        _id: '3',
+        name: 'Forest',
+        description:
+          'Forests are biomes that are characterized by trees and other tall vegetation. They are the most common biome in the Overworld.',
+        temperature: 12,
+        dimension: Dimension.overworld,
+      },
+      createdBy: {
+        _id: '3',
+        username: 'EnderDragon',
+        email: 'ender@mc.com',
+        password: 'secret',
+        subscriptions: [],
+        subscribers: [],
+      },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 4)),
+      lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 4)),
     },
     {
       _id: '5',
@@ -65,9 +130,25 @@ export class MobService extends EntityService<Mob> {
       health: 40,
       attack: 7,
       armor: 3,
-      dimension: 'The End',
       isPassive: true,
+      biome: {
+        _id: '6',
+        name: 'The End',
+        description:
+          'The End is a dimension that is accessed by traveling to the top of the End Portal Frame in the End Portal Room in the End City.',
+        temperature: 0,
+        dimension: Dimension.end,
+      },
+      createdBy: {
+        _id: '3',
+        username: 'EnderDragon',
+        email: 'ender@mc.com',
+        password: 'secret',
+        subscriptions: [],
+        subscribers: [],
+      },
       creationDate: new Date(),
+      lastUpdateDate: new Date(),
     },
   ];
 
@@ -80,11 +161,16 @@ export class MobService extends EntityService<Mob> {
   }
 
   addMob(mob: Mob) {
+    let newId = this.mobs.length + 1;
+    while (this.mobs.find((mob) => mob._id === `${newId}`) !== undefined) {
+      newId++;
+    }
+    mob._id = `${newId}`;
     this.mobs.push(mob);
   }
 
-  updateMob(id: string, mob: Mob) {
-    const index = this.mobs.findIndex((mob) => mob._id === id);
+  updateMob(mob: Mob) {
+    const index = this.mobs.findIndex((m) => m._id === mob._id);
     this.mobs[index] = mob;
   }
 

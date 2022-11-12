@@ -32,11 +32,24 @@ export class HomeComponent {
     this.tools = this.toolService.getTools();
     this.blocks = this.blockService.getBlocks();
     this.users = this.userService.getUsers();
-    
+
     this.feed = [...this.mobs, ...this.tools, ...this.blocks];
     this.feed.sort((a, b) => {
       return b.creationDate.getTime() - a.creationDate.getTime();
+    });
+  }
+
+  search() {
+    // get the value of the search input
+    let searchValue = (document.getElementById('search') as HTMLInputElement)
+      .value;
+    if (searchValue != '') {
+      this.users = this.users.filter((item) => {
+        return item.username.toLowerCase().includes(searchValue.toLowerCase());
+      });
+    } else {
+      this.users = this.userService.getUsers();
     }
-    );
+    console.log(searchValue);
   }
 }
