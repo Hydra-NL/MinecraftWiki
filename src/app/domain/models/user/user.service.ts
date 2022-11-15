@@ -14,7 +14,16 @@ export class UserService extends EntityService<User> {
       username: 'SteveTheMiner',
       email: 'steve@mc.com',
       password: 'secret',
-      subscriptions: [],
+      subscriptions: [
+        {
+          _id: '2',
+          username: 'AlexTheBuilder',
+          email: 'alex@mc.com',
+          password: 'secret',
+          subscriptions: [],
+          subscribers: [],
+        },
+      ],
       subscribers: [],
     },
     {
@@ -70,7 +79,16 @@ export class UserService extends EntityService<User> {
       username: 'FerdinandPierre',
       email: 'ferdinand@mc.com',
       password: 'secret',
-      subscriptions: [],
+      subscriptions: [
+        {
+          _id: '1',
+          username: 'SteveTheMiner',
+          email: 'steve@mc.com',
+          password: 'secret',
+          subscriptions: [],
+          subscribers: [],
+        },
+      ],
       subscribers: [
         {
           _id: '1',
@@ -82,6 +100,14 @@ export class UserService extends EntityService<User> {
         },
       ],
     },
+    {
+      _id: '9',
+      username: 'xAyrianna',
+      email: 'xay@mc.com',
+      password: 'secret',
+      subscriptions: [],
+      subscribers: [],
+    },
   ];
 
   getUsers(): User[] {
@@ -92,5 +118,13 @@ export class UserService extends EntityService<User> {
   getUserById(id: string): User {
     console.log('getUserById aangeroepen');
     return this.users.find((user) => user._id === id)!;
+  }
+
+  deleteUser(id: string): void {
+    console.log('deleteUser aangeroepen');
+    this.users.splice(
+      this.users.findIndex((user) => user._id === id),
+      1
+    );
   }
 }

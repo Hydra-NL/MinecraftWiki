@@ -9,6 +9,7 @@ import { ToolComponent } from './domain/pages/tool/list/tool.component';
 import { BlockDetailComponent } from './domain/pages/block/detail/blockdetail.component';
 import { BlockEditComponent } from './domain/pages/block/edit/blockedit.component';
 import { BlockAddComponent } from './domain/pages/block/add/blockadd.component';
+import { HomeAddComponent } from './domain/pages/home/add/homeadd.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,10 @@ const routes: Routes = [
       {
         path: 'home',
         component: HomeComponent,
+      },
+      {
+        path: 'home',
+        children: [{ path: 'add', component: HomeAddComponent }],
       },
       { path: 'about', component: AboutComponent },
       { path: 'blocks', component: BlockComponent },

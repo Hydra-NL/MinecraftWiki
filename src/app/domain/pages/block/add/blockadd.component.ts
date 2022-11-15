@@ -16,12 +16,10 @@ import { BiomeAddComponent } from '../../biome/add/biomeadd.component';
 })
 export class BlockAddComponent implements OnInit {
   block!: Block;
-  biomeSelected(biome: Biome) {
-    this.block.biome = biome;
-  }
 
   constructor(
     private blockService: BlockService,
+    private userService: UserService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -42,14 +40,21 @@ export class BlockAddComponent implements OnInit {
       creationDate: new Date(),
       lastUpdateDate: new Date(),
     };
+
+    let biomeform = document.getElementById('biome-form') as HTMLFormElement;
+    biomeform['markAsUntouched'];
+    biomeform['markAsPristine'];
   }
 
   addBlock() {
     this.block;
     if (this.block) {
+      this.block.createdBy = this.userService.getUserById('8');
+      this.block.creationDate = new Date();
+      this.block.lastUpdateDate = new Date();
       this.blockService.addBlock(this.block);
       this.router.navigate(['/blocks/' + this.block._id]);
-      console.log('BlockEditComponent updateBlock');
+      console.log('BlockAddComponent Block added');
       console.log(this.block);
     }
   }

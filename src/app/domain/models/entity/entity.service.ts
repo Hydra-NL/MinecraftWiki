@@ -26,7 +26,7 @@ export class EntityService<T extends Entity> {
   }
 
   public create(item: T, options?: any): Observable<T> {
-    const endpoint = `${this.url}${this.endpoint}/new`
+    const endpoint = `${this.url}/${this.endpoint}/new`
     console.log(`create ${endpoint}`)
     return this.http.post<T>(endpoint, item, { ...options, ...httpOptions }).pipe(
       tap(console.log),
@@ -36,7 +36,7 @@ export class EntityService<T extends Entity> {
   }
 
   public read(id: number | string, options?: any): Observable<T> {
-    const endpoint = `${this.url}${this.endpoint}/${id}`
+    const endpoint = `${this.url}/${this.endpoint}/${id}`
     console.log(`read ${endpoint}`)
     return this.http
       .get<T[]>(endpoint, { ...options, ...httpOptions })
@@ -44,7 +44,7 @@ export class EntityService<T extends Entity> {
   }
 
   public update(item: T, options?: any): Observable<T> {
-    const endpoint = `${this.url}${this.endpoint}/${item._id}/edit`
+    const endpoint = `${this.url}/${this.endpoint}/${item._id}/edit`
     console.log(`update ${endpoint}`)
     console.log(item)
     return this.http.put(endpoint, item, { ...options, ...httpOptions }).pipe(
@@ -54,7 +54,7 @@ export class EntityService<T extends Entity> {
   }
 
   public delete(id: string, options?: any): Observable<T> {
-    const endpoint = `${this.url}${this.endpoint}/${id}/remove`
+    const endpoint = `${this.url}/${this.endpoint}/${id}/remove`
     console.log(`delete ${endpoint}`)
     return this.http.delete(endpoint, { ...options, ...httpOptions }).pipe(
       // map((response: any) => response.result),
