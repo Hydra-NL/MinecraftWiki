@@ -37,6 +37,7 @@ export class BlockAddComponent implements OnInit {
       tool: ToolType.pickaxe,
       biome: new Biome(''),
       createdBy: new User(''),
+      timePassed: 0,
       creationDate: new Date(),
       lastUpdateDate: new Date(),
     };

@@ -28,6 +28,7 @@ export class ToolService extends EntityService<Tool> {
         subscribers: [],
       },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 1)),
+      timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 1)),
     },
     {
@@ -49,6 +50,7 @@ export class ToolService extends EntityService<Tool> {
         subscribers: [],
       },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 2)),
+      timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 2)),
     },
     {
@@ -70,6 +72,7 @@ export class ToolService extends EntityService<Tool> {
         subscribers: [],
       },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 3)),
+      timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 3)),
     },
     {
@@ -91,6 +94,7 @@ export class ToolService extends EntityService<Tool> {
         subscribers: [],
       },
       creationDate: new Date(),
+      timePassed: 0,
       lastUpdateDate: new Date(),
     },
     {
@@ -112,6 +116,7 @@ export class ToolService extends EntityService<Tool> {
         subscribers: [],
       },
       creationDate: new Date(),
+      timePassed: 0,
       lastUpdateDate: new Date(),
     },
   ];

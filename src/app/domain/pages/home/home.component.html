@@ -90,12 +90,12 @@
           {{ card.name }}
         </a>
         <div class="card-date">
-          <p class="text-muted">posted {{ card.creationDate }} ago</p>
+          <p class="text-muted">posted {{ card.timePassed }} ago</p>
           <p
             *ngIf="
-              card.creationDate.includes('s') ||
-              card.creationDate.includes('m') ||
-              card.creationDate.includes('h')
+              card.timePassed.includes('s') ||
+              card.timePassed.includes('m') ||
+              card.timePassed.includes('h')
             "
             class="text-muted"
           >
@@ -145,7 +145,7 @@
           {{ card.name }}
         </a>
         <div class="card-date">
-          <p class="text-muted">posted {{ card.creationDate }} ago</p>
+          <p class="text-muted">posted {{ card.timePassed }} ago</p>
           <p
             *ngIf="
               card.creationDate.includes('s') ||

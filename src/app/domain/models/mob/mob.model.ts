@@ -15,5 +15,6 @@ export class Mob extends Entity {
   biome: Biome = new Biome('');
   createdBy: User = new User('');
   creationDate: Date = new Date();
+  timePassed: number = 0;
   lastUpdateDate: Date = new Date();
 }
