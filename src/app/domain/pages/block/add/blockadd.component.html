@@ -300,16 +300,16 @@
             </div>
           </div>
         </div>
+        <button
+          type="submit"
+          (click)="addBlock()"
+          class="btn custom-btn edit-button"
+          [disabled]="!blockAddForm.valid"
+        >
+          <i class="fa-solid fa-check"></i>
+          Save
+        </button>
       </form>
-      <button
-        type="submit"
-        (click)="addBlock()"
-        class="btn custom-btn"
-        [disabled]="!blockAddForm.valid || blockAddForm.pristine"
-      >
-        <i class="fa-solid fa-check"></i>
-        Save
-      </button>
     </content>
   </div>
 </div>
