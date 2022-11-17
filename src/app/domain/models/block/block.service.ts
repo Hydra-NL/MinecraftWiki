@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { Block } from './block.model';
 import { ToolType } from '../tool/tool.model';
 import { Dimension } from '../biome/biome.model';
+import { EntityType } from '../entity/entity.model';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,7 @@ export class BlockService extends EntityService<Block> {
       name: 'Stone',
       description:
         'Stone is a block found underground in the Overworld or on the surface of mountains.',
+      type: EntityType.block,
       hardness: 1,
       stackable: true,
       stackSize: 64,
@@ -45,6 +47,7 @@ export class BlockService extends EntityService<Block> {
       name: 'Dirt',
       description:
         'Dirt is a block found abundantly in most biomes under a layer of grass blocks at the top of the Overworld.',
+      type: EntityType.block,
       hardness: 0,
       stackable: true,
       stackSize: 64,
@@ -74,6 +77,7 @@ export class BlockService extends EntityService<Block> {
       name: 'Grass Block',
       description:
         'A grass block is a natural block that generates abundantly across the surface of the Overworld.',
+      type: EntityType.block,
       hardness: 0,
       stackable: false,
       stackSize: 64,
@@ -103,6 +107,7 @@ export class BlockService extends EntityService<Block> {
       name: 'Cobblestone',
       description:
         'Cobblestone is a common block, obtained from mining stone. It is mainly used for crafting or as a building block.',
+      type: EntityType.block,
       hardness: 1,
       stackable: true,
       stackSize: 64,
@@ -132,6 +137,7 @@ export class BlockService extends EntityService<Block> {
       name: 'Oak Wood',
       description:
         'A log or stem is a naturally occurring block found in trees or huge fungi, primarily used as a building block, and to create planks, a versatile crafting ingredient. It comes in nine types: oak, spruce, birch, jungle, acacia, dark oak, mangrove, crimson and warped. \n\nA stripped log or stripped stem is a variant obtained by using an axe on a log or a stem respectively. Once stripped, it cannot be reversed.',
+      type: EntityType.block,
       hardness: 0,
       stackable: true,
       stackSize: 64,

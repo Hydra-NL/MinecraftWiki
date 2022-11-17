@@ -9,6 +9,7 @@ import { UserService } from 'src/app/domain/models/user/user.service';
 import { User } from 'src/app/domain/models/user/user.model';
 import { Biome } from 'src/app/domain/models/biome/biome.model';
 import { BiomeAddComponent } from '../../biome/add/biomeadd.component';
+import { EntityType } from 'src/app/domain/models/entity/entity.model';
 
 @Component({
   selector: 'app-blockadd',
@@ -31,6 +32,7 @@ export class BlockAddComponent implements OnInit {
       _id: undefined,
       name: '',
       description: '',
+      type: EntityType.block,
       stackable: false,
       stackSize: 0,
       hardness: 0,

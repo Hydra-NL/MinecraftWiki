@@ -2,8 +2,10 @@
   <div class="custom-container">
     <content class="feed">
       <div class="big-title">
-        <h1>Feed</h1>
-        <button (click)="toggle()">For you</button>
+        <div class="feed-nav">
+          <button [disabled]="visible" (click)="toggle()">Feed</button>
+          <button [disabled]="!visible" (click)="toggle()">For you</button>
+        </div>
         <a class="btn add-btn custom-btn" routerLink="/home/add">
           <img class="btn-icon" src="../../../../assets/images/add-icon.png" />
           New Page
@@ -63,32 +65,31 @@
     It appears that the feed is empty.
   </p>
   <div *ngFor="let card of feed">
-    <div class="card entity-card" (click)="click()">
+    <div class="card entity-card">
       <div class="card-header">
-        <a
-          *ngIf="card.health >= 0"
-          class="entity-title"
-          routerLink="/mobs/{{ card._id }}"
-        >
+        <a class="card-click" routerLink="/mobs/{{ card._id }}"></a>
+        <p class="entity-title" *ngIf="card.type == 'Mob'">
           <i class="fa-solid fa-skull"></i>
           {{ card.name }}
-        </a>
+        </p>
         <a
-          *ngIf="card.hardness >= 0"
-          class="entity-title"
+          class="card-click"
           routerLink="/blocks/{{ card._id }}"
-        >
+          *ngIf="card.type == 'Block'"
+        ></a>
+        <p *ngIf="card.type == 'Block'" class="entity-title">
           <i class="fa fa-cube"></i>
           {{ card.name }}
-        </a>
+        </p>
         <a
-          *ngIf="card.durability >= 0"
-          class="entity-title"
+          class="card-click"
           routerLink="/tools/{{ card._id }}"
-        >
+          *ngIf="card.type == 'Tool'"
+        ></a>
+        <p *ngIf="card.type == 'Tool'" class="entity-title">
           <i class="fa-solid fa-hammer"></i>
           {{ card.name }}
-        </a>
+        </p>
         <div class="card-date">
           <p class="text-muted">posted {{ card.timePassed }} ago</p>
           <p

@@ -10,7 +10,7 @@ import { ToolService } from '../../models/tool/tool.service';
 import { BlockService } from '../../models/block/block.service';
 import { UserService } from '../../models/user/user.service';
 import { User } from '../../models/user/user.model';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { now } from 'moment';
 import * as moment from 'moment';
 
@@ -35,7 +35,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private mobService: MobService,
     private toolService: ToolService,
     private blockService: BlockService,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) {
     console.log('HomeComponent constructor');
   }
@@ -103,10 +104,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   toggle() {
     this.visible = !this.visible;
-  }
-
-  click() {
-    console.log('click');
   }
 
   calcTime() {

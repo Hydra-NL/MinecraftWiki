@@ -7,7 +7,7 @@
           <a class="btn add-btn custom-btn" routerLink="/blocks/add">
             <i class="fa fa-plus"></i>
             Add Block </a
-          ><a class="btn custom-btn  back" routerLink="..">
+          ><a class="btn custom-btn back" routerLink="..">
             <i class="fa-regular fa-square-caret-left"></i>
             Back
           </a>
@@ -15,9 +15,10 @@
       </div>
       <div class="content">
         <div *ngFor="let block of blocks">
-          <div class="card">
+          <div class="card entity-card">
+            <a class="card-click" routerLink="/blocks/{{ block._id }}"></a>
             <div class="card-header">
-              <a routerLink="/blocks/{{ block._id }}" class="entity-title">
+              <a class="entity-title">
                 {{ block.name }}
               </a>
             </div>
