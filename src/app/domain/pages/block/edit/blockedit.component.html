@@ -12,14 +12,30 @@
             <input
               type="text"
               class="form-control"
+              [(ngModel)]="block!.name"
+              name="name"
+              #blockname="ngModel"
               placeholder="Block Name"
+              [ngClass]="{
+                'is-invalid':
+                  blockname.invalid && (blockname.dirty || blockname.touched)
+              }"
               value="{{ block?.name }}"
               required
               minlength="3"
               maxlength="30"
             />
           </h1>
-          <a class="btn custom-btn" routerLink="/blocks/{{ block?._id }}">
+          <div *ngIf="blockname.invalid" class="invalid-feedback">
+            <div *ngIf="blockname.errors?.['required']">A name is required</div>
+            <div *ngIf="blockname.errors?.['minlength']">
+              The block's name should be atleast 3 characters long
+            </div>
+            <div *ngIf="blockname.errors?.['maxlength']">
+              The block's name should be atmost 30 characters long
+            </div>
+          </div>
+          <a class="btn custom-btn back" routerLink="/blocks/{{ block?._id }}">
             <i class="fa-regular fa-square-caret-left"></i>
             Back
           </a>
@@ -32,10 +48,26 @@
               id="description"
               rows="4"
               placeholder="Block Description"
+              [(ngModel)]="block!.description"
+              #blockdescription="ngModel"
+              name="description"
+              [ngClass]="{
+                'is-invalid':
+                  blockdescription.invalid &&
+                  (blockdescription.dirty || blockdescription.touched)
+              }"
               value="{{ block?.description }}"
               required
               minlength="3"
             ></textarea>
+            <div *ngIf="blockdescription.invalid" class="invalid-feedback">
+              <div *ngIf="blockdescription.errors?.['required']">
+                A description is required
+              </div>
+              <div *ngIf="blockdescription.errors?.['minlength']">
+                The block's description should be atleast 3 characters long
+              </div>
+            </div>
           </div>
 
           <h5 class="subtitle" id="stats">Stats</h5>
@@ -46,8 +78,10 @@
               id="stackable"
               value="{{ block?.stackable }}"
               (change)="(true)"
+              [(ngModel)]="block!.stackable"
+              #blockstackable="ngModel"
+              name="stackable"
               #checkBox
-              required
               [checked]="block?.stackable"
             />
           </div>
@@ -57,12 +91,32 @@
               type="number"
               class="form-control"
               id="stackSize"
+              placeholder="Stack Size"
+              [(ngModel)]="block!.stackSize"
+              #blockstacksize="ngModel"
+              name="stackSize"
+              [ngClass]="{
+                'is-invalid':
+                  blockstacksize.invalid &&
+                  (blockstacksize.dirty || blockstacksize.touched)
+              }"
               value="{{ block?.stackSize }}"
               required
               min="1"
               max="64"
             />
             (1 - 64)
+            <div *ngIf="blockstacksize.invalid" class="invalid-feedback">
+              <div *ngIf="blockstacksize.errors?.['required']">
+                A stack size is required
+              </div>
+              <div *ngIf="blockstacksize.errors?.['min']">
+                The block's stack size should be atleast 1
+              </div>
+              <div *ngIf="blockstacksize.errors?.['max']">
+                The block's stack size should be atmost 64
+              </div>
+            </div>
           </div>
           <div class="edit-field">
             <label for="hardness">Hardness: </label>
@@ -70,12 +124,32 @@
               type="number"
               class="form-control"
               id="hardness"
+              placeholder="Hardness"
+              [(ngModel)]="block!.hardness"
+              #blockhardness="ngModel"
+              name="hardness"
+              [ngClass]="{
+                'is-invalid':
+                  blockhardness.invalid &&
+                  (blockhardness.dirty || blockhardness.touched)
+              }"
               value="{{ block?.hardness }}"
               required
               min="0"
               max="5"
             />
             (0 - 5)
+            <div *ngIf="blockhardness.invalid" class="invalid-feedback">
+              <div *ngIf="blockhardness.errors?.['required']">
+                A hardness is required
+              </div>
+              <div *ngIf="blockhardness.errors?.['min']">
+                The block's hardness should be atleast 0
+              </div>
+              <div *ngIf="blockhardness.errors?.['max']">
+                The block's hardness should be atmost 5
+              </div>
+            </div>
           </div>
 
           <h5 class="subtitle" id="tools">Tools</h5>
@@ -86,6 +160,9 @@
               id="tool"
               value="{{ block?.tool }}"
               required
+              [(ngModel)]="block!.tool"
+              #blocktool="ngModel"
+              name="tool"
             >
               <option value="Pickaxe">Pickaxe</option>
               <option value="Axe">Axe</option>
@@ -100,9 +177,22 @@
               type="text"
               class="form-control"
               id="biome"
+              placeholder="Biome name"
+              [(ngModel)]="biome!.name"
+              #blockbiome="ngModel"
+              name="biome"
+              [ngClass]="{
+                'is-invalid':
+                  blockbiome.invalid && (blockbiome.dirty || blockbiome.touched)
+              }"
               required
               value="{{ biome?.name }}"
             />
+            <div *ngIf="blockbiome.invalid" class="invalid-feedback">
+              <div *ngIf="blockbiome.errors?.['required']">
+                A biome name is required
+              </div>
+            </div>
           </div>
           <div class="edit-textbox">
             <label for="biome">Description </label>
@@ -111,10 +201,26 @@
               id="biome"
               rows="4"
               placeholder="Biome Description"
+              [(ngModel)]="biome!.description"
+              #blockbiomedescription="ngModel"
+              name="biomeDescription"
+              [ngClass]="{
+                'is-invalid':
+                  blockbiomedescription.invalid &&
+                  (blockbiomedescription.dirty || blockbiomedescription.touched)
+              }"
               required
               minlength="3"
               value="{{ biome?.description }}"
             ></textarea>
+            <div *ngIf="blockbiomedescription.invalid" class="invalid-feedback">
+              <div *ngIf="blockbiomedescription.errors?.['required']">
+                A description is required
+              </div>
+              <div *ngIf="blockbiomedescription.errors?.['minlength']">
+                The biome's description should be atleast 3 characters long
+              </div>
+            </div>
           </div>
           <div class="edit-field">
             <label for="biome">Temperature: </label>
@@ -122,12 +228,32 @@
               type="number"
               class="form-control"
               id="biome"
+              placeholder="Temperature"
+              [(ngModel)]="biome!.temperature"
+              #blockbiometemperature="ngModel"
+              name="biomeTemperature"
+              [ngClass]="{
+                'is-invalid':
+                  blockbiometemperature.invalid &&
+                  (blockbiometemperature.dirty || blockbiometemperature.touched)
+              }"
               required
               min="-20"
               max="50"
               value="{{ biome?.temperature }}"
             />
             (°C)
+            <div *ngIf="blockbiometemperature.invalid" class="invalid-feedback">
+              <div *ngIf="blockbiometemperature.errors?.['required']">
+                A temperature is required
+              </div>
+              <div *ngIf="blockbiometemperature.errors?.['min']">
+                The biome's temperature should be atleast -20°C
+              </div>
+              <div *ngIf="blockbiometemperature.errors?.['max']">
+                The biome's temperature should be atmost 50°C
+              </div>
+            </div>
           </div>
           <div class="edit-field">
             <label for="biome">Dimension: </label>
@@ -136,11 +262,25 @@
               value="{{ biome?.dimension }}"
               id="biome"
               required
+              [(ngModel)]="biome!.dimension"
+              #blockbiomedimension="ngModel"
+              name="biomeDimension"
+              [ngClass]="{
+                'is-invalid':
+                  blockbiomedimension.invalid &&
+                  (blockbiomedimension.dirty || blockbiomedimension.touched)
+              }"
+              required
             >
               <option value="Overworld">Overworld</option>
               <option value="Nether">Nether</option>
               <option value="End">End</option>
             </select>
+            <div *ngIf="blockbiomedimension.invalid" class="invalid-feedback">
+              <div *ngIf="blockbiomedimension.errors?.['required']">
+                A dimension is required
+              </div>
+            </div>
           </div>
         </div>
         <button

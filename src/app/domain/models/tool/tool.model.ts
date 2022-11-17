@@ -21,5 +21,6 @@ export class Tool extends Entity {
   toolType: ToolType = ToolType.pickaxe;
   createdBy: User = new User('');
   creationDate: Date = new Date();
+  timePassed: number = 0;
   lastUpdateDate: Date = new Date();
 }

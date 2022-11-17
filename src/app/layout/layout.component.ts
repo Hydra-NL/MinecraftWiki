@@ -4,6 +4,4 @@ import { Component } from '@angular/core';
   selector: 'app-layout',
   templateUrl: './layout.component.html',
 })
-export class LayoutComponent {
-  title = 'ClientSide-Project';
-}
+export class LayoutComponent {}

@@ -13,7 +13,7 @@
             />Edit</a
           >
         </h1>
-        <a class="btn custom-btn" routerLink="/blocks">
+        <a class="btn custom-btn  back" routerLink="/blocks">
           <i class="fa-regular fa-square-caret-left"></i>
           Back
         </a>
@@ -120,6 +120,13 @@
       <p>{{ biome?.description }}</p>
       <p>Average temperatures: {{ biome?.temperature }}°C</p>
       <p>Dimension: {{ biome?.dimension }}</p>
+      <button class="btn custom-btn delete-btn">
+        <img
+          class="btn-icon"
+          src="../../../../../assets/images/delete-icon.png"
+        />
+        Delete
+      </button>
     </content>
   </div>
 

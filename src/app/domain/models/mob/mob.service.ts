@@ -35,7 +35,8 @@ export class MobService extends EntityService<Mob> {
         subscriptions: [],
         subscribers: [],
       },
-      creationDate: new Date(new Date().setDate(new Date().getDate() - 1)),
+      creationDate: new Date(new Date().setDate(new Date().getDate() - 3)),
+      timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 1)),
     },
     {
@@ -64,6 +65,7 @@ export class MobService extends EntityService<Mob> {
         subscribers: [],
       },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 2)),
+      timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 2)),
     },
     {
@@ -91,7 +93,8 @@ export class MobService extends EntityService<Mob> {
         subscriptions: [],
         subscribers: [],
       },
-      creationDate: new Date(new Date().setDate(new Date().getDate() - 3)),
+      creationDate: new Date(new Date().setDate(new Date().getDate() - 1)),
+      timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 3)),
     },
     {
@@ -120,6 +123,7 @@ export class MobService extends EntityService<Mob> {
         subscribers: [],
       },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 4)),
+      timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 4)),
     },
     {
@@ -148,6 +152,7 @@ export class MobService extends EntityService<Mob> {
         subscribers: [],
       },
       creationDate: new Date(),
+      timePassed: 0,
       lastUpdateDate: new Date(),
     },
   ];

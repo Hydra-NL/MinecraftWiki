@@ -10,6 +10,7 @@ import { NavComponent } from './navbar/nav.component';
 import { LayoutComponent } from './layout/layout.component';
 import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './domain/pages/home/home.component';
+import { HomeAddComponent } from './domain/pages/home/add/homeadd.component';
 import { AboutComponent } from './domain/pages/about/about.component';
 import { BlockComponent } from './domain/pages/block/list/block.component';
 import { MobComponent } from './domain/pages/mob/list/mob.component';
@@ -26,6 +27,7 @@ import { BiomeAddComponent } from './domain/pages/biome/add/biomeadd.component';
     LayoutComponent,
     FooterComponent,
     HomeComponent,
+    HomeAddComponent,
     AboutComponent,
     BlockComponent,
     MobComponent,
