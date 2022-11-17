@@ -52,4 +52,9 @@ export class BlockDetailComponent implements OnInit {
     this.blocks.sort((a, b) => a.hardness - b.hardness);
     console.log(this.tools);
   }
+
+  deleteBlock() {
+    this.blockService.deleteBlock(this.block!._id!);
+    this.router.navigate(['/blocks']);
+  }
 }
