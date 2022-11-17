@@ -9,13 +9,13 @@
           Het project is bedoeld om een soort wikipedia voor het spel Minecraft™
           neer te zetten. De gebruiker kan deze wiki aanvullen met de volgende
           <a class="totext" href="/about#entiteiten">entiteiten</a>: Tools,
-          Blocks en Mobs.<br />
+          Blocks en Mobs.<br /><br />
           Tools kunnen wapens zijn die gebruikt kunnen worden om Mobs (vaak
           vijandelijke monsters) te verslaan of gereedschappen om bepaalde
-          blokken te breken.<br />
+          blokken te breken.<br /><br />
           Blocks zijn letterlijk de bouwstenen van het spel en kunnen
           verschillende "levels" hebben, deste hoger het level deste sterker de
-          tool moet zijn om het blok te kunnen breken.<br />
+          tool moet zijn om het blok te kunnen breken.<br /><br />
           Mobs zijn de dieren of monsters van het spel, hiervoor zijn wapens
           nodig om door de bepantsering heen te kunnen komen. Ook hiervoor
           geldt: deste hoger het pantser-level deste sterker de tool moet zijn.
@@ -42,37 +42,26 @@
           Zoals in het
           <a class="totext" href="/about#datamodel">datamodel</a> staat
           aangegeven kunnen enkele entiteiten relaties met elkaar hebben. Zo
-          heeft de Tool eigenschappen zoals "toolLevel" en "toolType",
-          afhankelijk van het level en van het type tool, kan deze bepaalde
-          blokken juist wel of niet breken. Tooltypes zijn bepaald aan de hand
-          van een enum die de volgende types bevat: Pickaxe, Shovel, Axe,
-          Sword.<br />
-          Ook als een tool een wapen is moet deze een bepaald niveau van
-          'Attack' hebben om schade aan te kunnen richten op Mobs. <br />
+          beschikken de entiteiten 'Block' en 'Mob' over een 'Biome' entiteit.
+          Deze kan alleen bestaan als er een Mob of Block bestaat, deze is hier
+          dus compleet van afhankelijk en kan niet op zichzelf bestaan.<br /><br />
+          Verder zijn er tussen de entiteiten ook nog andere relaties te vinden.
+          Zo beschikken de Block en Tool entiteien over een 'ToolType', en
+          'Hardness' en 'ToolLevel' respectievelijk. Deze geven aan of een tool
+          een block juist wel of niet kan breken (aan het einde van de pagina
+          voorbeelden). Tussen Tool en Mob is er zo'n soortgelijke relatie te
+          vinden namelijk met damage van de Tool tenopzichte van de armor van de
+          Mob.
         </p>
         <table>
           <thead>
-            <th>Entiteit 1: Tool</th>
-            <th>Entiteit 2: Block</th>
+            <th>Entiteit 1: Block</th>
+            <th>Entiteit 2: Tool</th>
             <th>Entiteit 3: Mob</th>
             <th>Entiteit 4: Biome</th>
           </thead>
           <tbody>
             <tr>
-              <td>
-                <ul>
-                  <li>name: string</li>
-                  <li>description: string</li>
-                  <li>durability: number</li>
-                  <li>isWeapon: boolean</li>
-                  <li>attack: number</li>
-                  <li>toolLevel: number</li>
-                  <li>toolType: ToolType</li>
-                  <li>createdBy: User</li>
-                  <li>creationDate: Date</li>
-                  <li>lastUpdateDate: Date</li>
-                </ul>
-              </td>
               <td>
                 <ul>
                   <li>name: string</li>
@@ -84,6 +73,22 @@
                   <li>biome: Biome</li>
                   <li>createdBy: User</li>
                   <li>creationDate: Date</li>
+                  <li>timePassed: number</li>
+                  <li>lastUpdateDate: Date</li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li>name: string</li>
+                  <li>description: string</li>
+                  <li>durability: number</li>
+                  <li>isWeapon: boolean</li>
+                  <li>attack: number</li>
+                  <li>toolLevel: number</li>
+                  <li>toolType: ToolType</li>
+                  <li>createdBy: User</li>
+                  <li>creationDate: Date</li>
+                  <li>timePassed: number</li>
                   <li>lastUpdateDate: Date</li>
                 </ul>
               </td>
@@ -94,11 +99,11 @@
                   <li>health: number</li>
                   <li>attack: number</li>
                   <li>armor: number</li>
-                  <li>dimension: string</li>
                   <li>isPassive: boolean</li>
                   <li>biome: Biome</li>
                   <li>createdBy: User</li>
                   <li>creationDate: Date</li>
+                  <li>timePassed: number</li>
                   <li>lastUpdateDate: Date</li>
                 </ul>
               </td>
@@ -116,8 +121,7 @@
         <h5 class="subtitle" id="datamodel">Datamodel</h5>
         <img src="assets/images/datamodel.png" alt="Datamodel" /><br />
         <p>
-          <b>Voorbeelden:</b><br />
-          <i
+          <b>Voorbeelden:</b><br /><i
             >Tool.attack = 3; Mob.armor = 1; Kan 2 'health' schade
             aanrichten.</i
           ><br />
