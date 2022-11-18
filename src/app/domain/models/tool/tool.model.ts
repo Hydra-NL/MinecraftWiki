@@ -1,4 +1,4 @@
-import { Entity } from '../entity/entity.model';
+import { Entity, EntityType } from '../entity/entity.model';
 import { User } from '../user/user.model';
 
 export enum ToolType {
@@ -14,6 +14,7 @@ export class Tool extends Entity {
   }
   name: string = '';
   description: string = '';
+  type: EntityType = EntityType.tool;
   durability: number = 0;
   isWeapon: boolean = false;
   attack: number = 0;

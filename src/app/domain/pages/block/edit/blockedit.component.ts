@@ -53,7 +53,6 @@ export class BlockEditComponent implements OnInit {
   }
 
   updateBlock() {
-    this.block;
     if (this.block) {
       this.block.lastUpdateDate = new Date();
       this.blockService.updateBlock(this.block);

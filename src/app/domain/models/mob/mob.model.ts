@@ -1,4 +1,4 @@
-import { Entity } from '../entity/entity.model';
+import { Entity, EntityType } from '../entity/entity.model';
 import { User } from '../user/user.model';
 import { Biome } from '../biome/biome.model';
 
@@ -8,6 +8,7 @@ export class Mob extends Entity {
   }
   name: string = '';
   description: string = '';
+  type: EntityType = EntityType.mob;
   health: number = 0;
   attack: number = 0;
   armor: number = 0;
