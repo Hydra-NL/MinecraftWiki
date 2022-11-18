@@ -43,15 +43,13 @@ export class BlockAddComponent implements OnInit {
       creationDate: new Date(),
       lastUpdateDate: new Date(),
     };
-
-    let biomeform = document.getElementById('biome-form') as HTMLFormElement;
-    biomeform['markAsUntouched'];
-    biomeform['markAsPristine'];
   }
 
   addBlock() {
     this.block;
     if (this.block) {
+      this.block.name =
+        this.block.name.charAt(0).toUpperCase() + this.block.name.slice(1);
       this.block.createdBy = this.userService.getUserById('8');
       this.block.creationDate = new Date();
       this.block.lastUpdateDate = new Date();

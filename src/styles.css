@@ -180,6 +180,10 @@ footer a {
   text-align: center;
 }
 
+label {
+  min-width: 110px;
+}
+
 /* scroll */
 .scroll::-webkit-scrollbar {
   width: 10px;
@@ -779,7 +783,7 @@ tbody {
 }
 
 .dark .card {
-  background-color: #292929;
+  background-color: #343434;
 }
 
 .dark .card-header {
@@ -788,6 +792,19 @@ tbody {
     rgb(137 66 24) 0%,
     rgb(97 80 52) 20%,
     rgb(53, 53, 53) 30%
+  );
+}
+
+.dark .card.entity-card:hover {
+  background-color: rgb(39, 39, 39);
+}
+
+.dark .card.entity-card:hover .card-header {
+  background-image: linear-gradient(
+    315deg,
+    rgb(137 66 24) 0%,
+    rgb(97 80 52) 20%,
+    rgb(39, 39, 39) 30%
   );
 }
 
@@ -856,4 +873,16 @@ tbody {
   color: white;
   font-size: 22px;
   background: linear-gradient(rgb(97 80 52), rgb(137 66 24));
+}
+
+.dark .slider {
+  background: #ca9e74;
+}
+
+.dark .sub-feed-box:hover,
+.dark .feed-nav button:hover,
+.dark .card.entity-card:hover,
+.dark .search:hover,
+.dark .custom-btn.add-btn:focus {
+  border: rgb(154, 69, 20) 1px solid;
 }

@@ -185,7 +185,7 @@
           <div class="edit-field">
             <label for="tool">Tool: </label>
             <select
-              class="form-control"
+              class="form-control edit-select"
               id="tool"
               [(ngModel)]="block.tool"
               #blocktool="ngModel"
@@ -303,7 +303,7 @@
         </div>
 
         <button
-          type="submit"
+          type="button"
           (click)="addBlock()"
           class="btn custom-btn edit-button"
           [disabled]="!blockAddForm.valid"

@@ -7,6 +7,7 @@
           }}<a
             class="edit-entity-link"
             routerLink="/blocks/{{ block?._id }}/edit"
+            *ngIf="user?._id == '1'"
             ><img
               class="edit-icon"
               src="../../../../assets/images/edit-icon.png"
@@ -120,7 +121,11 @@
       <p>{{ biome?.description }}</p>
       <p>Average temperatures: {{ biome?.temperature }}°C</p>
       <p>Dimension: {{ biome?.dimension }}</p>
-      <button class="btn custom-btn delete-btn" (click)="deleteBlock()">
+      <button
+        class="btn custom-btn delete-btn"
+        (click)="deleteBlock()"
+        *ngIf="user?._id == '1'"
+      >
         <img
           class="btn-icon"
           src="../../../../../assets/images/delete-icon.png"
@@ -156,6 +161,9 @@
         <h5>More from {{ user?.username }}:</h5>
       </div>
       <div class="content scroll">
+        <p *ngIf="userBlocks.length == 0" class="text-muted empty-text">
+          This creator doesn't have other pages yet.
+        </p>
         <div *ngFor="let blocks of userBlocks">
           <div class="sub-feed-box">
             <a routerLink="/blocks/{{ blocks._id }}" class="entity-title">{{
@@ -172,11 +180,9 @@
       <div class="content scroll">
         <div *ngFor="let blockOther of blocks">
           <div class="sub-feed-box">
-            <a
-              routerLink="/blocks/{{ blockOther?._id }}"
-              class="entity-title"
-              >{{ blockOther?.name }}</a
-            >
+            <a routerLink="/blocks/{{ blockOther._id }}" class="entity-title">{{
+              blockOther?.name
+            }}</a>
           </div>
         </div>
       </div>
