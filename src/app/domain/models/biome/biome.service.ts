@@ -9,6 +9,10 @@ import { Dimension } from '../biome/biome.model';
   providedIn: 'root',
 })
 export class BiomeService extends EntityService<Biome> {
+  constructor(protected override http: HttpClient) {
+    super(environment.apiUrl, http, 'biomes');
+  }
+
   biomes: Biome[] = [
     {
       _id: '1',

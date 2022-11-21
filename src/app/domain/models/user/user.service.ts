@@ -8,6 +8,9 @@ import { User } from './user.model';
   providedIn: 'root',
 })
 export class UserService extends EntityService<User> {
+  constructor(protected override http: HttpClient) {
+    super(environment.apiUrl, http, 'users');
+  }
   readonly users: User[] = [
     {
       _id: '1',
@@ -22,9 +25,11 @@ export class UserService extends EntityService<User> {
           password: 'secret',
           subscriptions: [],
           subscribers: [],
+          liked: [],
         },
       ],
       subscribers: [],
+      liked: [],
     },
     {
       _id: '2',
@@ -33,6 +38,7 @@ export class UserService extends EntityService<User> {
       password: 'secret',
       subscriptions: [],
       subscribers: [],
+      liked: [],
     },
     {
       _id: '3',
@@ -41,6 +47,7 @@ export class UserService extends EntityService<User> {
       password: 'secret',
       subscriptions: [],
       subscribers: [],
+      liked: [],
     },
     {
       _id: '4',
@@ -49,6 +56,7 @@ export class UserService extends EntityService<User> {
       password: 'secret',
       subscriptions: [],
       subscribers: [],
+      liked: [],
     },
     {
       _id: '5',
@@ -57,6 +65,7 @@ export class UserService extends EntityService<User> {
       password: 'secret',
       subscriptions: [],
       subscribers: [],
+      liked: [],
     },
     {
       _id: '6',
@@ -65,6 +74,7 @@ export class UserService extends EntityService<User> {
       password: 'secret',
       subscriptions: [],
       subscribers: [],
+      liked: [],
     },
     {
       _id: '7',
@@ -73,6 +83,7 @@ export class UserService extends EntityService<User> {
       password: 'secret',
       subscriptions: [],
       subscribers: [],
+      liked: [],
     },
     {
       _id: '8',
@@ -87,6 +98,7 @@ export class UserService extends EntityService<User> {
           password: 'secret',
           subscriptions: [],
           subscribers: [],
+          liked: [],
         },
       ],
       subscribers: [
@@ -97,8 +109,10 @@ export class UserService extends EntityService<User> {
           password: 'secret',
           subscriptions: [],
           subscribers: [],
+          liked: [],
         },
       ],
+      liked: [],
     },
     {
       _id: '9',
@@ -107,6 +121,7 @@ export class UserService extends EntityService<User> {
       password: 'secret',
       subscriptions: [],
       subscribers: [],
+      liked: [],
     },
   ];
 

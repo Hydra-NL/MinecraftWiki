@@ -10,6 +10,9 @@ import { EntityType } from '../entity/entity.model';
   providedIn: 'root',
 })
 export class MobService extends EntityService<Mob> {
+  constructor(protected override http: HttpClient) {
+    super(environment.apiUrl, http, 'mobs');
+  }
   mobs: Mob[] = [
     {
       _id: '1',
@@ -36,6 +39,7 @@ export class MobService extends EntityService<Mob> {
         password: 'secret',
         subscriptions: [],
         subscribers: [],
+        liked: [],
       },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 3)),
       timePassed: 0,
@@ -68,6 +72,7 @@ export class MobService extends EntityService<Mob> {
         password: 'secret',
         subscriptions: [],
         subscribers: [],
+        liked: [],
       },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 2)),
       timePassed: 0,
@@ -100,6 +105,7 @@ export class MobService extends EntityService<Mob> {
         password: 'secret',
         subscriptions: [],
         subscribers: [],
+        liked: [],
       },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 1)),
       timePassed: 0,
@@ -132,6 +138,7 @@ export class MobService extends EntityService<Mob> {
         password: 'secret',
         subscriptions: [],
         subscribers: [],
+        liked: [],
       },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 4)),
       timePassed: 0,
@@ -164,6 +171,7 @@ export class MobService extends EntityService<Mob> {
         password: 'secret',
         subscriptions: [],
         subscribers: [],
+        liked: [],
       },
       creationDate: new Date(),
       timePassed: 0,

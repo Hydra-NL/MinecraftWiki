@@ -52,6 +52,14 @@ export class BlockEditComponent implements OnInit {
     this.biome = this.block?.biome;
   }
 
+  playAudio() {
+    const audio = new Audio();
+    audio.src = '/assets/audio/Smithing_Table1.ogg';
+    audio.load();
+    audio.play();
+    console.log('playAudio');
+  }
+
   updateBlock() {
     if (this.block) {
       this.block.lastUpdateDate = new Date();
@@ -59,6 +67,7 @@ export class BlockEditComponent implements OnInit {
       this.router.navigate(['/blocks/' + this.blockId]);
       console.log('BlockEditComponent updateBlock');
       console.log(this.block);
+      this.playAudio();
     } else {
       this.router.navigate(['/blocks/' + this.blockId + '/edit']);
     }

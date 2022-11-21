@@ -3,9 +3,12 @@ import { MobService } from '../../models/mob/mob.service';
 import { ToolService } from '../../models/tool/tool.service';
 import { BlockService } from '../../models/block/block.service';
 import { UserService } from '../../models/user/user.service';
+import { RandomUserService } from '../user/user.service';
+import { RndUser } from '../user/user.model';
 import { User } from '../../models/user/user.model';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -23,13 +26,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   results: boolean = false;
   user!: User;
   visible: boolean = true;
+  subscription!: Subscription;
+
+  randomUsers: any[] = [];
 
   constructor(
     private mobService: MobService,
     private toolService: ToolService,
     private blockService: BlockService,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
+    private randomUserService: RandomUserService
   ) {
     console.log('HomeComponent constructor');
   }
@@ -42,6 +50,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.tools = this.toolService.getTools();
     this.blocks = this.blockService.getBlocks();
     this.users = this.userService.getUsers();
+    this.randomUserService.getRandomUsers().subscribe((data) => {
+      this.randomUsers = data;
+      console.log(this.randomUsers);
+    });
 
     // Feed
     this.feed = [...this.mobs, ...this.tools, ...this.blocks];

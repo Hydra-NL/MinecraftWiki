@@ -10,6 +10,8 @@ import { BlockDetailComponent } from './domain/pages/block/detail/blockdetail.co
 import { BlockEditComponent } from './domain/pages/block/edit/blockedit.component';
 import { BlockAddComponent } from './domain/pages/block/add/blockadd.component';
 import { HomeAddComponent } from './domain/pages/home/add/homeadd.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
 
 const routes: Routes = [
   {
@@ -49,6 +51,14 @@ const routes: Routes = [
         path: 'tools',
         children: [{ path: ':id', component: ToolComponent }],
       },
+      {
+        path: 'login',
+        component: LoginComponent,
+      },
+      {
+        path: 'register',
+        component: RegisterComponent,
+      }
     ],
   },
   { path: '**', redirectTo: '/home' },

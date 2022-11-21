@@ -9,6 +9,9 @@ import { Tool, ToolType } from './tool.model';
   providedIn: 'root',
 })
 export class ToolService extends EntityService<Tool> {
+  constructor(protected override http: HttpClient) {
+    super(environment.apiUrl, http, 'tools');
+  }
   tools: Tool[] = [
     {
       _id: '1',
@@ -28,6 +31,7 @@ export class ToolService extends EntityService<Tool> {
         password: 'secret',
         subscriptions: [],
         subscribers: [],
+        liked: [],
       },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 1)),
       timePassed: 0,
@@ -53,6 +57,7 @@ export class ToolService extends EntityService<Tool> {
         password: 'secret',
         subscriptions: [],
         subscribers: [],
+        liked: [],
       },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 2)),
       timePassed: 0,
@@ -78,6 +83,7 @@ export class ToolService extends EntityService<Tool> {
         password: 'secret',
         subscriptions: [],
         subscribers: [],
+        liked: [],
       },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 3)),
       timePassed: 0,
@@ -103,6 +109,7 @@ export class ToolService extends EntityService<Tool> {
         password: 'secret',
         subscriptions: [],
         subscribers: [],
+        liked: [],
       },
       creationDate: new Date(),
       timePassed: 0,
@@ -128,6 +135,7 @@ export class ToolService extends EntityService<Tool> {
         password: 'secret',
         subscriptions: [],
         subscribers: [],
+        liked: [],
       },
       creationDate: new Date(),
       timePassed: 0,

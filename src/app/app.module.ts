@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './navbar/nav.component';
@@ -19,6 +20,8 @@ import { BlockDetailComponent } from './domain/pages/block/detail/blockdetail.co
 import { BlockEditComponent } from './domain/pages/block/edit/blockedit.component';
 import { BlockAddComponent } from './domain/pages/block/add/blockadd.component';
 import { BiomeAddComponent } from './domain/pages/biome/add/biomeadd.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +39,8 @@ import { BiomeAddComponent } from './domain/pages/biome/add/biomeadd.component';
     BlockEditComponent,
     BlockAddComponent,
     BiomeAddComponent,
+    LoginComponent,
+    RegisterComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -43,6 +48,7 @@ import { BiomeAddComponent } from './domain/pages/biome/add/biomeadd.component';
     RouterModule,
     BrowserModule,
     FormsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -11,6 +11,9 @@ import { EntityType } from '../entity/entity.model';
   providedIn: 'root',
 })
 export class BlockService extends EntityService<Block> {
+  constructor(protected override http: HttpClient) {
+    super(environment.apiUrl, http, 'blocks');
+  }
   blocks: Block[] = [
     {
       _id: '1',
@@ -37,6 +40,7 @@ export class BlockService extends EntityService<Block> {
         password: 'secret',
         subscriptions: [],
         subscribers: [],
+        liked: [],
       },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 1)),
       timePassed: 0,
@@ -50,6 +54,7 @@ export class BlockService extends EntityService<Block> {
           password: 'secret',
           subscriptions: [],
           subscribers: [],
+          liked: [],
         },
       ],
     },
@@ -78,6 +83,7 @@ export class BlockService extends EntityService<Block> {
         password: 'secret',
         subscriptions: [],
         subscribers: [],
+        liked: [],
       },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 2)),
       timePassed: 0,
@@ -110,6 +116,7 @@ export class BlockService extends EntityService<Block> {
         password: 'secret',
         subscriptions: [],
         subscribers: [],
+        liked: [],
       },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 3)),
       timePassed: 0,
@@ -142,6 +149,7 @@ export class BlockService extends EntityService<Block> {
         password: 'secret',
         subscriptions: [],
         subscribers: [],
+        liked: [],
       },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 4)),
       timePassed: 0,
@@ -174,6 +182,7 @@ export class BlockService extends EntityService<Block> {
         password: 'secret',
         subscriptions: [],
         subscribers: [],
+        liked: [],
       },
       creationDate: new Date(),
       timePassed: 0,

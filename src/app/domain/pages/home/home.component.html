@@ -57,6 +57,18 @@
         </div>
       </div>
     </content>
+    <content>
+      <div class="content scroll">
+        <div class="big-title">
+          <h2>Random users</h2>
+        </div>
+        <div *ngFor="let rnd of randomUsers">
+          <div class="sub-feed-box">
+            {{ rnd.name.title }} {{ rnd.name.first }} {{ rnd.name.last }}
+          </div>
+        </div>
+      </div>
+    </content>
   </div>
 </div>
 

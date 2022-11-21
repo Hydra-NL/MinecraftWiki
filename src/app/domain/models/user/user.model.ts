@@ -6,6 +6,7 @@ export class User extends Entity {
   password: string = '';
   subscriptions: Array<User> = [];
   subscribers: Array<User> = [];
+  liked: Array<Entity> = [];
 
   constructor(_id: string) {
     super(_id);

@@ -758,6 +758,22 @@ tbody {
   background-size: cover;
 }
 
+/* Login/Register */
+.login {
+  width: 500px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-form .form-group {
+  width: 75%;
+  margin-bottom: 10px;
+}
+
 /* MISC */
 .likes {
   min-width: 7%;

@@ -58,8 +58,16 @@ export class BlockDetailComponent implements OnInit {
     });
   }
 
+  playAudio() {
+    const audio = new Audio();
+    audio.src = '/assets/audio/Explosion1.ogg';
+    audio.load();
+    audio.play();
+  }
+
   deleteBlock() {
     this.blockService.deleteBlock(this.block!._id!);
+    this.playAudio();
     this.router.navigate(['/blocks']);
   }
 }
