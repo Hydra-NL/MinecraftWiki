@@ -32,6 +32,8 @@ export class ToolService extends EntityService<Tool> {
       creationDate: new Date(new Date().setDate(new Date().getDate() - 1)),
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 1)),
+      likes: 0,
+      likedBy: [],
     },
     {
       _id: '2',
@@ -55,6 +57,8 @@ export class ToolService extends EntityService<Tool> {
       creationDate: new Date(new Date().setDate(new Date().getDate() - 2)),
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 2)),
+      likes: 0,
+      likedBy: [],
     },
     {
       _id: '3',
@@ -78,6 +82,8 @@ export class ToolService extends EntityService<Tool> {
       creationDate: new Date(new Date().setDate(new Date().getDate() - 3)),
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 3)),
+      likes: 0,
+      likedBy: [],
     },
     {
       _id: '4',
@@ -101,6 +107,8 @@ export class ToolService extends EntityService<Tool> {
       creationDate: new Date(),
       timePassed: 0,
       lastUpdateDate: new Date(),
+      likes: 0,
+      likedBy: [],
     },
     {
       _id: '5',
@@ -124,6 +132,8 @@ export class ToolService extends EntityService<Tool> {
       creationDate: new Date(),
       timePassed: 0,
       lastUpdateDate: new Date(),
+      likes: 0,
+      likedBy: [],
     },
   ];
 

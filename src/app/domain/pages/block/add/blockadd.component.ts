@@ -42,6 +42,8 @@ export class BlockAddComponent implements OnInit {
       timePassed: 0,
       creationDate: new Date(),
       lastUpdateDate: new Date(),
+      likes: 0,
+      likedBy: [],
     };
   }
 

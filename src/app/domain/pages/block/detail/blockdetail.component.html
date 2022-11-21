@@ -121,17 +121,6 @@
       <p>{{ biome?.description }}</p>
       <p>Average temperatures: {{ biome?.temperature }}°C</p>
       <p>Dimension: {{ biome?.dimension }}</p>
-      <button
-        class="btn custom-btn delete-btn"
-        (click)="deleteBlock()"
-        *ngIf="user?._id == '1'"
-      >
-        <img
-          class="btn-icon"
-          src="../../../../../assets/images/delete-icon.png"
-        />
-        Delete
-      </button>
     </content>
   </div>
 
@@ -154,6 +143,15 @@
           <b>Created: </b>{{ block?.creationDate | date: "medium" }}<br />
           <b>Last updated: </b>{{ block?.lastUpdateDate | date: "medium" }}
         </p>
+      </div>
+      <div class="card-footer" *ngIf="user?._id == '1'">
+        <p>Delete page</p>
+        <button class="btn custom-btn delete-btn" (click)="deleteBlock()">
+          <img
+            class="btn-icon"
+            src="../../../../../assets/images/delete-icon.png"
+          />
+        </button>
       </div>
     </div>
     <content class="see-also">

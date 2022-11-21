@@ -22,7 +22,7 @@
   <div class="custom-container">
     <content class="subscriptions">
       <div class="big-title">
-        <h1>Subscriptions</h1>
+        <h2>Subscriptions</h2>
       </div>
       <div class="search">
         <i class="fa-solid fa-search"></i>
@@ -65,50 +65,75 @@
     It appears that the feed is empty.
   </p>
   <div *ngFor="let card of feed">
-    <div class="card entity-card">
-      <div class="card-header">
-        <a class="card-click" routerLink="/mobs/{{ card._id }}"></a>
-        <p class="entity-title" *ngIf="card.type == 'Mob'">
-          <i class="fa-solid fa-skull"></i>
-          {{ card.name }}
-        </p>
-        <a
-          class="card-click"
-          routerLink="/blocks/{{ card._id }}"
-          *ngIf="card.type == 'Block'"
-        ></a>
-        <p *ngIf="card.type == 'Block'" class="entity-title">
-          <i class="fa fa-cube"></i>
-          {{ card.name }}
-        </p>
-        <a
-          class="card-click"
-          routerLink="/tools/{{ card._id }}"
-          *ngIf="card.type == 'Tool'"
-        ></a>
-        <p *ngIf="card.type == 'Tool'" class="entity-title">
-          <i class="fa-solid fa-hammer"></i>
-          {{ card.name }}
-        </p>
-        <div class="card-date">
-          <p class="text-muted">posted {{ card.timePassed }} ago</p>
-          <p
-            *ngIf="
-              card.timePassed.includes('s') ||
-              card.timePassed.includes('m') ||
-              card.timePassed.includes('h')
-            "
-            class="text-muted"
-          >
-            New <i class="fa-solid fa-meteor"></i>
+    <div class="card-grid">
+      <div class="card entity-card">
+        <div class="card-header">
+          <a class="card-click" routerLink="/mobs/{{ card._id }}"></a>
+          <p class="entity-title" *ngIf="card.type == 'Mob'">
+            <i class="fa-solid fa-skull"></i>
+            {{ card.name }}
+          </p>
+          <a
+            class="card-click"
+            routerLink="/blocks/{{ card._id }}"
+            *ngIf="card.type == 'Block'"
+          ></a>
+          <p *ngIf="card.type == 'Block'" class="entity-title">
+            <i class="fa fa-cube"></i>
+            {{ card.name }}
+          </p>
+          <a
+            class="card-click"
+            routerLink="/tools/{{ card._id }}"
+            *ngIf="card.type == 'Tool'"
+          ></a>
+          <p *ngIf="card.type == 'Tool'" class="entity-title">
+            <i class="fa-solid fa-hammer"></i>
+            {{ card.name }}
+          </p>
+          <div class="card-date">
+            <p class="text-muted">Posted {{ card.timePassed }} ago</p>
+            <p
+              *ngIf="
+                card.timePassed.includes('s') ||
+                card.timePassed.includes('m') ||
+                card.timePassed.includes('h')
+              "
+              class="text-muted"
+            >
+              New <i class="fa-solid fa-meteor"></i>
+            </p>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>
+            Posted by:
+            <a class="reference-entity-list">{{ card.createdBy.username }}</a>
           </p>
         </div>
       </div>
-      <div class="card-body">
-        <p>
-          Posted by:
-          <a class="reference-entity-list">{{ card.createdBy.username }}</a>
-        </p>
+      <div class="likes">
+        <a (click)="like(card._id, true)"
+          ><i
+            *ngIf="card.likedBy.includes(user._id)"
+            class="fa-solid fa-circle-up"
+          ></i
+          ><i
+            *ngIf="!card.likedBy.includes(user._id)"
+            class="fa-regular fa-circle-up"
+          ></i
+        ></a>
+        <span>{{ card.likes }}</span>
+        <a (click)="like(card._id, false)"
+          ><i
+            *ngIf="card.likedBy.includes(user._id)"
+            class="fa-solid fa-circle-down"
+          ></i
+          ><i
+            *ngIf="!card.likedBy.includes(user._id)"
+            class="fa-regular fa-circle-down"
+          ></i
+        ></a>
       </div>
     </div>
   </div>

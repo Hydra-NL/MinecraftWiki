@@ -24,4 +24,6 @@ export class Tool extends Entity {
   creationDate: Date = new Date();
   timePassed: number = 0;
   lastUpdateDate: Date = new Date();
+  likes: number = 0;
+  likedBy: User[] = [];
 }

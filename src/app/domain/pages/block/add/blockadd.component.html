@@ -218,7 +218,8 @@
               [(ngModel)]="block.biome.name"
               #blockbiomename="ngModel"
               name="name"
-              [ngClass]="{ 'is-invalid': blockbiomename.errors }"
+              [ngClass]="{ 'is-invalid': blockbiomename.errors &&
+                  (blockbiomename.dirty || blockbiomename.touched)}"
             />
             <div *ngIf="blockbiomename.errors" class="invalid-feedback">
               <div *ngIf="blockbiomename.errors?.['required']">
@@ -238,7 +239,8 @@
               rows="4"
               placeholder="Biome Description"
               minlength="3"
-              [ngClass]="{ 'is-invalid': blockbiomedescription.errors }"
+              [ngClass]="{ 'is-invalid': blockbiomedescription.errors &&
+                  (blockbiomedescription.dirty || blockbiomedescription.touched)}"
             ></textarea>
             <div *ngIf="blockbiomedescription.errors" class="invalid-feedback">
               <div *ngIf="blockbiomedescription.errors?.['required']">
@@ -261,7 +263,8 @@
               name="temperature"
               min="-20"
               max="50"
-              [ngClass]="{ 'is-invalid': blockbiometemperature.errors }"
+              [ngClass]="{ 'is-invalid': blockbiometemperature.errors &&
+                  (blockbiometemperature.dirty || blockbiometemperature.touched)}"
             />
             (°C)
             <div *ngIf="blockbiometemperature.errors" class="invalid-feedback">
@@ -285,7 +288,8 @@
               name="dimension"
               id="dimension"
               required
-              [ngClass]="{ 'is-invalid': blockbiomedimension.errors }"
+              [ngClass]="{ 'is-invalid': blockbiomedimension.errors &&
+                  (blockbiomedimension.dirty || blockbiomedimension.touched)}"
             >
               <option value="" selected disabled hidden>
                 Pick a dimension
