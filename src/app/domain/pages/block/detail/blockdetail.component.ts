@@ -34,13 +34,20 @@ export class BlockDetailComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe((params: any) => {
+      // Block for this page
       this.block = this.blockService.getBlock(this.route.snapshot.params['id']);
+      this.biome = this.block?.biome;
       console.log(this.route.snapshot.params['id']);
+
+      // Creator of said block
       this.userBlockId = this.block?.createdBy['_id'] || '';
       this.user = this.userService.getUserById(this.userBlockId);
+
+      // Current user
       // Moet current user worden
       this.currentUser = this.userService.getUserById('1');
-      this.biome = this.block?.biome;
+
+      // Blocks of the creator (see also from creator list)
       this.userBlocks = this.blockService.getBlocksByUser(this.userBlockId);
       this.userBlocks = this.userBlocks.filter(
         (block) => block._id !== this.block?._id
@@ -49,16 +56,24 @@ export class BlockDetailComponent implements OnInit {
         return a.creationDate.getTime() - b.creationDate.getTime();
       });
 
+      // Blocks (see also list)
       this.blocks = this.blockService.getBlocks();
       this.blocks = this.blocks.filter(
         (block) => block._id !== this.block?._id
       );
+      this.blocks.sort((a, b) => a.hardness - b.hardness);
+
+      // Tools that can break this block
       this.tools = this.toolService
         .getTools()
-        .filter((tool) => tool.toolType === this.block?.tool);
-      this.blocks.sort((a, b) => a.hardness - b.hardness);
+        .filter((tool) => tool.toolType === this.block?.tool)
+        .filter((tool) => tool.toolLevel >= this.block!.hardness);
+
       console.log('current: ' + this.currentUser._id);
       console.log('user: ' + this.user._id);
+      console.log(
+        'includes: ' + this.user?.subscriptions?.includes(this.currentUser!)
+      );
     });
   }
 

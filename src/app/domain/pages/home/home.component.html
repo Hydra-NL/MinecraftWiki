@@ -49,15 +49,15 @@
         <p class="text-muted empty-text" *ngIf="users.length == 0 && results">
           No creators found.
         </p>
-        <div *ngFor="let user of users">
+        <div *ngFor="let sub of currentUser!.subscriptions">
           <div class="sub-feed-box">
-            <a routerLink="/users/{{ user._id }}">{{ user.username }}</a>
+            <a routerLink="/users/{{ sub._id }}">{{ sub.username }}</a>
             <div class="slide-in unsubscribe" id="unsubscribe">
               <button
                 class="btn custom-btn"
                 routerLink="#"
                 title="Unsubscribe"
-                (click)="unsubscribe(user._id)"
+                (click)="unsubscribe(sub._id!)"
               >
                 Unsubscribe
               </button>

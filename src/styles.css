@@ -447,6 +447,28 @@ tbody {
   position: absolute;
   right: 10px;
   top: 10px;
+  display: flex;
+  gap: 4px;
+}
+
+#subscribe-detail-page.btn.custom-btn:hover #subscribe-detail-page-text {
+  animation-name: extend-btn;
+  animation-timing-function: ease-in-out;
+  display: flex;
+}
+
+#subscribe-detail-page-text {
+  animation-duration: 0.1s;
+  display: none;
+}
+
+@keyframes extend-btn {
+  0% {
+    transform: translateX(10px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
 }
 
 .page-btns {
@@ -614,7 +636,6 @@ tbody {
     transform: translateX(0px);
   }
 }
-
 .unsubscribe {
   animation-duration: 0.2s;
   display: none;

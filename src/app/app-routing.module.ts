@@ -16,6 +16,8 @@ import { UserComponent } from './domain/pages/user/list/user.component';
 import { UserDetailComponent } from './domain/pages/user/detail/userdetail.component';
 import { UserEditComponent } from './domain/pages/user/edit/useredit.component';
 import { ToolEditComponent } from './domain/pages/tool/edit/tooledit.component';
+import { ToolDetailComponent } from './domain/pages/tool/detail/tooldetail.component';
+import { ToolAddComponent } from './domain/pages/tool/add/tooladd.component';
 
 const routes: Routes = [
   {
@@ -54,7 +56,8 @@ const routes: Routes = [
       {
         path: 'tools',
         children: [
-          { path: ':id', component: ToolComponent },
+          { path: 'add', component: ToolAddComponent },
+          { path: ':id', component: ToolDetailComponent },
           { path: ':id/edit', component: ToolEditComponent },
         ],
       },

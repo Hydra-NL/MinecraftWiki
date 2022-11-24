@@ -4,7 +4,7 @@
       <form
         #toolEditForm="ngForm"
         name="form"
-        (ngSubmit)="toolEditForm.form.valid && updateTool()"
+        (ngSubmit)="toolEditForm.form.valid && addTool()"
       >
         <div class="big-title">
           <h1 class="edit-big-title">
@@ -20,7 +20,6 @@
                 'is-invalid':
                   toolname.invalid && (toolname.dirty || toolname.touched)
               }"
-              value="{{ tool?.name }}"
               required
               minlength="3"
               maxlength="30"
@@ -60,9 +59,9 @@
                   tooldescription.invalid &&
                   (tooldescription.dirty || tooldescription.touched)
               }"
-              value="{{ tool?.description }}"
               required
               minlength="3"
+              maxlength="2000"
             ></textarea>
             <div *ngIf="tooldescription.invalid" class="invalid-feedback">
               <div *ngIf="tooldescription.errors?.['required']">
@@ -70,6 +69,9 @@
               </div>
               <div *ngIf="tooldescription.errors?.['minlength']">
                 The tool's description should be atleast 3 characters long
+              </div>
+              <div *ngIf="tooldescription.errors?.['maxlength']">
+                The tool's description can atmost be 2000 characters long
               </div>
             </div>
           </div>
@@ -81,7 +83,6 @@
               type="number"
               id="durability"
               class="form-control"
-              value="{{ tool?.durability }}"
               [(ngModel)]="tool!.durability"
               #tooldurability="ngModel"
               name="durability"
@@ -103,7 +104,7 @@
                 The tool's durability should be atleast 1
               </div>
               <div *ngIf="tooldurability.errors?.['max']">
-                The tool's durability can atmost be 3000
+                The tool's durability should be atmost 3000
               </div>
             </div>
           </div>
@@ -121,7 +122,6 @@
                 'is-invalid':
                   toolattack.invalid && (toolattack.dirty || toolattack.touched)
               }"
-              value="{{ tool?.attack }}"
               required
               min="1"
               max="20"
@@ -135,9 +135,40 @@
                 The tool's hardness should be atleast 1
               </div>
               <div *ngIf="toolattack.errors?.['max']">
-                The tool's hardness can atmost be 20
+                The tool's hardness should be atmost 20
               </div>
             </div>
+          </div>
+
+          <h5 class="subtitle" id="tools">Tool</h5>
+          <div class="edit-field">
+            <label for="weapon">Weapon: </label>
+            <input
+              type="checkbox"
+              id="weapon"
+              [(ngModel)]="tool!.isWeapon"
+              #toolisweapon="ngModel"
+              name="stackSize"
+              (change)="(true)"
+              #checkBox
+              [checked]="tool!.isWeapon"
+            />
+          </div>
+          <div class="edit-field">
+            <label for="tool">Tool type: </label>
+            <select
+              class="form-control edit-select"
+              id="tool"
+              required
+              [(ngModel)]="tool!.toolType"
+              #tooltool="ngModel"
+              name="tool"
+            >
+              <option *ngIf="!checkBox.checked" value="Pickaxe">Pickaxe</option>
+              <option *ngIf="!checkBox.checked" value="Axe">Axe</option>
+              <option *ngIf="!checkBox.checked" value="Shovel">Shovel</option>
+              <option *ngIf="checkBox.checked" value="Sword">Sword</option>
+            </select>
           </div>
           <div class="edit-textbox">
             <label for="toollevel">Tool Level: </label>
@@ -153,7 +184,7 @@
                   tooltoollevel.invalid &&
                   (tooltoollevel.dirty || tooltoollevel.touched)
               }"
-              value="{{ tool?.toolLevel }}"
+              [defaultValue]="1"
               required
               min="0"
               max="6"
@@ -196,42 +227,10 @@
               />
             </div>
           </div>
-
-          <h5 class="subtitle" id="tools">Tool</h5>
-          <div class="edit-field">
-            <label for="weapon">Weapon: </label>
-            <input
-              type="checkbox"
-              id="weapon"
-              [(ngModel)]="tool!.isWeapon"
-              #toolisweapon="ngModel"
-              name="stackSize"
-              (change)="(true)"
-              #checkBox
-              [checked]="tool!.isWeapon"
-            />
-          </div>
-          <div class="edit-field">
-            <label for="tool">Tool type: </label>
-            <select
-              class="form-control edit-select"
-              id="tool"
-              value="{{ tool?.toolType }}"
-              required
-              [(ngModel)]="tool!.toolType"
-              #tooltool="ngModel"
-              name="tool"
-            >
-              <option *ngIf="!checkBox.checked" value="Pickaxe">Pickaxe</option>
-              <option *ngIf="!checkBox.checked" value="Axe">Axe</option>
-              <option *ngIf="!checkBox.checked" value="Shovel">Shovel</option>
-              <option *ngIf="checkBox.checked" value="Sword">Sword</option>
-            </select>
-          </div>
         </div>
         <button
           type="button"
-          (click)="updateTool()"
+          (click)="addTool()"
           class="btn custom-btn"
           [disabled]="!toolEditForm.valid"
         >

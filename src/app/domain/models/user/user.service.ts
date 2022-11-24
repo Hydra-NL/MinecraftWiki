@@ -267,10 +267,15 @@ export class UserService extends EntityService<User> {
       subscriber.subscriptions.push(subscribedTo);
       subscribedTo.subscribers.push(subscriber);
     } else {
-      console.log(
-        subscriber.username +
-          ' is already subscribed to ' +
-          subscribedTo.username
+      subscriber.subscriptions.splice(
+        subscriber.subscriptions.findIndex((user) => user._id === subscribedTo._id),
+        1
+      );
+      subscribedTo.subscribers.splice(
+        subscribedTo.subscribers.findIndex(
+          (user) => user._id === subscriber._id
+        ),
+        1
       );
     }
   }

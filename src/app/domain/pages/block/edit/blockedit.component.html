@@ -63,6 +63,7 @@
               value="{{ block?.description }}"
               required
               minlength="3"
+              maxlength="2000"
             ></textarea>
             <div *ngIf="blockdescription.invalid" class="invalid-feedback">
               <div *ngIf="blockdescription.errors?.['required']">
@@ -70,6 +71,9 @@
               </div>
               <div *ngIf="blockdescription.errors?.['minlength']">
                 The block's description should be atleast 3 characters long
+              </div>
+              <div *ngIf="blockdescription.errors?.['maxlength']">
+                The block's description can atmost be 2000 characters long
               </div>
             </div>
           </div>

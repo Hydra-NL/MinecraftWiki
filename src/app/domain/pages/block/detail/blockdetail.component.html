@@ -37,8 +37,8 @@
                 >
               </li>
               <li>
-                <a class="totext" href="/blocks/{{ block?._id }}#tools"
-                  >Tools</a
+                <a class="totext" href="/blocks/{{ block?._id }}#behavior"
+                  >Behavior</a
                 >
               </li>
               <li>
@@ -100,22 +100,27 @@
           src="../../../../../assets/images/unbreakable.png"
         />
       </p>
-      <h5 class="subtitle" id="tools">Tools</h5>
+      <h5 class="subtitle" id="behavior">Behavior</h5>
       <p>
         {{ block?.name }} can be mined by {{ block?.tool }}s that have a Tool
         Level of {{ block?.hardness }} or higher.<br />
-        Tools that can mine {{ block?.name }}:
-        <a
-          class="reference-entity-list"
-          *ngFor="let tool of tools"
-          routerLink="/tools/{{ tool._id }}"
+        <span *ngIf="this.tools.length != 0">
+          Tools that can mine {{ block?.name }}:
+          <a
+            class="reference-entity-list"
+            *ngFor="let tool of tools"
+            routerLink="/tools/{{ tool._id }}"
+          >
+            {{ tool.name
+            }}<i
+              class="fa-solid fa-up-right-from-square reference-entity-icon"
+            ></i
+            ><span *ngIf="tool !== tools[tools.length - 1]">, </span>
+          </a>
+        </span>
+        <span *ngIf="this.tools.length == 0"
+          >There are no known tools that can break {{ block?.name }}.</span
         >
-          {{ tool.name
-          }}<i
-            class="fa-solid fa-up-right-from-square reference-entity-icon"
-          ></i
-          ><span *ngIf="tool !== tools[tools.length - 1]">, </span>
-        </a>
       </p>
       <h5 class="subtitle" id="biome">Biome</h5>
       <p>{{ block?.name }} can be found in the {{ biome?.name }} biome.</p>
@@ -132,18 +137,34 @@
         <a routerLink="/users/{{ user?._id }}" class="editor-title">{{
           user?.username
         }}</a>
-        <span *ngIf="currentUser!._id !== user!._id"
-          ><a
+        <span *ngIf="currentUser!._id !== user!._id">
+          <button
             (click)="subscribe()"
-            *ngIf="user?.subscriptions?.includes(currentUser!) == false"
+            *ngIf="!user?.subscribers?.includes(currentUser!)"
+            class="btn custom-btn add-btn"
+            id="subscribe-detail-page"
           >
+            <span id="subscribe-detail-page-text"> Subscribe </span>
             <img
               class="subscribe-icon"
               src="../../../../assets/images/subscribe-icon.png"
-              id="subscribe-detail-page"
               title="Subscribe"
-            /> </a
-        ></span>
+            />
+          </button>
+          <button
+            (click)="subscribe()"
+            *ngIf="user?.subscribers?.includes(currentUser!)"
+            id="subscribe-detail-page"
+            class="btn custom-btn delete-btn"
+          >
+            <span id="subscribe-detail-page-text"> Unsubscribe </span>
+            <img
+              class="subscribe-icon"
+              src="../../../../assets/images/cancel-icon.png"
+              title="Unsubscribe"
+            />
+          </button>
+        </span>
       </div>
       <div class="card-body">
         <p class="card-date">

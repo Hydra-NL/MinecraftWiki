@@ -1,0 +1,213 @@
+<div class="page">
+  <div class="custom-container">
+    <content class="tools">
+      <div class="big-title">
+        <h1>
+          <i class="fa fa-cube"></i> {{ tool?.name
+          }}<a
+            class="edit-entity-link"
+            routerLink="/tools/{{ tool?._id }}/edit"
+            *ngIf="currentUser?._id == '1'"
+            title="Edit tool"
+            ><img
+              class="edit-icon"
+              src="../../../../assets/images/edit-icon.png"
+            />Edit</a
+          >
+        </h1>
+        <a class="btn custom-btn back" routerLink="/tools" title="Back">
+          <i class="fa-regular fa-square-caret-left"></i>
+          Back
+        </a>
+      </div>
+      <div class="entity-intro">
+        <div class="col-md-9">
+          <p>{{ tool?.description }}</p>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card">
+            <div class="card-header">
+              <p class="editor-title" id="content">Contents</p>
+            </div>
+            <div class="card-body" id="content-box">
+              <li>
+                <a class="totext" href="/tools/{{ tool?._id }}#stats">Stats</a>
+              </li>
+              <li>
+                <a class="totext" href="/tools/{{ tool?._id }}#usage">Usage</a>
+              </li>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h5 class="subtitle" id="stats">Stats</h5>
+      <p>
+        Durability: {{ tool?.durability }}<br />
+        Attack: {{ tool?.attack }}<br />
+        Tool Level:
+        <img
+          *ngIf="tool?.toolLevel == 0"
+          class="slider-img"
+          title="No tool"
+          src="../../../../../assets/images/breakable.png"
+        />
+        <img
+          *ngIf="tool?.toolLevel == 1"
+          class="slider-img"
+          title="Wooden tool"
+          src="../../../../../assets/images/wooden-pickaxe.png"
+        />
+        <img
+          *ngIf="tool?.toolLevel == 2"
+          class="slider-img"
+          title="Stone tool"
+          src="../../../../../assets/images/stone-pickaxe.png"
+        />
+        <img
+          *ngIf="tool?.toolLevel == 3"
+          class="slider-img"
+          title="Iron tool"
+          src="../../../../../assets/images/iron-pickaxe.png"
+        />
+        <img
+          *ngIf="tool?.toolLevel == 4"
+          class="slider-img"
+          title="Diamond tool"
+          src="../../../../../assets/images/diamond-pickaxe.png"
+        />
+        <img
+          *ngIf="tool?.toolLevel == 5"
+          class="slider-img"
+          title="Netherite tool"
+          src="../../../../../assets/images/netherite-pickaxe.png"
+        />
+        <img
+          *ngIf="tool?.toolLevel == 6"
+          class="slider-img"
+          title="Unbreakable"
+          src="../../../../../assets/images/unbreakable.png"
+        />
+      </p>
+      <h5 class="subtitle" id="usage">Usage</h5>
+      <p *ngIf="!tool!.isWeapon">
+        {{ tool?.name }} can mine blocks that have to be mined by
+        {{ tool?.toolType }}s and have a Hardness of {{ tool?.toolLevel }} or
+        lower.<br />
+        Blocks that can be mined by {{ tool?.name }}:
+        <a
+          class="reference-entity-list"
+          *ngFor="let block of blocks"
+          routerLink="/blocks/{{ block._id }}"
+        >
+          {{ block.name
+          }}<i
+            class="fa-solid fa-up-right-from-square reference-entity-icon"
+          ></i
+          ><span *ngIf="block !== blocks[blocks.length - 1]">, </span>
+        </a>
+      </p>
+      <p *ngIf="tool!.isWeapon">
+        {{ tool?.name }} can damage mobs that have an armor-level of
+        {{ tool?.attack }} or lower.<br />
+        Mobs that can be damages by {{ tool?.name }}:
+        <a
+          class="reference-entity-list"
+          *ngFor="let mob of mobs"
+          routerLink="/mobs/{{ mob._id }}"
+        >
+          {{ mob.name
+          }}<i
+            class="fa-solid fa-up-right-from-square reference-entity-icon"
+          ></i
+          ><span *ngIf="mob !== mobs[mobs.length - 1]">, </span>
+        </a>
+      </p>
+    </content>
+  </div>
+
+  <div class="custom-container">
+    <div class="card">
+      <div class="card-header">
+        <span>Creator</span>
+        <a routerLink="/users/{{ user?._id }}" class="editor-title">{{
+          user?.username
+        }}</a>
+        <span *ngIf="currentUser!._id !== user!._id">
+          <button
+            (click)="subscribe()"
+            *ngIf="!user?.subscribers?.includes(currentUser!)"
+            class="btn custom-btn add-btn"
+            id="subscribe-detail-page"
+          >
+            <span id="subscribe-detail-page-text"> Subscribe </span>
+            <img
+              class="subscribe-icon"
+              src="../../../../assets/images/subscribe-icon.png"
+              title="Subscribe"
+            />
+          </button>
+          <button
+            (click)="subscribe()"
+            *ngIf="user?.subscribers?.includes(currentUser!)"
+            id="subscribe-detail-page"
+            class="btn custom-btn delete-btn"
+          >
+            <span id="subscribe-detail-page-text"> Unsubscribe </span>
+            <img
+              class="subscribe-icon"
+              src="../../../../assets/images/cancel-icon.png"
+              title="Unsubscribe"
+            />
+          </button>
+        </span>
+      </div>
+      <div class="card-body">
+        <p class="card-date">
+          <b>Created: </b>{{ tool?.creationDate | date: "medium" }}<br />
+          <b>Last updated: </b>{{ tool?.lastUpdateDate | date: "medium" }}
+        </p>
+      </div>
+      <div class="card-footer" *ngIf="user?._id == '1'">
+        <p>Delete page</p>
+        <button class="btn custom-btn delete-btn" (click)="deleteTool()">
+          <img
+            class="btn-icon"
+            src="../../../../../assets/images/delete-icon.png"
+          />
+        </button>
+      </div>
+    </div>
+    <content class="see-also">
+      <div class="big-title">
+        <h5>More from {{ user?.username }}:</h5>
+      </div>
+      <div class="content scroll">
+        <p *ngIf="userTools.length == 0" class="text-muted empty-text">
+          This creator doesn't have other pages yet.
+        </p>
+        <div *ngFor="let tools of userTools">
+          <div class="sub-feed-box">
+            <a routerLink="/tools/{{ tools._id }}" class="entity-title">{{
+              tools.name
+            }}</a>
+          </div>
+        </div>
+      </div>
+    </content>
+    <content class="see-also">
+      <div class="big-title">
+        <h5>See also:</h5>
+      </div>
+      <div class="content scroll">
+        <div *ngFor="let toolOther of tools">
+          <div class="sub-feed-box">
+            <a routerLink="/tools/{{ toolOther._id }}" class="entity-title">{{
+              toolOther?.name
+            }}</a>
+          </div>
+        </div>
+      </div>
+    </content>
+  </div>
+</div>
