@@ -17,6 +17,7 @@ export class BlockDetailComponent implements OnInit {
   blocks: Block[] = [];
   tools: Tool[] = [];
   user: User | undefined;
+  currentUser: User | undefined;
   userBlockId!: string;
   biome: Biome | undefined;
   userBlocks: Block[] = [];
@@ -37,6 +38,8 @@ export class BlockDetailComponent implements OnInit {
       console.log(this.route.snapshot.params['id']);
       this.userBlockId = this.block?.createdBy['_id'] || '';
       this.user = this.userService.getUserById(this.userBlockId);
+      // Moet current user worden
+      this.currentUser = this.userService.getUserById('1');
       this.biome = this.block?.biome;
       this.userBlocks = this.blockService.getBlocksByUser(this.userBlockId);
       this.userBlocks = this.userBlocks.filter(
@@ -54,7 +57,8 @@ export class BlockDetailComponent implements OnInit {
         .getTools()
         .filter((tool) => tool.toolType === this.block?.tool);
       this.blocks.sort((a, b) => a.hardness - b.hardness);
-      console.log(this.tools);
+      console.log('current: ' + this.currentUser._id);
+      console.log('user: ' + this.user._id);
     });
   }
 
@@ -69,5 +73,10 @@ export class BlockDetailComponent implements OnInit {
     this.blockService.deleteBlock(this.block!._id!);
     this.playAudio();
     this.router.navigate(['/blocks']);
+  }
+
+  subscribe() {
+    this.userService.subscribeToUser(this.currentUser!, this.user!);
+    this.router.navigate(['/blocks', this.block?._id]);
   }
 }

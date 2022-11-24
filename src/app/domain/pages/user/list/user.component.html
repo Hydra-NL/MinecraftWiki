@@ -1,13 +1,9 @@
 <div class="page">
   <div class="custom-container">
-    <content class="mobs">
+    <content class="users">
       <div class="big-title">
-        <h1><i class="fa-solid fa-dragon"></i> Mobs</h1>
+        <h1><i class="fa-solid fa-users"></i> Creators</h1>
         <div class="page-btns">
-          <a class="btn add-btn custom-btn">
-            <i class="fa fa-plus"></i>
-            Add Mob
-          </a>
           <a class="btn custom-btn back" routerLink="/home" title="Back">
             <i class="fa-regular fa-square-caret-left"></i>
             Back
@@ -15,18 +11,16 @@
         </div>
       </div>
       <div class="content">
-        <div *ngFor="let mob of mobs">
-          <div class="card">
+        <div *ngFor="let user of users">
+          <div class="card entity-card">
+            <a class="card-click" routerLink="/users/{{ user._id }}"></a>
             <div class="card-header">
-              <a routerLink="/mobs/{{ mob._id }}" class="entity-title">
-                {{ mob.name }}
+              <a class="entity-title">
+                {{ user.username }}
               </a>
             </div>
             <div class="card-body">
-              <p>
-                {{ mob.description | slice: 0:200
-                }}{{ mob.description.length > 200 ? "..." : "" }}
-              </p>
+              Subscribers: {{ user.subscribers.length }}
             </div>
           </div>
         </div>

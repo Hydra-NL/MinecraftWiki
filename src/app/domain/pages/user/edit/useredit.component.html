@@ -1,0 +1,79 @@
+<div class="page">
+  <div class="custom-container">
+    <content class="users">
+      <form
+        #userEditForm="ngForm"
+        name="form"
+        (ngSubmit)="userEditForm.form.valid && updateUser()"
+      >
+        <div class="big-title">
+          <h1 class="edit-big-title">
+            <i class="fa-solid fa-user"></i>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="user!.username"
+              name="name"
+              #username="ngModel"
+              placeholder="Block Name"
+              [ngClass]="{
+                'is-invalid':
+                  username.invalid && (username.dirty || username.touched)
+              }"
+              value="{{ user.username }}"
+              required
+              minlength="3"
+              maxlength="15"
+            />
+          </h1>
+        </div>
+
+        <div
+          *ngIf="username.invalid && (username.dirty || username.touched)"
+          class="invalid-feedback"
+        >
+          <div *ngIf="username.errors?.['required']">
+            A username is required.
+          </div>
+          <div *ngIf="username.errors?.['minlength']">
+            Username must be at least 3 characters long.
+          </div>
+          <div *ngIf="username.errors?.['maxlength']">
+            Username cannot be more than 15 characters long.
+          </div>
+        </div>
+        <div class="edit-textbox">
+          <label for="about">About</label>
+          <textarea
+            class="form-control"
+            id="about"
+            rows="4"
+            placeholder="Type something about yourself"
+            [(ngModel)]="user.about"
+            #about="ngModel"
+            name="about"
+            [ngClass]="{
+              'is-invalid': about.invalid && (about.dirty || about.touched)
+            }"
+            value="{{ user.about }}"
+            maxlength="500"
+          ></textarea>
+          <div *ngIf="about.invalid" class="invalid-feedback">
+            <div *ngIf="about.errors?.['maxlength']">
+              Description cannot be more than 500 characters long.
+            </div>
+          </div>
+        </div>
+        <button
+          type="submit"
+          (click)="updateUser()"
+          class="btn custom-btn"
+          [disabled]="!userEditForm.valid"
+        >
+          <i class="fa-solid fa-check"></i>
+          Save
+        </button>
+      </form>
+    </content>
+  </div>
+</div>

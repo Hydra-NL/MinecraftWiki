@@ -1,0 +1,99 @@
+<div class="page">
+  <div class="custom-container">
+    <content class="users">
+      <div class="big-title">
+        <h1>
+          <i class="fa-solid fa-user"></i> {{ user.username
+          }}<a
+            class="edit-entity-link"
+            routerLink="/users/{{ user._id }}/edit"
+            *ngIf="currentUser?._id == user._id"
+            title="Edit user"
+            ><img
+              class="edit-icon"
+              src="../../../../assets/images/edit-icon.png"
+            />Edit</a
+          >
+        </h1>
+        <a class="btn custom-btn back" routerLink="/users" title="Back">
+          <i class="fa-regular fa-square-caret-left"></i>
+          Back
+        </a>
+      </div>
+      <div>
+        <p>{{ user.about }}</p>
+        <h5 class="subtitle">Creator stats</h5>
+        <p>
+          Pages created: {{ pagesCreated }}<br />
+          Pages:
+          <a
+            class="reference-entity-list"
+            *ngFor="let page of pages"
+            routerLink="/{{ page.type }}s/{{ page._id }}"
+            >{{ page.name
+            }}<span *ngIf="page !== pages[pages.length - 1]">, </span></a
+          ><br />
+          Total likes: {{ totalLikes }}<br />
+          Total subscribers: {{ totalSubs }}
+        </p>
+      </div>
+    </content>
+  </div>
+  <div class="custom-container" *ngIf="currentUser?._id == user._id">
+    <div class="card">
+      <div class="card-header">
+        <span>Profile management</span>
+      </div>
+      <div class="card-footer" *ngIf="user?._id == '1'">
+        <p>Delete profile</p>
+        <button class="btn custom-btn delete-btn" (click)="deleteProfile()">
+          <img
+            class="btn-icon"
+            src="../../../../../assets/images/delete-icon.png"
+          />
+        </button>
+      </div>
+    </div>
+
+    <content class="see-also">
+      <div class="big-title">
+        <h5>Subscriptions:</h5>
+      </div>
+
+      <div class="content scroll">
+        <p *ngIf="user.subscriptions.length == 0" class="text-muted empty-text">
+          You aren't subscribed to any creators yet.
+        </p>
+        <div *ngFor="let subscription of user.subscriptions">
+          <div class="sub-feed-box">
+            <a
+              class="entity-title"
+              routerLink="/users/{{ subscription._id }}"
+              >{{ subscription.username }}</a
+            >
+          </div>
+        </div>
+      </div>
+    </content>
+    <content class="see-also">
+      <div class="big-title">
+        <h5>Liked by you:</h5>
+      </div>
+
+      <div class="content scroll">
+        <p *ngIf="user.liked.length == 0" class="text-muted empty-text">
+          You haven't liked any pages yet.
+        </p>
+        <div *ngFor="let like of user.liked">
+          <div class="sub-feed-box">
+            <a
+              class="entity-title"
+              routerLink="/{{ like.type }}s/{{ like._id }}"
+              >{{ like.name }}</a
+            >
+          </div>
+        </div>
+      </div>
+    </content>
+  </div>
+</div>

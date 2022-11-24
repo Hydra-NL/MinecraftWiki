@@ -28,7 +28,8 @@ export class ToolService extends EntityService<Tool> {
         _id: '8',
         username: 'FerdinandPierre',
         email: 'ender@mc.com',
-        password: 'secret',
+        password: 'secret', about: 'I am a Minecraft player',
+        
         subscriptions: [],
         subscribers: [],
         liked: [],
@@ -54,7 +55,8 @@ export class ToolService extends EntityService<Tool> {
         _id: '8',
         username: 'FerdinandPierre',
         email: 'ender@mc.com',
-        password: 'secret',
+        password: 'secret', about: 'I am a Minecraft player',
+        
         subscriptions: [],
         subscribers: [],
         liked: [],
@@ -80,7 +82,8 @@ export class ToolService extends EntityService<Tool> {
         _id: '8',
         username: 'FerdinandPierre',
         email: 'ender@mc.com',
-        password: 'secret',
+        password: 'secret', about: 'I am a Minecraft player',
+        
         subscriptions: [],
         subscribers: [],
         liked: [],
@@ -106,7 +109,8 @@ export class ToolService extends EntityService<Tool> {
         _id: '4',
         username: 'Herobrine',
         email: 'ender@mc.com',
-        password: 'secret',
+        password: 'secret', about: 'I am a Minecraft player',
+        
         subscriptions: [],
         subscribers: [],
         liked: [],
@@ -132,7 +136,8 @@ export class ToolService extends EntityService<Tool> {
         _id: '4',
         username: 'Herobrine',
         email: 'ender@mc.com',
-        password: 'secret',
+        password: 'secret', about: 'I am a Minecraft player',
+        
         subscriptions: [],
         subscribers: [],
         liked: [],
@@ -159,6 +164,10 @@ export class ToolService extends EntityService<Tool> {
 
   getToolByToolLevel(toolLevel: number) {
     return this.tools.filter((tool) => tool.toolLevel === toolLevel);
+  }
+
+  getToolsByUser(userId: string) {
+    return this.tools.filter((tool) => tool.createdBy._id === userId);
   }
 
   addTool(tool: Tool) {

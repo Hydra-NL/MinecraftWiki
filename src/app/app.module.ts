@@ -22,6 +22,10 @@ import { BlockAddComponent } from './domain/pages/block/add/blockadd.component';
 import { BiomeAddComponent } from './domain/pages/biome/add/biomeadd.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { UserComponent } from './domain/pages/user/list/user.component';
+import { UserDetailComponent } from './domain/pages/user/detail/userdetail.component';
+import { UserEditComponent } from './domain/pages/user/edit/useredit.component';
+import { ToolEditComponent } from './domain/pages/tool/edit/tooledit.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +45,10 @@ import { RegisterComponent } from './auth/register/register.component';
     BiomeAddComponent,
     LoginComponent,
     RegisterComponent,
+    UserComponent,
+    UserDetailComponent,
+    UserEditComponent,
+    ToolEditComponent,
   ],
   imports: [
     AppRoutingModule,

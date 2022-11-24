@@ -38,6 +38,8 @@ export class BlockService extends EntityService<Block> {
         username: 'SteveTheMiner',
         email: 'steve@mc.com',
         password: 'secret',
+        about: 'I am a Minecraft player',
+
         subscriptions: [],
         subscribers: [],
         liked: [],
@@ -45,13 +47,14 @@ export class BlockService extends EntityService<Block> {
       creationDate: new Date(new Date().setDate(new Date().getDate() - 1)),
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 1)),
-      likes: 0,
+      likes: 1,
       likedBy: [
         {
           _id: '2',
           username: 'AlexTheMiner',
           email: 'alex@email.com',
           password: 'secret',
+          about: 'I am a Minecraft player',
           subscriptions: [],
           subscribers: [],
           liked: [],
@@ -81,6 +84,7 @@ export class BlockService extends EntityService<Block> {
         username: 'SteveTheMiner',
         email: 'steve@mc.com',
         password: 'secret',
+        about: 'I am a Minecraft player',
         subscriptions: [],
         subscribers: [],
         liked: [],
@@ -114,6 +118,8 @@ export class BlockService extends EntityService<Block> {
         username: 'SteveTheMiner',
         email: 'steve@mc.com',
         password: 'secret',
+        about: 'I am a Minecraft player',
+
         subscriptions: [],
         subscribers: [],
         liked: [],
@@ -147,6 +153,8 @@ export class BlockService extends EntityService<Block> {
         username: 'AlexTheBuilder',
         email: 'alex@mc.com',
         password: 'secret',
+        about: 'I am a Minecraft player',
+
         subscriptions: [],
         subscribers: [],
         liked: [],
@@ -154,8 +162,43 @@ export class BlockService extends EntityService<Block> {
       creationDate: new Date(new Date().setDate(new Date().getDate() - 4)),
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 4)),
-      likes: 0,
-      likedBy: [],
+      likes: 1,
+      likedBy: [
+        {
+          _id: '1',
+          username: 'SteveTheMiner',
+          email: 'steve@mc.com',
+          password: 'secret',
+          about: 'I am a Minecraft player',
+          subscriptions: [
+            {
+              _id: '2',
+              username: 'AlexTheBuilder',
+              email: 'alex@mc.com',
+              password: 'secret',
+              about: 'I am a Minecraft player',
+
+              subscriptions: [],
+              subscribers: [],
+              liked: [],
+            },
+          ],
+          subscribers: [
+            {
+              _id: '2',
+              username: 'AlexTheBuilder',
+              email: 'alex@mc.com',
+              password: 'secret',
+              about: 'I am a Minecraft player',
+
+              subscriptions: [],
+              subscribers: [],
+              liked: [],
+            },
+          ],
+          liked: [],
+        },
+      ],
     },
     {
       _id: '5',
@@ -180,6 +223,8 @@ export class BlockService extends EntityService<Block> {
         username: 'AlexTheBuilder',
         email: 'alex@mc.com',
         password: 'secret',
+        about: 'I am a Minecraft player',
+
         subscriptions: [],
         subscribers: [],
         liked: [],
@@ -208,8 +253,8 @@ export class BlockService extends EntityService<Block> {
     return this.blocks.find((block) => block.hardness === hardness);
   }
 
-  getBlocksByUser(id: string) {
-    return this.blocks.filter((block) => block.createdBy._id === id);
+  getBlocksByUser(userId: string) {
+    return this.blocks.filter((block) => block.createdBy._id === userId);
   }
 
   addBlock(block: Block) {

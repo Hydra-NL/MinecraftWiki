@@ -3,8 +3,8 @@ import { MobService } from '../../models/mob/mob.service';
 import { ToolService } from '../../models/tool/tool.service';
 import { BlockService } from '../../models/block/block.service';
 import { UserService } from '../../models/user/user.service';
-import { RandomUserService } from '../user/user.service';
-import { RndUser } from '../user/user.model';
+import { RandomUserService } from '../user/rnduser.service';
+import { RndUser } from '../user/rnduser.model';
 import { User } from '../../models/user/user.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   mobs: any[] = [];
   blocks: any[] = [];
   users: any[] = [];
+  currentUser: User | undefined;
   feed: any[] = [];
   fyp: any[] = [];
   date: Date = new Date();
@@ -44,7 +45,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // Moet current user worden
-    this.user = this.userService.getUserById('2');
+    this.currentUser = this.userService.getUserById('2');
     console.log(this.user);
     this.mobs = this.mobService.getMobs();
     this.tools = this.toolService.getTools();
@@ -68,21 +69,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     // FYP moet worden gebaseerd op de current user
-    // FYP
-    // this.fyp = [...this.mobs, ...this.tools, ...this.blocks];
-    // for (let i = 0; i < this.fyp.length; i++) {
-    //   this.fyp[i].creationDate = this.calcTime(i, 'fyp');
-    // }
-    // console.log(this.fyp);
-    // this.fyp.sort((a, b) => {
-    //   return b.creationDate - a.creationDate;
-    // });
-    // console.log(this.fyp);
-    // this.fyp = this.fyp.filter((item) => {
-    //   console.log('id: ' + item._id);
-    //   return this.user.subscriptions.includes(item._id);
-    // });
-    // console.log(this.fyp);
+    //FYP
+    this.fyp = this.currentUser!.subscriptions;
+    console.log(this.fyp);
   }
 
   ngOnDestroy(): void {
@@ -147,6 +136,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   like(id: string, like: boolean) {
     let i = parseInt(id);
+    
     if (like) {
       this.feed[i].likes++;
     } else {

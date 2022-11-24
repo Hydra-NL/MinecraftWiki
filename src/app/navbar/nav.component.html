@@ -1,24 +1,42 @@
 <a class="dark-theme-btn" (click)="switchTheme()" id="dark-theme-btn"></a>
 <div class="sky" id="sky">
+  <div id="dark"></div>
   <div id="link">
-    <a routerLink="/home">
+    <a routerLink="/home" title="Home">
       <img
         src="../../assets/images/home-img.png"
         alt="logo"
         class="home-button-img"
       />
     </a>
-    <a routerLink="/home" id="home-link">Minecraft Wiki</a>
-    <a routerLink="/blocks"><i class="fa fa-cube"></i> Blocks </a>
-    <a routerLink="/tools"><i class="fa-solid fa-hammer"></i> Tools</a>
-    <a routerLink="/mobs"><i class="fa-solid fa-skull"></i> Mobs</a>
-    <a routerLink="/about">About</a>
+    <a routerLink="/home" id="home-link" title="Home">Minecraft Wiki</a>|
+    <a routerLink="/blocks" title="Blocks"
+      ><i class="fa fa-cube"></i> Blocks
+    </a>
+    |
+    <a routerLink="/tools" title="Tools"
+      ><i class="fa-solid fa-hammer"></i> Tools</a
+    >
+    |
+    <a routerLink="/mobs" title="Mobs"
+      ><i class="fa-solid fa-dragon"></i> Mobs</a
+    >
+    |
+    <a routerLink="/users" title="Users"
+      ><i class="fa-solid fa-users"></i> Creators</a
+    >
+    |
+    <a routerLink="/about" title="About">About</a>
   </div>
   <div id="auth">
-    <button class="btn custom-btn add-btn" routerLink="/login">
+    <button class="btn custom-btn add-btn" routerLink="/login" title="Login">
       <img class="btn-icon" src="../../assets/images/login-icon.png" /> Login
     </button>
-    <button class="btn custom-btn add-btn" routerLink="/register">
+    <button
+      class="btn custom-btn add-btn"
+      routerLink="/register"
+      title="Register"
+    >
       <img class="btn-icon" src="../../assets/images/register-icon.png" />
       Register
     </button>

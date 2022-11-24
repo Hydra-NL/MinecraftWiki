@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { RndUser } from './user.model';
+import { RndUser } from './rnduser.model';
 import { environment } from 'src/environments/environment';
 import { map, Observable, tap } from 'rxjs';
 import { ApiResponse } from './api.model';

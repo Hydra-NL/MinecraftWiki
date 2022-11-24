@@ -12,6 +12,10 @@ import { BlockAddComponent } from './domain/pages/block/add/blockadd.component';
 import { HomeAddComponent } from './domain/pages/home/add/homeadd.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { UserComponent } from './domain/pages/user/list/user.component';
+import { UserDetailComponent } from './domain/pages/user/detail/userdetail.component';
+import { UserEditComponent } from './domain/pages/user/edit/useredit.component';
+import { ToolEditComponent } from './domain/pages/tool/edit/tooledit.component';
 
 const routes: Routes = [
   {
@@ -49,7 +53,21 @@ const routes: Routes = [
       { path: 'tools', component: ToolComponent },
       {
         path: 'tools',
-        children: [{ path: ':id', component: ToolComponent }],
+        children: [
+          { path: ':id', component: ToolComponent },
+          { path: ':id/edit', component: ToolEditComponent },
+        ],
+      },
+      {
+        path: 'users',
+        component: UserComponent,
+      },
+      {
+        path: 'users',
+        children: [
+          { path: ':id', component: UserDetailComponent },
+          { path: ':id/edit', component: UserEditComponent },
+        ],
       },
       {
         path: 'login',
@@ -58,7 +76,7 @@ const routes: Routes = [
       {
         path: 'register',
         component: RegisterComponent,
-      }
+      },
     ],
   },
   { path: '**', redirectTo: '/home' },

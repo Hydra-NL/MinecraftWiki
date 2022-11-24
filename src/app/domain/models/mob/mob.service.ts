@@ -36,7 +36,8 @@ export class MobService extends EntityService<Mob> {
         _id: '2',
         username: 'AlexTheBuilder',
         email: 'alex@mc.com',
-        password: 'secret',
+        password: 'secret', about: 'I am a Minecraft player',
+        
         subscriptions: [],
         subscribers: [],
         liked: [],
@@ -69,7 +70,8 @@ export class MobService extends EntityService<Mob> {
         _id: '2',
         username: 'AlexTheBuilder',
         email: 'alex@mc.com',
-        password: 'secret',
+        password: 'secret', about: 'I am a Minecraft player',
+        
         subscriptions: [],
         subscribers: [],
         liked: [],
@@ -102,7 +104,8 @@ export class MobService extends EntityService<Mob> {
         _id: '3',
         username: 'EnderDragon',
         email: 'ender@mc.com',
-        password: 'secret',
+        password: 'secret', about: 'I am a Minecraft player',
+        
         subscriptions: [],
         subscribers: [],
         liked: [],
@@ -135,7 +138,8 @@ export class MobService extends EntityService<Mob> {
         _id: '3',
         username: 'EnderDragon',
         email: 'ender@mc.com',
-        password: 'secret',
+        password: 'secret', about: 'I am a Minecraft player',
+        
         subscriptions: [],
         subscribers: [],
         liked: [],
@@ -168,7 +172,8 @@ export class MobService extends EntityService<Mob> {
         _id: '3',
         username: 'EnderDragon',
         email: 'ender@mc.com',
-        password: 'secret',
+        password: 'secret', about: 'I am a Minecraft player',
+        
         subscriptions: [],
         subscribers: [],
         liked: [],
@@ -187,6 +192,10 @@ export class MobService extends EntityService<Mob> {
 
   getMob(id: string) {
     return this.mobs.find((mob) => mob._id === id);
+  }
+
+  getMobsByUser(userId: string) {
+    return this.mobs.filter((mob) => mob.createdBy._id === userId);
   }
 
   addMob(mob: Mob) {
