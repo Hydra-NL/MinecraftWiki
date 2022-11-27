@@ -16,9 +16,10 @@
       </div>
       <div class="content">
         <div *ngFor="let mob of mobs">
-          <div class="card">
+          <div class="card entity-card">
+            <a class="card-click" routerLink="/mobs/{{ mob._id }}"></a>
             <div class="card-header">
-              <a routerLink="/mobs/{{ mob._id }}" class="entity-title">
+              <a class="entity-title">
                 {{ mob.name }}
               </a>
             </div>

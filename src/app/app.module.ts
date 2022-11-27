@@ -28,6 +28,9 @@ import { UserEditComponent } from './domain/pages/user/edit/useredit.component';
 import { ToolEditComponent } from './domain/pages/tool/edit/tooledit.component';
 import { ToolDetailComponent } from './domain/pages/tool/detail/tooldetail.component';
 import { ToolAddComponent } from './domain/pages/tool/add/tooladd.component';
+import { MobDetailComponent } from './domain/pages/mob/detail/mobdetail.component';
+import { MobEditComponent } from './domain/pages/mob/edit/mobedit.component';
+import { MobAddComponent } from './domain/pages/mob/add/mobadd.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +56,9 @@ import { ToolAddComponent } from './domain/pages/tool/add/tooladd.component';
     ToolEditComponent,
     ToolDetailComponent,
     ToolAddComponent,
+    MobDetailComponent,
+    MobEditComponent,
+    MobAddComponent,
   ],
   imports: [
     AppRoutingModule,

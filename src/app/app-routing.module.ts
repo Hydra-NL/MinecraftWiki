@@ -18,6 +18,9 @@ import { UserEditComponent } from './domain/pages/user/edit/useredit.component';
 import { ToolEditComponent } from './domain/pages/tool/edit/tooledit.component';
 import { ToolDetailComponent } from './domain/pages/tool/detail/tooldetail.component';
 import { ToolAddComponent } from './domain/pages/tool/add/tooladd.component';
+import { MobDetailComponent } from './domain/pages/mob/detail/mobdetail.component';
+import { MobAddComponent } from './domain/pages/mob/add/mobadd.component';
+import { MobEditComponent } from './domain/pages/mob/edit/mobedit.component';
 
 const routes: Routes = [
   {
@@ -50,7 +53,11 @@ const routes: Routes = [
       { path: 'mobs', component: MobComponent },
       {
         path: 'mobs',
-        children: [{ path: ':id', component: MobComponent }],
+        children: [
+          { path: 'add', component: MobAddComponent },
+          { path: ':id', component: MobDetailComponent },
+          { path: ':id/edit', component: MobEditComponent },
+        ],
       },
       { path: 'tools', component: ToolComponent },
       {
