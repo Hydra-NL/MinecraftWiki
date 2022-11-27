@@ -1,0 +1,30 @@
+<div class="page">
+  <div class="custom-container">
+    <content class="users">
+      <div class="big-title">
+        <h1><i class="fa-solid fa-users"></i> Creators</h1>
+        <div class="page-btns">
+          <a class="btn custom-btn back" routerLink="/home" title="Back">
+            <i class="fa-regular fa-square-caret-left"></i>
+            Back
+          </a>
+        </div>
+      </div>
+      <div class="content">
+        <div *ngFor="let user of users">
+          <div class="card entity-card">
+            <a class="card-click" routerLink="/users/{{ user._id }}"></a>
+            <div class="card-header">
+              <a class="entity-title">
+                {{ user.username }}
+              </a>
+            </div>
+            <div class="card-body">
+              Subscribers: {{ user.subscribers.length }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </content>
+  </div>
+</div>

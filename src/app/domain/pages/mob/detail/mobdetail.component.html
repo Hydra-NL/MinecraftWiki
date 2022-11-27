@@ -1,0 +1,178 @@
+<div class="page">
+  <div class="custom-container">
+    <content class="mobs">
+      <div class="big-title">
+        <h1>
+          <i class="fa fa-cube"></i> {{ mob?.name
+          }}<a
+            class="edit-entity-link"
+            routerLink="/mobs/{{ mob?._id }}/edit"
+            *ngIf="currentUser?._id == '1'"
+            title="Edit mob"
+            ><img
+              class="edit-icon"
+              src="../../../../assets/images/edit-icon.png"
+            />Edit</a
+          >
+        </h1>
+        <a class="btn custom-btn back" routerLink="/mobs" title="Back">
+          <i class="fa-regular fa-square-caret-left"></i>
+          Back
+        </a>
+      </div>
+      <div class="entity-intro">
+        <div class="col-md-9">
+          <p>{{ mob?.description }}</p>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card">
+            <div class="card-header">
+              <p class="editor-title" id="content">Contents</p>
+            </div>
+            <div class="card-body" id="content-box">
+              <li>
+                <a class="totext" href="/mobs/{{ mob?._id }}#stats">Stats</a>
+              </li>
+              <li>
+                <a class="totext" href="/mobs/{{ mob?._id }}#behavior"
+                  >Behavior</a
+                >
+              </li>
+              <li>
+                <a class="totext" href="/mobs/{{ mob?._id }}#biome">Biome</a>
+              </li>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h5 class="subtitle" id="stats">Stats</h5>
+      <p>
+        Health: {{ mob?.health }}<br />
+        Attack: {{ mob?.attack }}<br />
+        Armor: {{ mob?.armor }}<br />
+      </p>
+      <h5 class="subtitle" id="behavior">Behavior</h5>
+      <p>
+        {{ mob?.name }} can be damaged by Swords that have an attack of
+        {{ mob?.armor }} or higher.<br />
+        <span *ngIf="this.tools.length != 0">
+          Swords that can deal damage to {{ mob?.name }}:
+          <a
+            class="reference-entity-list"
+            *ngFor="let tool of tools"
+            routerLink="/tools/{{ tool._id }}"
+          >
+            {{ tool.name
+            }}<i
+              class="fa-solid fa-up-right-from-square reference-entity-icon"
+            ></i
+            ><span *ngIf="tool !== tools[tools.length - 1]">, </span>
+          </a>
+        </span>
+        <span *ngIf="this.tools.length == 0"
+          >There are no known tools that can break {{ mob?.name }}.</span
+        ><br /><br />
+        <span *ngIf="mob?.isPassive"
+          >Since the {{ mob?.name }} is a Passive mob, it won't attack the
+          player automatically. It will either run away, or if it deems it
+          necessary it will defend itself and attack the player.
+        </span>
+        <span *ngIf="!mob?.isPassive"
+          >Since the {{ mob?.name }} is not an Passive mob, it will attack the
+          player automatically.
+        </span>
+      </p>
+      <h5 class="subtitle" id="biome">Biome</h5>
+      <p>{{ mob?.name }} can be found in the {{ biome?.name }} biome.</p>
+      <p>{{ biome?.description }}</p>
+      <p>Average temperatures: {{ biome?.temperature }}°C</p>
+      <p>Dimension: {{ biome?.dimension }}</p>
+    </content>
+  </div>
+
+  <div class="custom-container">
+    <div class="card">
+      <div class="card-header">
+        <span>Creator</span>
+        <a routerLink="/users/{{ user?._id }}" class="editor-title">{{
+          user?.username
+        }}</a>
+        <span *ngIf="currentUser!._id !== user!._id">
+          <button
+            (click)="subscribe()"
+            *ngIf="!user?.subscribers?.includes(currentUser!)"
+            class="btn custom-btn add-btn"
+            id="subscribe-detail-page"
+          >
+            <span id="subscribe-detail-page-text"> Subscribe </span>
+            <img
+              class="subscribe-icon"
+              src="../../../../assets/images/subscribe-icon.png"
+              title="Subscribe"
+            />
+          </button>
+          <button
+            (click)="subscribe()"
+            *ngIf="user?.subscribers?.includes(currentUser!)"
+            id="subscribe-detail-page"
+            class="btn custom-btn delete-btn"
+          >
+            <span id="subscribe-detail-page-text"> Unsubscribe </span>
+            <img
+              class="subscribe-icon"
+              src="../../../../assets/images/cancel-icon.png"
+              title="Unsubscribe"
+            />
+          </button>
+        </span>
+      </div>
+      <div class="card-body">
+        <p class="card-date">
+          <b>Created: </b>{{ mob?.creationDate | date: "medium" }}<br />
+          <b>Last updated: </b>{{ mob?.lastUpdateDate | date: "medium" }}
+        </p>
+      </div>
+      <div class="card-footer" *ngIf="user?._id == '1'">
+        <p>Delete page</p>
+        <button class="btn custom-btn delete-btn" (click)="deleteMob()">
+          <img
+            class="btn-icon"
+            src="../../../../../assets/images/delete-icon.png"
+          />
+        </button>
+      </div>
+    </div>
+    <content class="see-also">
+      <div class="big-title">
+        <h5>More from {{ user?.username }}:</h5>
+      </div>
+      <div class="content scroll">
+        <p *ngIf="userMobs.length == 0" class="text-muted empty-text">
+          This creator doesn't have other pages yet.
+        </p>
+        <div *ngFor="let mobs of userMobs">
+          <div class="sub-feed-box">
+            <a routerLink="/mobs/{{ mobs._id }}" class="entity-title">{{
+              mobs.name
+            }}</a>
+          </div>
+        </div>
+      </div>
+    </content>
+    <content class="see-also">
+      <div class="big-title">
+        <h5>See also:</h5>
+      </div>
+      <div class="content scroll">
+        <div *ngFor="let mobOther of mobs">
+          <div class="sub-feed-box">
+            <a routerLink="/mobs/{{ mobOther._id }}" class="entity-title">{{
+              mobOther?.name
+            }}</a>
+          </div>
+        </div>
+      </div>
+    </content>
+  </div>
+</div>

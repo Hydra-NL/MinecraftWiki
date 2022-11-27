@@ -4,11 +4,11 @@
       <div class="big-title">
         <h1><i class="fa-solid fa-hammer"></i> Tools</h1>
         <div class="page-btns">
-          <a class="btn add-btn custom-btn">
+          <a class="btn add-btn custom-btn" routerLink="/tools/add">
             <i class="fa fa-plus"></i>
             Add Tool
           </a>
-          <a class="btn custom-btn back" routerLink="/home">
+          <a class="btn custom-btn back" routerLink="/home" title="Back">
             <i class="fa-regular fa-square-caret-left"></i>
             Back
           </a>
@@ -16,9 +16,10 @@
       </div>
       <div class="content">
         <div *ngFor="let tool of tools">
-          <div class="card">
+          <div class="card entity-card">
+            <a class="card-click" routerLink="/tools/{{ tool._id }}"></a>
             <div class="card-header">
-              <a routerLink="/tools/{{ tool._id }}" class="entity-title">
+              <a class="entity-title">
                 {{ tool.name }}
               </a>
             </div>

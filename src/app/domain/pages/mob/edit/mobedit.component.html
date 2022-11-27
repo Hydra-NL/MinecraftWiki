@@ -1,0 +1,296 @@
+<div class="page">
+  <div class="custom-container">
+    <content class="mobs">
+      <form
+        #mobAddForm="ngForm"
+        name="form"
+        (ngSubmit)="mobAddForm.form.valid && updateMob()"
+      >
+        <div class="big-title">
+          <h1 class="edit-big-title">
+            <i class="fa fa-cube"></i>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Mob Name"
+              [(ngModel)]="mob!.name"
+              #mobname="ngModel"
+              name="mobname"
+              [ngClass]="{
+                'is-invalid':
+                  mobname.invalid && (mobname.dirty || mobname.touched)
+              }"
+              required
+              minlength="3"
+              maxlength="30"
+            />
+          </h1>
+          <div *ngIf="mobname.invalid" class="invalid-feedback">
+            <div *ngIf="mobname.errors?.['required']">A name is required</div>
+            <div *ngIf="mobname.errors?.['minlength']">
+              The mob's name should be atleast 3 characters long
+            </div>
+            <div *ngIf="mobname.errors?.['maxlength']">
+              The mob's name should be atmost 30 characters long
+            </div>
+          </div>
+
+          <a class="btn custom-btn back" routerLink="/mobs" title="Back">
+            <i class="fa-regular fa-square-caret-left"></i>
+            Back
+          </a>
+        </div>
+        <div>
+          <div class="edit-textbox">
+            <label for="description">Description</label>
+            <textarea
+              class="form-control"
+              id="description"
+              rows="4"
+              placeholder="Mob Description"
+              [(ngModel)]="mob!.description"
+              #mobdescription="ngModel"
+              name="mobdescription"
+              [ngClass]="{
+                'is-invalid':
+                  mobdescription.invalid &&
+                  (mobdescription.dirty || mobdescription.touched)
+              }"
+              required
+              minlength="3"
+              maxlength="2000"
+            ></textarea>
+            <div *ngIf="mobdescription.invalid" class="invalid-feedback">
+              <div *ngIf="mobdescription.errors?.['required']">
+                A description is required
+              </div>
+              <div *ngIf="mobdescription.errors?.['minlength']">
+                The mob's description should be atleast 3 characters long
+              </div>
+              <div *ngIf="mobdescription.errors?.['maxlength']">
+                The mob's description can atmost be 2000 characters long
+              </div>
+            </div>
+          </div>
+
+          <h5 class="subtitle" id="stats">Stats</h5>
+          <div class="edit-field">
+            <label for="health">Health: </label>
+            <input
+              type="number"
+              class="form-control"
+              id="health"
+              [(ngModel)]="mob!.health"
+              #mobhealth="ngModel"
+              name="mobhealth"
+              [ngClass]="{
+                'is-invalid':
+                  mobhealth.invalid && (mobhealth.dirty || mobhealth.touched)
+              }"
+              min="1"
+              max="200"
+            />(1 - 200)
+            <div *ngIf="mobhealth.invalid" class="invalid-feedback">
+              <div *ngIf="mobhealth.errors?.['required']">
+                Health is required
+              </div>
+              <div *ngIf="mobhealth.errors?.['min']">
+                The mob's health should be atleast 1
+              </div>
+              <div *ngIf="mobhealth.errors?.['max']">
+                The mob's health should be atmost 200
+              </div>
+            </div>
+          </div>
+          <div class="edit-field">
+            <label for="attack">Attack: </label>
+            <input
+              type="number"
+              class="form-control"
+              id="attack"
+              [(ngModel)]="mob!.attack"
+              #mobattack="ngModel"
+              name="mobattack"
+              [ngClass]="{
+                'is-invalid':
+                  mobattack.invalid && (mobattack.dirty || mobattack.touched)
+              }"
+              min="1"
+              max="50"
+            />(1 - 50)
+            <div *ngIf="mobattack.invalid" class="invalid-feedback">
+              <div *ngIf="mobattack.errors?.['required']">
+                Attack is required
+              </div>
+              <div *ngIf="mobattack.errors?.['min']">
+                The mob's attack should be atleast 1
+              </div>
+              <div *ngIf="mobattack.errors?.['max']">
+                The mob's attack should be atmost 50
+              </div>
+            </div>
+          </div>
+          <div class="edit-field">
+            <label for="armor">Armor: </label>
+            <input
+              type="number"
+              class="form-control"
+              id="armor"
+              [(ngModel)]="mob!.armor"
+              #mobarmor="ngModel"
+              name="mobarmor"
+              [ngClass]="{
+                'is-invalid':
+                  mobarmor.invalid && (mobarmor.dirty || mobarmor.touched)
+              }"
+              min="1"
+              max="20"
+            />(1 - 20)
+            <div *ngIf="mobarmor.invalid" class="invalid-feedback">
+              <div *ngIf="mobarmor.errors?.['required']">Armor is required</div>
+              <div *ngIf="mobarmor.errors?.['min']">
+                The mob's armor should be atleast 1
+              </div>
+              <div *ngIf="mobarmor.errors?.['max']">
+                The mob's armor should be atmost 20
+              </div>
+            </div>
+          </div>
+
+          <h5 class="subtitle" id="behavior">Behavior</h5>
+          <div class="edit-field">
+            <label for="passive">Passive: </label>
+            <input
+              type="checkbox"
+              id="passive"
+              [(ngModel)]="mob!.isPassive"
+              #mobpassive="ngModel"
+              name="mobpassive"
+              (change)="(true)"
+              #checkBox
+            />
+          </div>
+          <h5 class="subtitle" id="biome">Biome</h5>
+          <div class="edit-field">
+            <label for="biome">Biome name: </label>
+            <input
+              type="text"
+              class="form-control"
+              id="biome"
+              required
+              [(ngModel)]="mob!.biome.name"
+              #mobbiomename="ngModel"
+              name="name"
+              [ngClass]="{
+                'is-invalid':
+                  mobbiomename.errors &&
+                  (mobbiomename.dirty || mobbiomename.touched)
+              }"
+            />
+            <div *ngIf="mobbiomename.errors" class="invalid-feedback">
+              <div *ngIf="mobbiomename.errors?.['required']">
+                A biome name is required
+              </div>
+            </div>
+          </div>
+          <div class="edit-textbox">
+            <label for="biome">Description </label>
+            <textarea
+              class="form-control"
+              id="description"
+              required
+              [(ngModel)]="mob!.biome.description"
+              #mobbiomedescription="ngModel"
+              name="description"
+              rows="4"
+              placeholder="Biome Description"
+              minlength="3"
+              [ngClass]="{
+                'is-invalid':
+                  mobbiomedescription.errors &&
+                  (mobbiomedescription.dirty || mobbiomedescription.touched)
+              }"
+            ></textarea>
+            <div *ngIf="mobbiomedescription.errors" class="invalid-feedback">
+              <div *ngIf="mobbiomedescription.errors?.['required']">
+                A description is required
+              </div>
+              <div *ngIf="mobbiomedescription.errors?.['minlength']">
+                The biome's description should be atleast 3 characters long
+              </div>
+            </div>
+          </div>
+          <div class="edit-field">
+            <label for="biome">Temperature: </label>
+            <input
+              type="number"
+              class="form-control"
+              id="temperature"
+              required
+              [(ngModel)]="mob!.biome.temperature"
+              #mobbiometemperature="ngModel"
+              name="temperature"
+              min="-20"
+              max="50"
+              [ngClass]="{
+                'is-invalid':
+                  mobbiometemperature.errors &&
+                  (mobbiometemperature.dirty || mobbiometemperature.touched)
+              }"
+            />
+            (°C)
+            <div *ngIf="mobbiometemperature.errors" class="invalid-feedback">
+              <div *ngIf="mobbiometemperature.errors?.['required']">
+                A temperature is required
+              </div>
+              <div *ngIf="mobbiometemperature.errors?.['min']">
+                The temperature should be atleast -20°C
+              </div>
+              <div *ngIf="mobbiometemperature.errors?.['max']">
+                The temperature should be atmost 50°C
+              </div>
+            </div>
+          </div>
+          <div class="edit-field">
+            <label for="biome">Dimension: </label>
+            <select
+              class="form-control edit-select"
+              [(ngModel)]="mob!.biome.dimension"
+              #mobbiomedimension="ngModel"
+              name="dimension"
+              id="dimension"
+              required
+              [ngClass]="{
+                'is-invalid':
+                  mobbiomedimension.errors &&
+                  (mobbiomedimension.dirty || mobbiomedimension.touched)
+              }"
+            >
+              <option value="" selected disabled hidden>
+                Pick a dimension
+              </option>
+              <option value="Overworld">Overworld</option>
+              <option value="Nether">Nether</option>
+              <option value="End">End</option>
+            </select>
+            <div *ngIf="mobbiomedimension.errors" class="invalid-feedback">
+              <div *ngIf="mobbiomedimension.errors?.['required']">
+                A dimension is required
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          (click)="updateMob()"
+          class="btn custom-btn edit-button"
+          [disabled]="!mobAddForm.valid"
+        >
+          <i class="fa-solid fa-check"></i>
+          Save
+        </button>
+      </form>
+    </content>
+  </div>
+</div>

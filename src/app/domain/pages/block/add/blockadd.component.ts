@@ -42,7 +42,16 @@ export class BlockAddComponent implements OnInit {
       timePassed: 0,
       creationDate: new Date(),
       lastUpdateDate: new Date(),
+      likes: 0,
+      likedBy: [],
     };
+  }
+
+  playAudio() {
+    const audio = new Audio();
+    audio.src = '/assets/audio/Drawmap1.ogg';
+    audio.load();
+    audio.play();
   }
 
   addBlock() {
@@ -54,6 +63,7 @@ export class BlockAddComponent implements OnInit {
       this.block.creationDate = new Date();
       this.block.lastUpdateDate = new Date();
       this.blockService.addBlock(this.block);
+      this.playAudio();
       this.router.navigate(['/blocks/' + this.block._id]);
       console.log('BlockAddComponent Block added');
       console.log(this.block);

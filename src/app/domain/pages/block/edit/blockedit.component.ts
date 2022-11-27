@@ -28,28 +28,17 @@ export class BlockEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.route.paramMap.subscribe((params) => {
-    //   this.blockId = String(params.get('id'));
-    //   this.subscription = this.blockService
-    //     .read(this.blockId)
-    //     .subscribe((result) => (this.block = result));
-    // });
-    // this.block = {
-    //   _id: undefined,
-    //   name: '',
-    //   description: '',
-    //   stackable: false,
-    //   stackSize: 0,
-    //   hardness: 0,
-    //   tool: ToolType.pickaxe,
-    //   biome: new Biome(''),
-    //   createdBy: new User(''),
-    //   creationDate: new Date(),
-    //   lastUpdateDate: new Date(),
-    // };
     this.block = this.blockService.getBlock(this.blockId);
 
     this.biome = this.block?.biome;
+  }
+
+  playAudio() {
+    const audio = new Audio();
+    audio.src = '/assets/audio/Smithing_Table1.ogg';
+    audio.load();
+    audio.play();
+    console.log('playAudio');
   }
 
   updateBlock() {
@@ -59,6 +48,7 @@ export class BlockEditComponent implements OnInit {
       this.router.navigate(['/blocks/' + this.blockId]);
       console.log('BlockEditComponent updateBlock');
       console.log(this.block);
+      this.playAudio();
     } else {
       this.router.navigate(['/blocks/' + this.blockId + '/edit']);
     }

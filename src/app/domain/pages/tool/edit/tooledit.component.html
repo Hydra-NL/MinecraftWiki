@@ -1,0 +1,244 @@
+<div class="page">
+  <div class="custom-container">
+    <content class="tools">
+      <form
+        #toolEditForm="ngForm"
+        name="form"
+        (ngSubmit)="toolEditForm.form.valid && updateTool()"
+      >
+        <div class="big-title">
+          <h1 class="edit-big-title">
+            <i class="fa-solid fa-hammer"></i>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="tool!.name"
+              name="name"
+              #toolname="ngModel"
+              placeholder="Tool Name"
+              [ngClass]="{
+                'is-invalid':
+                  toolname.invalid && (toolname.dirty || toolname.touched)
+              }"
+              value="{{ tool?.name }}"
+              required
+              minlength="3"
+              maxlength="30"
+            />
+          </h1>
+          <div *ngIf="toolname.invalid" class="invalid-feedback">
+            <div *ngIf="toolname.errors?.['required']">A name is required</div>
+            <div *ngIf="toolname.errors?.['minlength']">
+              The tool's name should be atleast 3 characters long
+            </div>
+            <div *ngIf="toolname.errors?.['maxlength']">
+              The tool's name should be atmost 30 characters long
+            </div>
+          </div>
+          <a
+            class="btn custom-btn back"
+            routerLink="/tools/{{ tool?._id }}"
+            title="Back"
+          >
+            <i class="fa-regular fa-square-caret-left"></i>
+            Back
+          </a>
+        </div>
+        <div>
+          <div class="edit-textbox">
+            <label for="description">Description</label>
+            <textarea
+              class="form-control"
+              id="description"
+              rows="5"
+              placeholder="Tool Description"
+              [(ngModel)]="tool!.description"
+              #tooldescription="ngModel"
+              name="description"
+              [ngClass]="{
+                'is-invalid':
+                  tooldescription.invalid &&
+                  (tooldescription.dirty || tooldescription.touched)
+              }"
+              value="{{ tool?.description }}"
+              required
+              minlength="3"
+            ></textarea>
+            <div *ngIf="tooldescription.invalid" class="invalid-feedback">
+              <div *ngIf="tooldescription.errors?.['required']">
+                A description is required
+              </div>
+              <div *ngIf="tooldescription.errors?.['minlength']">
+                The tool's description should be atleast 3 characters long
+              </div>
+            </div>
+          </div>
+
+          <h5 class="subtitle" id="stats">Stats</h5>
+          <div class="edit-field">
+            <label for="durability">Durability: </label>
+            <input
+              type="number"
+              id="durability"
+              class="form-control"
+              value="{{ tool?.durability }}"
+              [(ngModel)]="tool!.durability"
+              #tooldurability="ngModel"
+              name="durability"
+              [ngClass]="{
+                'is-invalid':
+                  tooldurability.invalid &&
+                  (tooldurability.dirty || tooldurability.touched)
+              }"
+              required
+              min="1"
+              max="3000"
+            />
+            (1 - 3000)
+            <div *ngIf="tooldurability.invalid" class="invalid-feedback">
+              <div *ngIf="tooldurability.errors?.['required']">
+                A durability is required
+              </div>
+              <div *ngIf="tooldurability.errors?.['min']">
+                The tool's durability should be atleast 1
+              </div>
+              <div *ngIf="tooldurability.errors?.['max']">
+                The tool's durability can atmost be 3000
+              </div>
+            </div>
+          </div>
+          <div class="edit-field">
+            <label for="attack">Attack: </label>
+            <input
+              type="number"
+              class="form-control"
+              id="attack"
+              placeholder="Hardness"
+              [(ngModel)]="tool!.attack"
+              #toolattack="ngModel"
+              name="attack"
+              [ngClass]="{
+                'is-invalid':
+                  toolattack.invalid && (toolattack.dirty || toolattack.touched)
+              }"
+              value="{{ tool?.attack }}"
+              required
+              min="1"
+              max="20"
+            />
+            (1 - 20)
+            <div *ngIf="toolattack.invalid" class="invalid-feedback">
+              <div *ngIf="toolattack.errors?.['required']">
+                A hardness is required
+              </div>
+              <div *ngIf="toolattack.errors?.['min']">
+                The tool's hardness should be atleast 1
+              </div>
+              <div *ngIf="toolattack.errors?.['max']">
+                The tool's hardness can atmost be 20
+              </div>
+            </div>
+          </div>
+          <div class="edit-textbox">
+            <label for="toollevel">Tool Level: </label>
+            <input
+              type="range"
+              class="slider"
+              id="toollevel"
+              [(ngModel)]="tool!.toolLevel"
+              #tooltoollevel="ngModel"
+              name="tooltoollevel"
+              [ngClass]="{
+                'is-invalid':
+                  tooltoollevel.invalid &&
+                  (tooltoollevel.dirty || tooltoollevel.touched)
+              }"
+              value="{{ tool?.toolLevel }}"
+              required
+              min="0"
+              max="6"
+            />
+            <div class="slider-images-row">
+              <img
+                class="slider-img"
+                title="No tool"
+                src="../../../../../assets/images/breakable.png"
+              />
+              <img
+                class="slider-img"
+                title="Wooden tool"
+                src="../../../../../assets/images/wooden-pickaxe.png"
+              />
+              <img
+                class="slider-img"
+                title="Stone tool"
+                src="../../../../../assets/images/stone-pickaxe.png"
+              />
+              <img
+                class="slider-img"
+                title="Iron tool"
+                src="../../../../../assets/images/iron-pickaxe.png"
+              />
+              <img
+                class="slider-img"
+                title="Diamond tool"
+                src="../../../../../assets/images/diamond-pickaxe.png"
+              />
+              <img
+                class="slider-img"
+                title="Netherite tool"
+                src="../../../../../assets/images/netherite-pickaxe.png"
+              />
+              <img
+                class="slider-img"
+                title="Unbreakable"
+                src="../../../../../assets/images/unbreakable.png"
+              />
+            </div>
+          </div>
+
+          <h5 class="subtitle" id="tools">Tool</h5>
+          <div class="edit-field">
+            <label for="weapon">Weapon: </label>
+            <input
+              type="checkbox"
+              id="weapon"
+              [(ngModel)]="tool!.isWeapon"
+              #toolisweapon="ngModel"
+              name="stackSize"
+              (change)="(true)"
+              #checkBox
+              [checked]="tool!.isWeapon"
+            />
+          </div>
+          <div class="edit-field">
+            <label for="tool">Tool type: </label>
+            <select
+              class="form-control edit-select"
+              id="tool"
+              value="{{ tool?.toolType }}"
+              required
+              [(ngModel)]="tool!.toolType"
+              #tooltool="ngModel"
+              name="tool"
+            >
+              <option *ngIf="!checkBox.checked" value="Pickaxe">Pickaxe</option>
+              <option *ngIf="!checkBox.checked" value="Axe">Axe</option>
+              <option *ngIf="!checkBox.checked" value="Shovel">Shovel</option>
+              <option *ngIf="checkBox.checked" value="Sword">Sword</option>
+            </select>
+          </div>
+        </div>
+        <button
+          type="button"
+          (click)="updateTool()"
+          class="btn custom-btn"
+          [disabled]="!toolEditForm.valid"
+        >
+          <i class="fa-solid fa-check"></i>
+          Save
+        </button>
+      </form>
+    </content>
+  </div>
+</div>

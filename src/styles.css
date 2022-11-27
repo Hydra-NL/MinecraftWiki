@@ -15,7 +15,18 @@
 
 #sky {
   display: grid;
-  grid-template-areas: "🔗 🚪";
+  grid-template-areas: "☀ 🔗 🚪";
+}
+
+#dark {
+  grid-area: ☀;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  align-content: center;
+  gap: 8px;
 }
 
 #link {
@@ -173,6 +184,8 @@ footer a {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0px;
+  color: black;
+  text-decoration: none;
 }
 
 .empty-text {
@@ -213,8 +226,7 @@ label {
   gap: 5px;
   border-radius: 5px;
   border: 1px solid #b1b1b1;
-  width: 300px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .search .form-control {
@@ -272,8 +284,10 @@ content {
 }
 
 .sub-feed-box a {
-  font-size: 16px;
+  text-decoration: none;
+  font-size: 20px;
   padding-inline-start: 4px;
+  color: black;
 }
 
 /* Table */
@@ -285,6 +299,7 @@ tbody {
 .card {
   background-color: #ffffff;
   margin-bottom: 10px;
+  min-width: 92%;
 }
 .card-header {
   background-image: linear-gradient(
@@ -296,12 +311,9 @@ tbody {
   margin: 0px;
 }
 
-.card-date {
-  font-size: 0.8em;
-  margin: 0px;
-}
-
+.card-date,
 .card-date p {
+  font-size: 0.8em;
   margin: 0px;
 }
 
@@ -309,18 +321,18 @@ tbody {
   padding: 10px 10px;
 }
 
-.card-body p {
-  margin-bottom: 0px;
+.card-body p,
+.card-footer p {
+  margin: 0px;
 }
 
 .card-footer {
   display: flex;
-  justify-content: flex-end;
-  background-color: rgb(209 208 208);
-}
-
-.card-footer button {
-  margin-inline-start: 3px;
+  background-color: rgb(255 255 255);
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
 }
 
 .card.entity-card {
@@ -345,6 +357,7 @@ tbody {
   width: 100%;
   height: 100%;
   position: absolute;
+  border-radius: 5px;
 }
 
 /* Border on hover */
@@ -434,6 +447,28 @@ tbody {
   position: absolute;
   right: 10px;
   top: 10px;
+  display: flex;
+  gap: 4px;
+}
+
+#subscribe-detail-page.btn.custom-btn:hover #subscribe-detail-page-text {
+  animation-name: extend-btn;
+  animation-timing-function: ease-in-out;
+  display: flex;
+}
+
+#subscribe-detail-page-text {
+  animation-duration: 0.1s;
+  display: none;
+}
+
+@keyframes extend-btn {
+  0% {
+    transform: translateX(10px);
+  }
+  100% {
+    transform: translateX(0px);
+  }
 }
 
 .page-btns {
@@ -481,7 +516,7 @@ tbody {
 }
 
 .edit-field input[type="number"] {
-  max-width: 50px;
+  max-width: 65px;
   padding: 3px 5px;
 }
 
@@ -601,24 +636,15 @@ tbody {
     transform: translateX(0px);
   }
 }
-
 .unsubscribe {
   animation-duration: 0.2s;
   display: none;
   background-color: rgb(199, 25, 16);
   border-radius: 5px;
-  padding: 5px;
-  margin-bottom: 2px;
-}
-
-.unsubscribe a {
   color: white;
   text-decoration: none;
 }
 
-.unsubscribe a:hover {
-  text-decoration: underline;
-}
 /* Entity feed */
 .feed-nav {
   display: flex;
@@ -659,6 +685,11 @@ tbody {
 .feed .content {
   height: fit-content;
   overflow-y: scroll;
+}
+
+.feed .card,
+.feed .card-header {
+  border-radius: 5px 0px 0px 5px;
 }
 
 .feed .card-header {
@@ -720,6 +751,11 @@ tbody {
   width: 700px;
 }
 
+/* Users */
+.users {
+  width: 600px;
+}
+
 /* Add page */
 .add-page {
   width: 900px;
@@ -754,6 +790,46 @@ tbody {
   background-size: cover;
 }
 
+/* Login/Register */
+.login {
+  width: 500px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-form .form-group {
+  width: 75%;
+  margin-bottom: 10px;
+}
+
+/* MISC */
+.likes {
+  min-width: 7%;
+  border-radius: 0px 5px 5px 0px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  font-size: 14px;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #bebebe;
+  background-color: #e7e7e7;
+}
+
+.like-button {
+  cursor: pointer;
+  color: black;
+}
+
+.card-grid {
+  display: flex;
+  flex-direction: row;
+}
+
 /* Dark Theme */
 .dark .page,
 .dark #auth,
@@ -765,7 +841,10 @@ tbody {
 .dark #content-box .totext,
 .dark .edit-entity-link,
 .dark .entity-title,
-.dark .custom-btn {
+.dark .custom-btn,
+.dark .sub-feed-box a,
+.dark .editor-title,
+.dark .like-button {
   color: #eaeaea;
   transition: all 0.2s;
 }
@@ -782,7 +861,8 @@ tbody {
   background: linear-gradient(rgba(3, 13, 32, 1) 55%, rgb(13, 15, 101) 90%);
 }
 
-.dark .card {
+.dark .card,
+.dark .card-footer {
   background-color: #343434;
 }
 
@@ -819,6 +899,10 @@ tbody {
 
 .dark .custom-btn {
   background-color: #c6b19657;
+}
+
+.dark .unsubscribe .custom-btn:hover {
+  background-color: transparent;
 }
 
 .dark .form-control {
@@ -885,4 +969,9 @@ tbody {
 .dark .search:hover,
 .dark .custom-btn.add-btn:focus {
   border: rgb(154, 69, 20) 1px solid;
+}
+
+.dark .likes {
+  border: 1px solid #434242;
+  background-color: #1f1f1f;
 }

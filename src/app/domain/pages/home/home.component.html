@@ -3,10 +3,18 @@
     <content class="feed">
       <div class="big-title">
         <div class="feed-nav">
-          <button [disabled]="visible" (click)="toggle()">Feed</button>
-          <button [disabled]="!visible" (click)="toggle()">For you</button>
+          <button [disabled]="visible" (click)="toggle()" title="Feed">
+            Feed
+          </button>
+          <button [disabled]="!visible" (click)="toggle()" title="For You Feed">
+            For you
+          </button>
         </div>
-        <a class="btn add-btn custom-btn" routerLink="/home/add">
+        <a
+          class="btn add-btn custom-btn"
+          routerLink="/home/add"
+          title="New Page"
+        >
           <img class="btn-icon" src="../../../../assets/images/add-icon.png" />
           New Page
         </a>
@@ -22,7 +30,7 @@
   <div class="custom-container">
     <content class="subscriptions">
       <div class="big-title">
-        <h1>Subscriptions</h1>
+        <h2>Subscriptions</h2>
       </div>
       <div class="search">
         <i class="fa-solid fa-search"></i>
@@ -35,23 +43,24 @@
         />
       </div>
       <div class="content scroll">
-        <p class="text-muted empty-text" *ngIf="users.length == 0 && !results">
+        <p class="text-muted empty-text" *ngIf="subs.length == 0 && !results">
           You are not subscribed to any creators.
         </p>
-        <p class="text-muted empty-text" *ngIf="users.length == 0 && results">
+        <p class="text-muted empty-text" *ngIf="subs.length == 0 && results">
           No creators found.
         </p>
-        <div *ngFor="let user of users">
+        <div *ngFor="let sub of subs">
           <div class="sub-feed-box">
-            <p>{{ user.username }}</p>
+            <a routerLink="/users/{{ sub._id }}">{{ sub.username }}</a>
             <div class="slide-in unsubscribe" id="unsubscribe">
-              <a
+              <button
+                class="btn custom-btn"
                 routerLink="#"
                 title="Unsubscribe"
-                (click)="unsubscribe(user._id)"
+                (click)="unsubscribe(sub._id!)"
               >
                 Unsubscribe
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -65,105 +74,156 @@
     It appears that the feed is empty.
   </p>
   <div *ngFor="let card of feed">
-    <div class="card entity-card">
-      <div class="card-header">
-        <a class="card-click" routerLink="/mobs/{{ card._id }}"></a>
-        <p class="entity-title" *ngIf="card.type == 'Mob'">
-          <i class="fa-solid fa-skull"></i>
-          {{ card.name }}
-        </p>
-        <a
-          class="card-click"
-          routerLink="/blocks/{{ card._id }}"
-          *ngIf="card.type == 'Block'"
-        ></a>
-        <p *ngIf="card.type == 'Block'" class="entity-title">
-          <i class="fa fa-cube"></i>
-          {{ card.name }}
-        </p>
-        <a
-          class="card-click"
-          routerLink="/tools/{{ card._id }}"
-          *ngIf="card.type == 'Tool'"
-        ></a>
-        <p *ngIf="card.type == 'Tool'" class="entity-title">
-          <i class="fa-solid fa-hammer"></i>
-          {{ card.name }}
-        </p>
-        <div class="card-date">
-          <p class="text-muted">posted {{ card.timePassed }} ago</p>
-          <p
-            *ngIf="
-              card.timePassed.includes('s') ||
-              card.timePassed.includes('m') ||
-              card.timePassed.includes('h')
-            "
-            class="text-muted"
-          >
-            New <i class="fa-solid fa-meteor"></i>
+    <div class="card-grid">
+      <div class="card entity-card">
+        <div class="card-header">
+          <a
+            class="card-click"
+            routerLink="/mobs/{{ card._id }}"
+            *ngIf="card.type == 'mob'"
+          ></a>
+          <p class="entity-title" *ngIf="card.type == 'mob'">
+            <i class="fa-solid fa-dragon"></i>
+            {{ card.name }}
           </p>
+          <a
+            class="card-click"
+            routerLink="/blocks/{{ card._id }}"
+            *ngIf="card.type == 'block'"
+          ></a>
+          <p *ngIf="card.type == 'block'" class="entity-title">
+            <i class="fa fa-cube"></i>
+            {{ card.name }}
+          </p>
+          <a
+            class="card-click"
+            routerLink="/tools/{{ card._id }}"
+            *ngIf="card.type == 'tool'"
+          ></a>
+          <p *ngIf="card.type == 'tool'" class="entity-title">
+            <i class="fa-solid fa-hammer"></i>
+            {{ card.name }}
+          </p>
+          <div class="card-date">
+            <p class="text-muted">Posted {{ card.timePassed }} ago</p>
+            <p
+              *ngIf="
+                card.timePassed.includes('s') ||
+                card.timePassed.includes('m') ||
+                card.timePassed.includes('h')
+              "
+              class="text-muted"
+            >
+              New <i class="fa-solid fa-meteor"></i>
+            </p>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>Posted by: {{ card.createdBy.username }}</p>
         </div>
       </div>
-      <div class="card-body">
-        <p>
-          Posted by:
-          <a class="reference-entity-list">{{ card.createdBy.username }}</a>
-        </p>
+      <div class="likes">
+        <a (click)="like(card._id, true)" class="like-button"
+          ><i
+            *ngIf="card.likedBy.includes(currentUser!._id)"
+            class="fa-solid fa-circle-up"
+          ></i
+          ><i
+            *ngIf="!card.likedBy.includes(currentUser!._id)"
+            class="fa-regular fa-circle-up"
+          ></i
+        ></a>
+        <span>{{ card.likes }}</span>
+        <a (click)="like(card._id, false)" class="like-button"
+          ><i
+            *ngIf="card.likedBy.includes(currentUser!._id)"
+            class="fa-solid fa-circle-down"
+          ></i
+          ><i
+            *ngIf="!card.likedBy.includes(currentUser!._id)"
+            class="fa-regular fa-circle-down"
+          ></i
+        ></a>
       </div>
     </div>
   </div>
 </ng-template>
 
 <ng-template #foryoupage>
-  <p id="nosub" class="text-muted empty-text" *ngIf="fyp.length == 0">
-    It appears that the your feed is empty.
+  <p class="text-muted empty-text" *ngIf="fyp.length == 0">
+    It appears that your feed is empty.
   </p>
   <div *ngFor="let card of fyp">
-    <div class="card">
-      <div class="card-header">
-        <a
-          *ngIf="card.health >= 0"
-          class="entity-title"
-          routerLink="/mobs/{{ card._id }}"
-        >
-          <i class="fa-solid fa-skull"></i>
-          {{ card.name }}
-        </a>
-        <a
-          *ngIf="card.hardness >= 0"
-          class="entity-title"
-          routerLink="/blocks/{{ card._id }}"
-        >
-          <i class="fa fa-cube"></i>
-          {{ card.name }}
-        </a>
-        <a
-          *ngIf="card.durability >= 0"
-          class="entity-title"
-          routerLink="/tools/{{ card._id }}"
-        >
-          <i class="fa-solid fa-hammer"></i>
-          {{ card.name }}
-        </a>
-        <div class="card-date">
-          <p class="text-muted">posted {{ card.timePassed }} ago</p>
-          <p
-            *ngIf="
-              card.creationDate.includes('s') ||
-              card.creationDate.includes('m') ||
-              card.creationDate.includes('h')
-            "
-            class="text-muted"
-          >
-            New <i class="fa-solid fa-meteor"></i>
+    <div class="card-grid">
+      <div class="card entity-card">
+        <div class="card-header">
+          <a
+            class="card-click"
+            routerLink="/mobs/{{ card._id }}"
+            *ngIf="card.type == 'mob'"
+          ></a>
+          <p class="entity-title" *ngIf="card.type == 'mob'">
+            <i class="fa-solid fa-dragon"></i>
+            {{ card.name }}
           </p>
+          <a
+            class="card-click"
+            routerLink="/blocks/{{ card._id }}"
+            *ngIf="card.type == 'block'"
+          ></a>
+          <p *ngIf="card.type == 'block'" class="entity-title">
+            <i class="fa fa-cube"></i>
+            {{ card.name }}
+          </p>
+          <a
+            class="card-click"
+            routerLink="/tools/{{ card._id }}"
+            *ngIf="card.type == 'tool'"
+          ></a>
+          <p *ngIf="card.type == 'tool'" class="entity-title">
+            <i class="fa-solid fa-hammer"></i>
+            {{ card.name }}
+          </p>
+          <div class="card-date">
+            <p class="text-muted">Posted {{ card.timePassed }} ago</p>
+            <p
+              *ngIf="
+                card.timePassed.includes('s') ||
+                card.timePassed.includes('m') ||
+                card.timePassed.includes('h')
+              "
+              class="text-muted"
+            >
+              New <i class="fa-solid fa-meteor"></i>
+            </p>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>Posted by: {{ card.createdBy.username }}</p>
         </div>
       </div>
-      <div class="card-body">
-        <p>
-          Posted by:
-          <a class="reference-entity-list">{{ card.createdBy.username }}</a>
-        </p>
+      <div class="likes">
+        <a (click)="like(card._id, true)" class="like-button">
+          <i
+            *ngIf="card.likedBy.includes(currentUser!._id)"
+            class="fa-solid fa-circle-up"
+          ></i
+          ><i
+            *ngIf="!card.likedBy.includes(currentUser!._id)"
+            class="fa-regular fa-circle-up"
+          ></i
+        ></a>
+        <span>{{ card.likes }}</span>
+        <a (click)="like(card._id, false)"
+          ><i
+            *ngIf="card.likedBy.includes(currentUser!._id)"
+            class="fa-solid fa-circle-down"
+          ></i
+          ><i
+            *ngIf="!card.likedBy.includes(currentUser!._id)"
+            class="fa-regular fa-circle-down"
+          ></i
+        ></a>
       </div>
     </div>
   </div>

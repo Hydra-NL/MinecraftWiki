@@ -3,7 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './navbar/nav.component';
@@ -19,6 +20,17 @@ import { BlockDetailComponent } from './domain/pages/block/detail/blockdetail.co
 import { BlockEditComponent } from './domain/pages/block/edit/blockedit.component';
 import { BlockAddComponent } from './domain/pages/block/add/blockadd.component';
 import { BiomeAddComponent } from './domain/pages/biome/add/biomeadd.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
+import { UserComponent } from './domain/pages/user/list/user.component';
+import { UserDetailComponent } from './domain/pages/user/detail/userdetail.component';
+import { UserEditComponent } from './domain/pages/user/edit/useredit.component';
+import { ToolEditComponent } from './domain/pages/tool/edit/tooledit.component';
+import { ToolDetailComponent } from './domain/pages/tool/detail/tooldetail.component';
+import { ToolAddComponent } from './domain/pages/tool/add/tooladd.component';
+import { MobDetailComponent } from './domain/pages/mob/detail/mobdetail.component';
+import { MobEditComponent } from './domain/pages/mob/edit/mobedit.component';
+import { MobAddComponent } from './domain/pages/mob/add/mobadd.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +48,17 @@ import { BiomeAddComponent } from './domain/pages/biome/add/biomeadd.component';
     BlockEditComponent,
     BlockAddComponent,
     BiomeAddComponent,
+    LoginComponent,
+    RegisterComponent,
+    UserComponent,
+    UserDetailComponent,
+    UserEditComponent,
+    ToolEditComponent,
+    ToolDetailComponent,
+    ToolAddComponent,
+    MobDetailComponent,
+    MobEditComponent,
+    MobAddComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -43,6 +66,8 @@ import { BiomeAddComponent } from './domain/pages/biome/add/biomeadd.component';
     RouterModule,
     BrowserModule,
     FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

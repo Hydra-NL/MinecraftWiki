@@ -1,18 +1,14 @@
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MobService } from '../../models/mob/mob.service';
 import { ToolService } from '../../models/tool/tool.service';
 import { BlockService } from '../../models/block/block.service';
 import { UserService } from '../../models/user/user.service';
+import { RandomUserService } from '../user/rnduser.service';
+import { RndUser } from '../user/rnduser.model';
 import { User } from '../../models/user/user.model';
-import { Router, RouterLink } from '@angular/router';
-import { now } from 'moment';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -23,31 +19,46 @@ export class HomeComponent implements OnInit, OnDestroy {
   tools: any[] = [];
   mobs: any[] = [];
   blocks: any[] = [];
-  users: any[] = [];
+  subs: User[] = [];
+  currentUser: User | undefined;
   feed: any[] = [];
   fyp: any[] = [];
   date: Date = new Date();
   results: boolean = false;
   user!: User;
   visible: boolean = true;
+  subscription!: Subscription;
+
+  randomUsers: any[] = [];
 
   constructor(
     private mobService: MobService,
     private toolService: ToolService,
     private blockService: BlockService,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
+    private randomUserService: RandomUserService
   ) {
     console.log('HomeComponent constructor');
   }
 
   ngOnInit() {
-    this.user = this.userService.getUserById('2');
+    // Moet current user worden
+    this.currentUser = this.userService.getUserById('2');
+    this.subs = this.currentUser.subscriptions;
     console.log(this.user);
+
+    // Get all entities
     this.mobs = this.mobService.getMobs();
     this.tools = this.toolService.getTools();
     this.blocks = this.blockService.getBlocks();
-    this.users = this.userService.getUsers();
+
+    // Random users
+    this.randomUserService.getRandomUsers().subscribe((data) => {
+      this.randomUsers = data;
+      console.log(this.randomUsers);
+    });
 
     // Feed
     this.feed = [...this.mobs, ...this.tools, ...this.blocks];
@@ -61,21 +72,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       console.log(e);
     }
 
-    // FYP
-    // this.fyp = [...this.mobs, ...this.tools, ...this.blocks];
-    // for (let i = 0; i < this.fyp.length; i++) {
-    //   this.fyp[i].creationDate = this.calcTime(i, 'fyp');
-    // }
-    // console.log(this.fyp);
-    // this.fyp.sort((a, b) => {
-    //   return b.creationDate - a.creationDate;
-    // });
-    // console.log(this.fyp);
-    // this.fyp = this.fyp.filter((item) => {
-    //   console.log('id: ' + item._id);
-    //   return this.user.subscriptions.includes(item._id);
-    // });
-    // console.log(this.fyp);
+    // FYP moet worden gebaseerd op de current user
+    //FYP
+    this.fyp = this.currentUser!.subscriptions;
+    console.log(this.fyp);
   }
 
   ngOnDestroy(): void {
@@ -86,20 +86,21 @@ export class HomeComponent implements OnInit, OnDestroy {
     let searchValue = (document.getElementById('search') as HTMLInputElement)
       .value;
     if (searchValue != '') {
-      this.users = this.users.filter((item) => {
+      this.subs = this.subs.filter((item) => {
         return item.username.toLowerCase().includes(searchValue.toLowerCase());
       });
       this.results = true;
     } else {
       this.results = false;
-      this.users = this.userService.getUsers();
+      this.subs = this.currentUser!.subscriptions;
     }
     console.log(searchValue);
   }
 
   unsubscribe(id: string) {
-    this.userService.deleteUser(id);
-    this.users = this.userService.getUsers();
+    let unsub = this.userService.getUserById(id);
+    this.userService.subscribeToUser(this.currentUser!, unsub);
+    this.subs = this.currentUser!.subscriptions;
   }
 
   toggle() {
@@ -108,14 +109,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   calcTime() {
     for (let i = 0; i < this.feed.length; i++) {
-      // last verify
       let creationDate = this.feed[i].creationDate;
-      // format last login in dd-mm-yyyy hh:mm:ss
       this.feed[i].creationDate_unix = moment(creationDate).unix();
       let now = moment();
       let creationDate_moment = moment(creationDate);
       let timePassed = now.diff(creationDate_moment, 'days');
-      // if now.dif < 1 then calculate hours
       if (timePassed < 1) {
         timePassed = now.diff(creationDate_moment, 'hours');
         if (timePassed < 1) {
@@ -139,5 +137,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.feed.sort((a, b) => {
       return b.creationDate_unix - a.creationDate_unix;
     });
+  }
+
+  like(id: string, like: boolean) {
+    let i = parseInt(id);
+
+    if (like) {
+      this.feed[i].likes++;
+    } else {
+      this.feed[i].likes--;
+    }
   }
 }

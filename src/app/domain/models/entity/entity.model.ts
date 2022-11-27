@@ -1,7 +1,7 @@
 export enum EntityType {
-  mob = 'Mob',
-  tool = 'Tool',
-  block = 'Block',
+  mob = 'mob',
+  tool = 'tool',
+  block = 'block',
 }
 
 export abstract class Entity {

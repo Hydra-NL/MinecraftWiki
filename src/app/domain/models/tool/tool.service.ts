@@ -9,6 +9,9 @@ import { Tool, ToolType } from './tool.model';
   providedIn: 'root',
 })
 export class ToolService extends EntityService<Tool> {
+  constructor(protected override http: HttpClient) {
+    super(environment.apiUrl, http, 'tools');
+  }
   tools: Tool[] = [
     {
       _id: '1',
@@ -25,13 +28,17 @@ export class ToolService extends EntityService<Tool> {
         _id: '8',
         username: 'FerdinandPierre',
         email: 'ender@mc.com',
-        password: 'secret',
+        password: 'secret', about: 'I am a Minecraft player',
+        
         subscriptions: [],
         subscribers: [],
+        liked: [],
       },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 1)),
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 1)),
+      likes: 0,
+      likedBy: [],
     },
     {
       _id: '2',
@@ -48,13 +55,17 @@ export class ToolService extends EntityService<Tool> {
         _id: '8',
         username: 'FerdinandPierre',
         email: 'ender@mc.com',
-        password: 'secret',
+        password: 'secret', about: 'I am a Minecraft player',
+        
         subscriptions: [],
         subscribers: [],
+        liked: [],
       },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 2)),
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 2)),
+      likes: 0,
+      likedBy: [],
     },
     {
       _id: '3',
@@ -71,13 +82,17 @@ export class ToolService extends EntityService<Tool> {
         _id: '8',
         username: 'FerdinandPierre',
         email: 'ender@mc.com',
-        password: 'secret',
+        password: 'secret', about: 'I am a Minecraft player',
+        
         subscriptions: [],
         subscribers: [],
+        liked: [],
       },
       creationDate: new Date(new Date().setDate(new Date().getDate() - 3)),
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 3)),
+      likes: 0,
+      likedBy: [],
     },
     {
       _id: '4',
@@ -94,13 +109,17 @@ export class ToolService extends EntityService<Tool> {
         _id: '4',
         username: 'Herobrine',
         email: 'ender@mc.com',
-        password: 'secret',
+        password: 'secret', about: 'I am a Minecraft player',
+        
         subscriptions: [],
         subscribers: [],
+        liked: [],
       },
       creationDate: new Date(),
       timePassed: 0,
       lastUpdateDate: new Date(),
+      likes: 0,
+      likedBy: [],
     },
     {
       _id: '5',
@@ -117,13 +136,17 @@ export class ToolService extends EntityService<Tool> {
         _id: '4',
         username: 'Herobrine',
         email: 'ender@mc.com',
-        password: 'secret',
+        password: 'secret', about: 'I am a Minecraft player',
+        
         subscriptions: [],
         subscribers: [],
+        liked: [],
       },
       creationDate: new Date(),
       timePassed: 0,
       lastUpdateDate: new Date(),
+      likes: 0,
+      likedBy: [],
     },
   ];
 
@@ -141,6 +164,10 @@ export class ToolService extends EntityService<Tool> {
 
   getToolByToolLevel(toolLevel: number) {
     return this.tools.filter((tool) => tool.toolLevel === toolLevel);
+  }
+
+  getToolsByUser(userId: string) {
+    return this.tools.filter((tool) => tool.createdBy._id === userId);
   }
 
   addTool(tool: Tool) {

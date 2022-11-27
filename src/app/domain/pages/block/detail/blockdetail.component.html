@@ -7,14 +7,15 @@
           }}<a
             class="edit-entity-link"
             routerLink="/blocks/{{ block?._id }}/edit"
-            *ngIf="user?._id == '1'"
+            *ngIf="currentUser?._id == '1'"
+            title="Edit block"
             ><img
               class="edit-icon"
               src="../../../../assets/images/edit-icon.png"
             />Edit</a
           >
         </h1>
-        <a class="btn custom-btn back" routerLink="/blocks">
+        <a class="btn custom-btn back" routerLink="/blocks" title="Back">
           <i class="fa-regular fa-square-caret-left"></i>
           Back
         </a>
@@ -36,8 +37,8 @@
                 >
               </li>
               <li>
-                <a class="totext" href="/blocks/{{ block?._id }}#tools"
-                  >Tools</a
+                <a class="totext" href="/blocks/{{ block?._id }}#behavior"
+                  >Behavior</a
                 >
               </li>
               <li>
@@ -99,39 +100,33 @@
           src="../../../../../assets/images/unbreakable.png"
         />
       </p>
-      <h5 class="subtitle" id="tools">Tools</h5>
+      <h5 class="subtitle" id="behavior">Behavior</h5>
       <p>
         {{ block?.name }} can be mined by {{ block?.tool }}s that have a Tool
         Level of {{ block?.hardness }} or higher.<br />
-        Tools that can mine {{ block?.name }}:
-        <a
-          class="reference-entity-list"
-          *ngFor="let tool of tools"
-          routerLink="/tools/{{ tool._id }}"
+        <span *ngIf="this.tools.length != 0">
+          Tools that can mine {{ block?.name }}:
+          <a
+            class="reference-entity-list"
+            *ngFor="let tool of tools"
+            routerLink="/tools/{{ tool._id }}"
+          >
+            {{ tool.name
+            }}<i
+              class="fa-solid fa-up-right-from-square reference-entity-icon"
+            ></i
+            ><span *ngIf="tool !== tools[tools.length - 1]">, </span>
+          </a>
+        </span>
+        <span *ngIf="this.tools.length == 0"
+          >There are no known tools that can break {{ block?.name }}.</span
         >
-          {{ tool.name
-          }}<i
-            class="fa-solid fa-up-right-from-square reference-entity-icon"
-          ></i
-          ><span *ngIf="tool !== tools[tools.length - 1]">, </span>
-        </a>
       </p>
       <h5 class="subtitle" id="biome">Biome</h5>
       <p>{{ block?.name }} can be found in the {{ biome?.name }} biome.</p>
       <p>{{ biome?.description }}</p>
       <p>Average temperatures: {{ biome?.temperature }}°C</p>
       <p>Dimension: {{ biome?.dimension }}</p>
-      <button
-        class="btn custom-btn delete-btn"
-        (click)="deleteBlock()"
-        *ngIf="user?._id == '1'"
-      >
-        <img
-          class="btn-icon"
-          src="../../../../../assets/images/delete-icon.png"
-        />
-        Delete
-      </button>
     </content>
   </div>
 
@@ -139,21 +134,52 @@
     <div class="card">
       <div class="card-header">
         <span>Creator</span>
-        <p class="editor-title">{{ user?.username }}</p>
-        <a>
-          <img
-            class="subscribe-icon"
-            src="../../../../assets/images/subscribe-icon.png"
+        <a routerLink="/users/{{ user?._id }}" class="editor-title">{{
+          user?.username
+        }}</a>
+        <span *ngIf="currentUser!._id !== user!._id">
+          <button
+            (click)="subscribe()"
+            *ngIf="!user?.subscribers?.includes(currentUser!)"
+            class="btn custom-btn add-btn"
             id="subscribe-detail-page"
-            title="Subscribe"
-          />
-        </a>
+          >
+            <span id="subscribe-detail-page-text"> Subscribe </span>
+            <img
+              class="subscribe-icon"
+              src="../../../../assets/images/subscribe-icon.png"
+              title="Subscribe"
+            />
+          </button>
+          <button
+            (click)="subscribe()"
+            *ngIf="user?.subscribers?.includes(currentUser!)"
+            id="subscribe-detail-page"
+            class="btn custom-btn delete-btn"
+          >
+            <span id="subscribe-detail-page-text"> Unsubscribe </span>
+            <img
+              class="subscribe-icon"
+              src="../../../../assets/images/cancel-icon.png"
+              title="Unsubscribe"
+            />
+          </button>
+        </span>
       </div>
       <div class="card-body">
         <p class="card-date">
           <b>Created: </b>{{ block?.creationDate | date: "medium" }}<br />
           <b>Last updated: </b>{{ block?.lastUpdateDate | date: "medium" }}
         </p>
+      </div>
+      <div class="card-footer" *ngIf="user?._id == '1'">
+        <p>Delete page</p>
+        <button class="btn custom-btn delete-btn" (click)="deleteBlock()">
+          <img
+            class="btn-icon"
+            src="../../../../../assets/images/delete-icon.png"
+          />
+        </button>
       </div>
     </div>
     <content class="see-also">
