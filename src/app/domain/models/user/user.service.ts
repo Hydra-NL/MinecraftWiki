@@ -20,7 +20,7 @@ export class UserService extends EntityService<User> {
     private toolService: ToolService,
     private blockService: BlockService
   ) {
-    super(environment.apiUrl, http, 'users');
+    super(environment.apiUrl, http, 'user');
   }
   readonly users: User[] = [
     {
@@ -268,7 +268,9 @@ export class UserService extends EntityService<User> {
       subscribedTo.subscribers.push(subscriber);
     } else {
       subscriber.subscriptions.splice(
-        subscriber.subscriptions.findIndex((user) => user._id === subscribedTo._id),
+        subscriber.subscriptions.findIndex(
+          (user) => user._id === subscribedTo._id
+        ),
         1
       );
       subscribedTo.subscribers.splice(

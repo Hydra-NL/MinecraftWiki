@@ -16,9 +16,10 @@
       </div>
       <div class="content">
         <div *ngFor="let tool of tools">
-          <div class="card">
+          <div class="card entity-card">
+            <a class="card-click" routerLink="/tools/{{ tool._id }}"></a>
             <div class="card-header">
-              <a routerLink="/tools/{{ tool._id }}" class="entity-title">
+              <a class="entity-title">
                 {{ tool.name }}
               </a>
             </div>

@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   tools: any[] = [];
   mobs: any[] = [];
   blocks: any[] = [];
-  users: any[] = [];
+  subs: User[] = [];
   currentUser: User | undefined;
   feed: any[] = [];
   fyp: any[] = [];
@@ -46,11 +46,15 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // Moet current user worden
     this.currentUser = this.userService.getUserById('2');
+    this.subs = this.currentUser.subscriptions;
     console.log(this.user);
+
+    // Get all entities
     this.mobs = this.mobService.getMobs();
     this.tools = this.toolService.getTools();
     this.blocks = this.blockService.getBlocks();
-    this.users = this.userService.getUsers();
+
+    // Random users
     this.randomUserService.getRandomUsers().subscribe((data) => {
       this.randomUsers = data;
       console.log(this.randomUsers);
@@ -82,20 +86,21 @@ export class HomeComponent implements OnInit, OnDestroy {
     let searchValue = (document.getElementById('search') as HTMLInputElement)
       .value;
     if (searchValue != '') {
-      this.users = this.users.filter((item) => {
+      this.subs = this.subs.filter((item) => {
         return item.username.toLowerCase().includes(searchValue.toLowerCase());
       });
       this.results = true;
     } else {
       this.results = false;
-      this.users = this.userService.getUsers();
+      this.subs = this.currentUser!.subscriptions;
     }
     console.log(searchValue);
   }
 
   unsubscribe(id: string) {
-    this.userService.deleteUser(id);
-    this.users = this.userService.getUsers();
+    let unsub = this.userService.getUserById(id);
+    this.userService.subscribeToUser(this.currentUser!, unsub);
+    this.subs = this.currentUser!.subscriptions;
   }
 
   toggle() {
@@ -136,7 +141,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   like(id: string, like: boolean) {
     let i = parseInt(id);
-    
+
     if (like) {
       this.feed[i].likes++;
     } else {

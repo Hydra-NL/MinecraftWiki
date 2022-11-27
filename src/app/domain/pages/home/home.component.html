@@ -43,13 +43,13 @@
         />
       </div>
       <div class="content scroll">
-        <p class="text-muted empty-text" *ngIf="users.length == 0 && !results">
+        <p class="text-muted empty-text" *ngIf="subs.length == 0 && !results">
           You are not subscribed to any creators.
         </p>
-        <p class="text-muted empty-text" *ngIf="users.length == 0 && results">
+        <p class="text-muted empty-text" *ngIf="subs.length == 0 && results">
           No creators found.
         </p>
-        <div *ngFor="let sub of currentUser!.subscriptions">
+        <div *ngFor="let sub of subs">
           <div class="sub-feed-box">
             <a routerLink="/users/{{ sub._id }}">{{ sub.username }}</a>
             <div class="slide-in unsubscribe" id="unsubscribe">
@@ -62,18 +62,6 @@
                 Unsubscribe
               </button>
             </div>
-          </div>
-        </div>
-      </div>
-    </content>
-    <content>
-      <div class="content scroll">
-        <div class="big-title">
-          <h2>Random users</h2>
-        </div>
-        <div *ngFor="let rnd of randomUsers">
-          <div class="sub-feed-box">
-            {{ rnd.name.title }} {{ rnd.name.first }} {{ rnd.name.last }}
           </div>
         </div>
       </div>
