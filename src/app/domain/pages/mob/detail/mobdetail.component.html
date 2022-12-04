@@ -101,7 +101,7 @@
         <span *ngIf="currentUser!._id !== user!._id">
           <button
             (click)="subscribe()"
-            *ngIf="!user?.subscribers?.includes(currentUser!)"
+            *ngIf="!user?.subscribers?.includes(currentUser?._id!)"
             class="btn custom-btn add-btn"
             id="subscribe-detail-page"
           >
@@ -114,7 +114,7 @@
           </button>
           <button
             (click)="subscribe()"
-            *ngIf="user?.subscribers?.includes(currentUser!)"
+            *ngIf="user?.subscribers?.includes(currentUser?._id!)"
             id="subscribe-detail-page"
             class="btn custom-btn delete-btn"
           >

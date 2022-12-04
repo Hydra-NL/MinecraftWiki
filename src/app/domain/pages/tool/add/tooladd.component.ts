@@ -6,6 +6,7 @@ import { ToolType } from '../../../models/tool/tool.model';
 import { UserService } from 'src/app/domain/models/user/user.service';
 import { User } from 'src/app/domain/models/user/user.model';
 import { EntityType } from 'src/app/domain/models/entity/entity.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-tooladd',
@@ -13,6 +14,8 @@ import { EntityType } from 'src/app/domain/models/entity/entity.model';
 })
 export class ToolAddComponent implements OnInit {
   tool!: Tool;
+  currentUser!: User;
+  subscription!: Subscription;
 
   constructor(
     private toolService: ToolService,
@@ -34,7 +37,7 @@ export class ToolAddComponent implements OnInit {
       attack: 0,
       toolLevel: 0,
       toolType: ToolType.pickaxe,
-      createdBy: new User(''),
+      createdBy: '',
       timePassed: 0,
       creationDate: new Date(),
       lastUpdateDate: new Date(),
@@ -53,17 +56,33 @@ export class ToolAddComponent implements OnInit {
   addTool() {
     this.tool;
     if (this.tool) {
-      this.tool.name =
-        this.tool.name.charAt(0).toUpperCase() + this.tool.name.slice(1);
-        // Moet currentUser zijn
-      this.tool.createdBy = this.userService.getUserById('8');
-      this.tool.creationDate = new Date();
-      this.tool.lastUpdateDate = new Date();
-      this.toolService.addTool(this.tool);
-      this.playAudio();
-      this.router.navigate(['/tools/' + this.tool._id]);
-      console.log('ToolAddComponent Tool added');
-      console.log(this.tool);
+      // Moet currentUser zijn
+      this.subscription = this.userService
+        .read('638a0fd2abf8e7b2eb1bb039')
+        .subscribe({
+          next: (currentUser) => {
+            this.currentUser = currentUser;
+            this.tool.name =
+              this.tool.name.charAt(0).toUpperCase() + this.tool.name.slice(1);
+            this.tool.lastUpdateDate = new Date();
+            this.tool.createdBy = this.currentUser._id!;
+
+            this.subscription = this.toolService.create(this.tool).subscribe({
+              next: (tool) => {
+                this.router.navigate(['/tools/', tool._id]);
+                this.playAudio();
+                console.log('ToolAddComponent Tool added');
+                console.log(this.tool);
+              },
+              error: (err) => console.error('Error: ' + err),
+            });
+          },
+          error: (err) => {
+            console.log(
+              'An error occured while retrieving the currentuser: ' + err
+            );
+          },
+        });
     }
   }
 }

@@ -51,7 +51,7 @@
         </p>
         <div *ngFor="let sub of subs">
           <div class="sub-feed-box">
-            <a routerLink="/users/{{ sub._id }}">{{ sub.username }}</a>
+            <a routerLink="/users/{{ sub }}">{{ sub.username }}</a>
             <div class="slide-in unsubscribe" id="unsubscribe">
               <button
                 class="btn custom-btn"

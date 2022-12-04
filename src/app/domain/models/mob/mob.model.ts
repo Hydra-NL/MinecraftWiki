@@ -14,10 +14,10 @@ export class Mob extends Entity {
   armor: number = 0;
   isPassive: boolean = false;
   biome: Biome = new Biome('');
-  createdBy: User = new User('');
+  createdBy: string = '';
   creationDate: Date = new Date();
   timePassed: number = 0;
   lastUpdateDate: Date = new Date();
   likes: number = 0;
-  likedBy: User[] = [];
+  likedBy: string[] = [];
 }

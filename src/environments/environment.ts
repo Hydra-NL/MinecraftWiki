@@ -6,7 +6,7 @@ export const environment = {
   production: false,
 
   // Fill in your own local development server API url here
-  apiUrl: 'http://localhost:3000/',
+  apiUrl: 'http://localhost:3000',
 };
 
 /*

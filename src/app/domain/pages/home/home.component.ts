@@ -3,8 +3,6 @@ import { MobService } from '../../models/mob/mob.service';
 import { ToolService } from '../../models/tool/tool.service';
 import { BlockService } from '../../models/block/block.service';
 import { UserService } from '../../models/user/user.service';
-import { RandomUserService } from '../user/rnduser.service';
-import { RndUser } from '../user/rnduser.model';
 import { User } from '../../models/user/user.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
@@ -20,6 +18,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   mobs: any[] = [];
   blocks: any[] = [];
   subs: User[] = [];
+  users: User[] = [];
   currentUser: User | undefined;
   feed: any[] = [];
   fyp: any[] = [];
@@ -37,40 +36,85 @@ export class HomeComponent implements OnInit, OnDestroy {
     private blockService: BlockService,
     private userService: UserService,
     private router: Router,
-    private route: ActivatedRoute,
-    private randomUserService: RandomUserService
+    private route: ActivatedRoute
   ) {
     console.log('HomeComponent constructor');
   }
 
   ngOnInit() {
-    // Moet current user worden
-    this.currentUser = this.userService.getUserById('2');
-    this.subs = this.currentUser.subscriptions;
-    console.log(this.user);
+    this.route.paramMap.subscribe(() => {
+      // Moet current user worden
+      this.subscription = this.userService
+        .read('638a0fd2abf8e7b2eb1bb039')
+        .subscribe({
+          next: (currentUser) => {
+            this.currentUser = currentUser;
+          },
+          error: (err) => {
+            console.log(
+              'An error occured while retrieving the currentuser: ' + err
+            );
+          },
+        });
 
-    // Get all entities
-    this.mobs = this.mobService.getMobs();
-    this.tools = this.toolService.getTools();
-    this.blocks = this.blockService.getBlocks();
+      this.subscription = this.userService.list().subscribe({
+        next: (users) => {
+          this.users = users!;
+          for (let i = 0; i < this.users.length; i++) {
+            if (this.users[i].subscriptions.includes(this.currentUser?._id!)) {
+              this.subs.push(this.users[i]);
+            }
+          }
+        },
+      });
 
-    // Random users
-    this.randomUserService.getRandomUsers().subscribe((data) => {
-      this.randomUsers = data;
-      console.log(this.randomUsers);
+      // Get all entities
+      this.subscription = this.mobService.list().subscribe({
+        next: (mobs) => {
+          this.mobs = mobs!;
+          for (let i = 0; i < this.mobs.length; i++) {
+            this.feed.push(this.mobs[i]);
+            this.calcTime();
+          }
+          this.subscription = this.toolService.list().subscribe({
+            next: (tools) => {
+              this.tools = tools!;
+              for (let i = 0; i < this.tools.length; i++) {
+                this.feed.push(this.tools[i]);
+                this.calcTime();
+              }
+              this.subscription = this.blockService.list().subscribe({
+                next: (blocks) => {
+                  this.blocks = blocks!;
+                  for (let i = 0; i < this.blocks.length; i++) {
+                    this.feed.push(this.blocks[i]);
+                    this.calcTime();
+                  }
+                  try {
+                    this.sortFeed();
+                  } catch (e) {
+                    console.log(e);
+                  }
+                },
+                error: (err) => {
+                  console.log(
+                    'An error occured while retrieving the tools: ' + err
+                  );
+                },
+              });
+            },
+            error: (err) => {
+              console.log('An error occured while retrieving the mobs: ' + err);
+            },
+          });
+        },
+        error: (err) => {
+          console.log('An error occured while retrieving the blocks: ' + err);
+        },
+      });
+
+      console.log(this.feed);
     });
-
-    // Feed
-    this.feed = [...this.mobs, ...this.tools, ...this.blocks];
-
-    console.log(this.feed);
-
-    try {
-      this.calcTime();
-      this.sortFeed();
-    } catch (e) {
-      console.log(e);
-    }
 
     // FYP moet worden gebaseerd op de current user
     //FYP
@@ -86,21 +130,26 @@ export class HomeComponent implements OnInit, OnDestroy {
     let searchValue = (document.getElementById('search') as HTMLInputElement)
       .value;
     if (searchValue != '') {
-      this.subs = this.subs.filter((item) => {
-        return item.username.toLowerCase().includes(searchValue.toLowerCase());
-      });
       this.results = true;
     } else {
       this.results = false;
-      this.subs = this.currentUser!.subscriptions;
+      for (let i = 0; i < this.currentUser!.subscriptions.length; i++) {
+        this.subs.push(
+          this.userService.getUserById(this.currentUser!.subscriptions[i])
+        );
+      }
     }
     console.log(searchValue);
   }
 
   unsubscribe(id: string) {
     let unsub = this.userService.getUserById(id);
-    this.userService.subscribeToUser(this.currentUser!, unsub);
-    this.subs = this.currentUser!.subscriptions;
+    this.userService.subscribeToUser(this.currentUser!, unsub._id!);
+    for (let i = 0; i < this.currentUser!.subscriptions.length; i++) {
+      this.subs.push(
+        this.userService.getUserById(this.currentUser!.subscriptions[i])
+      );
+    }
   }
 
   toggle() {

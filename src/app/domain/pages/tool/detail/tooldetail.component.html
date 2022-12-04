@@ -3,11 +3,11 @@
     <content class="tools">
       <div class="big-title">
         <h1>
-          <i class="fa fa-cube"></i> {{ tool?.name
+          <i class="fa-solid fa-hammer"></i> {{ tool?.name
           }}<a
             class="edit-entity-link"
-            routerLink="/tools/{{ tool?._id }}/edit"
-            *ngIf="currentUser?._id == '1'"
+            routerLink="/tools/{{ tool!._id }}/edit"
+            *ngIf="currentUser?._id == tool?.createdBy"
             title="Edit tool"
             ><img
               class="edit-icon"
@@ -90,7 +90,7 @@
         />
       </p>
       <h5 class="subtitle" id="usage">Usage</h5>
-      <p *ngIf="!tool!.isWeapon">
+      <p *ngIf="tool!.isWeapon == false">
         {{ tool?.name }} can mine blocks that have to be mined by
         {{ tool?.toolType }}s and have a Hardness of {{ tool?.toolLevel }} or
         lower.<br />
@@ -107,7 +107,7 @@
           ><span *ngIf="block !== blocks[blocks.length - 1]">, </span>
         </a>
       </p>
-      <p *ngIf="tool!.isWeapon">
+      <p *ngIf="tool!.isWeapon == true">
         {{ tool?.name }} can damage mobs that have an armor-level of
         {{ tool?.attack }} or lower.<br />
         Mobs that can be damages by {{ tool?.name }}:
@@ -130,13 +130,13 @@
     <div class="card">
       <div class="card-header">
         <span>Creator</span>
-        <a routerLink="/users/{{ user?._id }}" class="editor-title">{{
-          user?.username
+        <a routerLink="/users/{{ creator?._id }}" class="editor-title">{{
+          creator?.username
         }}</a>
-        <span *ngIf="currentUser!._id !== user!._id">
+        <span *ngIf="currentUser!._id !== tool?.createdBy">
           <button
             (click)="subscribe()"
-            *ngIf="!user?.subscribers?.includes(currentUser!)"
+            *ngIf="!creator?.subscribers?.includes(currentUser!._id!)"
             class="btn custom-btn add-btn"
             id="subscribe-detail-page"
           >
@@ -149,7 +149,7 @@
           </button>
           <button
             (click)="subscribe()"
-            *ngIf="user?.subscribers?.includes(currentUser!)"
+            *ngIf="creator?.subscribers?.includes(currentUser!._id!)"
             id="subscribe-detail-page"
             class="btn custom-btn delete-btn"
           >
@@ -168,7 +168,7 @@
           <b>Last updated: </b>{{ tool?.lastUpdateDate | date: "medium" }}
         </p>
       </div>
-      <div class="card-footer" *ngIf="user?._id == '1'">
+      <div class="card-footer" *ngIf="currentUser?._id == tool?.createdBy">
         <p>Delete page</p>
         <button class="btn custom-btn delete-btn" (click)="deleteTool()">
           <img
@@ -180,7 +180,7 @@
     </div>
     <content class="see-also">
       <div class="big-title">
-        <h5>More from {{ user?.username }}:</h5>
+        <h5>More from {{ creator?.username }}:</h5>
       </div>
       <div class="content scroll">
         <p *ngIf="userTools.length == 0" class="text-muted empty-text">

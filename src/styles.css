@@ -739,21 +739,25 @@ tbody {
 /* Blocks */
 .blocks {
   width: 700px;
+  min-height: 450px;
 }
 
 /* Mobs */
 .mobs {
   width: 700px;
+  min-height: 450px;
 }
 
 /* Tools */
 .tools {
   width: 700px;
+  min-height: 450px;
 }
 
 /* Users */
 .users {
   width: 600px;
+  min-height: 450px;
 }
 
 /* Add page */

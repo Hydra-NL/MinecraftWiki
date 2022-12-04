@@ -38,7 +38,7 @@ export class MobAddComponent implements OnInit {
       armor: 0,
       isPassive: false,
       biome: new Biome(''),
-      createdBy: new User(''),
+      createdBy: '',
       timePassed: 0,
       creationDate: new Date(),
       lastUpdateDate: new Date(),
@@ -59,7 +59,7 @@ export class MobAddComponent implements OnInit {
     if (this.mob) {
       this.mob.name =
         this.mob.name.charAt(0).toUpperCase() + this.mob.name.slice(1);
-      this.mob.createdBy = this.userService.getUserById('8');
+      this.mob.createdBy = this.userService.getUserById('8')._id!;
       this.mob.creationDate = new Date();
       this.mob.lastUpdateDate = new Date();
       this.mobService.addMob(this.mob);

@@ -38,7 +38,7 @@ export class BlockAddComponent implements OnInit {
       hardness: 0,
       tool: ToolType.pickaxe,
       biome: new Biome(''),
-      createdBy: new User(''),
+      createdBy: '',
       timePassed: 0,
       creationDate: new Date(),
       lastUpdateDate: new Date(),
@@ -59,7 +59,7 @@ export class BlockAddComponent implements OnInit {
     if (this.block) {
       this.block.name =
         this.block.name.charAt(0).toUpperCase() + this.block.name.slice(1);
-      this.block.createdBy = this.userService.getUserById('8');
+      this.block.createdBy = this.userService.getUserById('8')._id!;
       this.block.creationDate = new Date();
       this.block.lastUpdateDate = new Date();
       this.blockService.addBlock(this.block);

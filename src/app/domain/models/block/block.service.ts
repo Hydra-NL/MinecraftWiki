@@ -12,7 +12,7 @@ import { EntityType } from '../entity/entity.model';
 })
 export class BlockService extends EntityService<Block> {
   constructor(protected override http: HttpClient) {
-    super(environment.apiUrl, http, 'blocks');
+    super(environment.apiUrl, http, 'block');
   }
   blocks: Block[] = [
     {
@@ -33,33 +33,12 @@ export class BlockService extends EntityService<Block> {
         temperature: 16,
         dimension: Dimension.overworld,
       },
-      createdBy: {
-        _id: '1',
-        username: 'SteveTheMiner',
-        email: 'steve@mc.com',
-        password: 'secret',
-        about: 'I am a Minecraft player',
-
-        subscriptions: [],
-        subscribers: [],
-        liked: [],
-      },
+      createdBy: '1',
       creationDate: new Date(new Date().setDate(new Date().getDate() - 1)),
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 1)),
       likes: 1,
-      likedBy: [
-        {
-          _id: '2',
-          username: 'AlexTheMiner',
-          email: 'alex@email.com',
-          password: 'secret',
-          about: 'I am a Minecraft player',
-          subscriptions: [],
-          subscribers: [],
-          liked: [],
-        },
-      ],
+      likedBy: ['2'],
     },
     {
       _id: '2',
@@ -79,16 +58,7 @@ export class BlockService extends EntityService<Block> {
         temperature: 16,
         dimension: Dimension.overworld,
       },
-      createdBy: {
-        _id: '1',
-        username: 'SteveTheMiner',
-        email: 'steve@mc.com',
-        password: 'secret',
-        about: 'I am a Minecraft player',
-        subscriptions: [],
-        subscribers: [],
-        liked: [],
-      },
+      createdBy: '1',
       creationDate: new Date(new Date().setDate(new Date().getDate() - 2)),
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 2)),
@@ -113,17 +83,7 @@ export class BlockService extends EntityService<Block> {
         temperature: 16,
         dimension: Dimension.overworld,
       },
-      createdBy: {
-        _id: '1',
-        username: 'SteveTheMiner',
-        email: 'steve@mc.com',
-        password: 'secret',
-        about: 'I am a Minecraft player',
-
-        subscriptions: [],
-        subscribers: [],
-        liked: [],
-      },
+      createdBy: '1',
       creationDate: new Date(new Date().setDate(new Date().getDate() - 3)),
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 3)),
@@ -148,57 +108,12 @@ export class BlockService extends EntityService<Block> {
         temperature: 10,
         dimension: Dimension.overworld,
       },
-      createdBy: {
-        _id: '2',
-        username: 'AlexTheBuilder',
-        email: 'alex@mc.com',
-        password: 'secret',
-        about: 'I am a Minecraft player',
-
-        subscriptions: [],
-        subscribers: [],
-        liked: [],
-      },
+      createdBy: '2',
       creationDate: new Date(new Date().setDate(new Date().getDate() - 4)),
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 4)),
       likes: 1,
-      likedBy: [
-        {
-          _id: '1',
-          username: 'SteveTheMiner',
-          email: 'steve@mc.com',
-          password: 'secret',
-          about: 'I am a Minecraft player',
-          subscriptions: [
-            {
-              _id: '2',
-              username: 'AlexTheBuilder',
-              email: 'alex@mc.com',
-              password: 'secret',
-              about: 'I am a Minecraft player',
-
-              subscriptions: [],
-              subscribers: [],
-              liked: [],
-            },
-          ],
-          subscribers: [
-            {
-              _id: '2',
-              username: 'AlexTheBuilder',
-              email: 'alex@mc.com',
-              password: 'secret',
-              about: 'I am a Minecraft player',
-
-              subscriptions: [],
-              subscribers: [],
-              liked: [],
-            },
-          ],
-          liked: [],
-        },
-      ],
+      likedBy: ['1'],
     },
     {
       _id: '5',
@@ -218,17 +133,7 @@ export class BlockService extends EntityService<Block> {
         temperature: 12,
         dimension: Dimension.overworld,
       },
-      createdBy: {
-        _id: '2',
-        username: 'AlexTheBuilder',
-        email: 'alex@mc.com',
-        password: 'secret',
-        about: 'I am a Minecraft player',
-
-        subscriptions: [],
-        subscribers: [],
-        liked: [],
-      },
+      createdBy: '2',
       creationDate: new Date(),
       timePassed: 0,
       lastUpdateDate: new Date(),
@@ -254,7 +159,7 @@ export class BlockService extends EntityService<Block> {
   }
 
   getBlocksByUser(userId: string) {
-    return this.blocks.filter((block) => block.createdBy._id === userId);
+    return this.blocks.filter((block) => block.createdBy === userId);
   }
 
   addBlock(block: Block) {

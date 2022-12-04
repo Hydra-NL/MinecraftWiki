@@ -40,7 +40,7 @@ export class BlockDetailComponent implements OnInit {
       console.log(this.route.snapshot.params['id']);
 
       // Creator of said block
-      this.userBlockId = this.block?.createdBy['_id'] || '';
+      this.userBlockId = this.block?.createdBy || '';
       this.user = this.userService.getUserById(this.userBlockId);
 
       // Current user
@@ -72,7 +72,7 @@ export class BlockDetailComponent implements OnInit {
       console.log('current: ' + this.currentUser._id);
       console.log('user: ' + this.user._id);
       console.log(
-        'includes: ' + this.user?.subscriptions?.includes(this.currentUser!)
+        'includes: ' + this.user?.subscriptions?.includes(this.currentUser._id!)
       );
     });
   }
@@ -91,7 +91,7 @@ export class BlockDetailComponent implements OnInit {
   }
 
   subscribe() {
-    this.userService.subscribeToUser(this.currentUser!, this.user!);
+    this.userService.subscribeToUser(this.currentUser!, this.user?._id!);
     this.router.navigate(['/blocks', this.block?._id]);
   }
 }

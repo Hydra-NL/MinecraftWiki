@@ -19,11 +19,11 @@ export class EntityService<T extends Entity> {
   ) {}
 
   public list(options?: any): Observable<T[] | null> {
-    const endpoint = `${this.url}${this.endpoint}`;
+    const endpoint = `${this.url}/${this.endpoint}`;
     console.log(`list ${this.endpoint}`);
     return this.http.get<T[]>(endpoint, { ...options, ...httpOptions }).pipe(
       tap(console.log),
-      // map((response) => response.body),
+      //map((response) => response.body),
       catchError(this.handleError)
     );
   }

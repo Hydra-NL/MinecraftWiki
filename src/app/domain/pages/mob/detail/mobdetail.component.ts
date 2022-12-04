@@ -40,7 +40,7 @@ export class MobDetailComponent implements OnInit {
       console.log(this.route.snapshot.params['id']);
 
       // Creator of said mob
-      this.userMobId = this.mob?.createdBy['_id'] || '';
+      this.userMobId = this.mob?.createdBy || '';
       this.user = this.userService.getUserById(this.userMobId);
 
       // Current user
@@ -68,7 +68,7 @@ export class MobDetailComponent implements OnInit {
       console.log('current: ' + this.currentUser._id);
       console.log('user: ' + this.user._id);
       console.log(
-        'includes: ' + this.user?.subscriptions?.includes(this.currentUser!)
+        'includes: ' + this.user?.subscriptions?.includes(this.currentUser._id!)
       );
     });
   }
@@ -87,7 +87,7 @@ export class MobDetailComponent implements OnInit {
   }
 
   subscribe() {
-    this.userService.subscribeToUser(this.currentUser!, this.user!);
+    this.userService.subscribeToUser(this.currentUser!, this.user?._id!);
     this.router.navigate(['/mobs', this.mob?._id]);
   }
 }
