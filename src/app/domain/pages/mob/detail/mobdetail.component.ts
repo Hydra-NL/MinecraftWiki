@@ -7,6 +7,7 @@ import { ToolService } from '../../../models/tool/tool.service';
 import { UserService } from 'src/app/domain/models/user/user.service';
 import { User } from 'src/app/domain/models/user/user.model';
 import { Biome } from 'src/app/domain/models/biome/biome.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-mobdetail',
@@ -16,11 +17,12 @@ export class MobDetailComponent implements OnInit {
   mob: Mob | undefined;
   mobs: Mob[] = [];
   tools: Tool[] = [];
-  user: User | undefined;
+  creator: User | undefined;
   currentUser: User | undefined;
   userMobId!: string;
   biome: Biome | undefined;
   userMobs: Mob[] = [];
+  subscription!: Subscription 
 
   constructor(
     private mobService: MobService,
@@ -41,18 +43,11 @@ export class MobDetailComponent implements OnInit {
 
       // Creator of said mob
       this.userMobId = this.mob?.createdBy || '';
-      this.user = this.userService.getUserById(this.userMobId);
+      this.creator = this.userService.getUserById(this.userMobId);
 
       // Current user
       // Moet current user worden
       this.currentUser = this.userService.getUserById('1');
-
-      // Mobs of the creator (see also from creator list)
-      this.userMobs = this.mobService.getMobsByUser(this.userMobId);
-      this.userMobs = this.userMobs.filter((mob) => mob._id !== this.mob?._id);
-      this.userMobs.sort((a, b) => {
-        return a.creationDate.getTime() - b.creationDate.getTime();
-      });
 
       // Mobs (see also list)
       this.mobs = this.mobService.getMobs();
@@ -65,11 +60,6 @@ export class MobDetailComponent implements OnInit {
         .filter((tool) => tool.toolType == 'Sword')
         .filter((tool) => tool.attack >= this.mob!.armor);
 
-      console.log('current: ' + this.currentUser._id);
-      console.log('user: ' + this.user._id);
-      console.log(
-        'includes: ' + this.user?.subscriptions?.includes(this.currentUser._id!)
-      );
     });
   }
 
@@ -87,7 +77,26 @@ export class MobDetailComponent implements OnInit {
   }
 
   subscribe() {
-    this.userService.subscribeToUser(this.currentUser!, this.user?._id!);
-    this.router.navigate(['/mobs', this.mob?._id]);
+    if (this.creator!.subscribers.includes(this.currentUser!._id!)) {
+      this.subscription = this.userService.update(this.creator!).subscribe({
+        next: () => {
+          this.creator!.subscribers = this.creator!.subscribers.filter(
+            (s) => s !== this.currentUser!._id
+          );
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+    } else {
+      this.subscription = this.userService.update(this.creator!).subscribe({
+        next: () => {
+          this.creator!.subscribers.push(this.currentUser!._id!);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+    }
   }
 }

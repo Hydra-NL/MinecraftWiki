@@ -58,19 +58,18 @@ export class ToolAddComponent implements OnInit {
     if (this.tool) {
       // Moet currentUser zijn
       this.subscription = this.userService
-        .read('638a0fd2abf8e7b2eb1bb039')
+        .read('638a100681c9e538c5ebd7f0')
         .subscribe({
           next: (currentUser) => {
             this.currentUser = currentUser;
             this.tool.name =
               this.tool.name.charAt(0).toUpperCase() + this.tool.name.slice(1);
-            this.tool.lastUpdateDate = new Date();
             this.tool.createdBy = this.currentUser._id!;
 
             this.subscription = this.toolService.create(this.tool).subscribe({
               next: (tool) => {
-                this.router.navigate(['/tools/', tool._id]);
                 this.playAudio();
+                this.router.navigate(['/tools/', tool._id]);
                 console.log('ToolAddComponent Tool added');
                 console.log(this.tool);
               },

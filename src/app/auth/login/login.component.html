@@ -6,51 +6,68 @@
       </div>
       <form
         class="login-form"
-        [formGroup]="signinForm"
-        (ngSubmit)="signinForm.valid && loginUser()"
+        #signinForm="ngForm"
+        name="form"
+        (ngSubmit)="signinForm.valid && login()"
       >
         <div class="form-group">
           <label for="email">Email</label>
           <input
             type="email"
             class="form-control"
+            [(ngModel)]="user.email"
+            name="email"
+            #email="ngModel"
             id="email"
+            [ngClass]="{
+              'is-invalid': email.invalid && (email.dirty || email.touched)
+            }"
             placeholder="Enter email"
-            formControlName="email"
+            required
           />
-          <span
-            *ngIf="
-              !signinForm.get('email')?.valid &&
-              signinForm.get('email')?.touched
-            "
-            class="invalid-feedback"
-          >
-            <p id="email-invalid">Please enter a valid email address</p>
-          </span>
+          <div *ngIf="email.errors" class="invalid-feedback">
+            <div *ngIf="email.errors?.['required']">An email is required.</div>
+            <div *ngIf="email.errors?.['email']">
+              Email must be a valid email address.
+            </div>
+          </div>
         </div>
         <div class="form-group">
-          <label for="password">Password</label>
+          <label for="current-password">Password</label>
           <input
             type="password"
             class="form-control"
-            id="password"
+            [(ngModel)]="user.password"
+            name="current-password"
+            #password="ngModel"
+            [ngClass]="{
+              'is-invalid':
+                password.invalid && (password.dirty || password.touched)
+            }"
+            id="current-password"
             placeholder="Password"
-            formControlName="password"
+            autocomplete="on"
+            required
+            minlength="6"
+            maxlength="20"
           />
-          <span
-            *ngIf="
-              !signinForm.get('password')?.valid &&
-              signinForm.get('password')?.touched
-            "
-            class="invalid-feedback"
-          >
-            <p id="password-invalid">Please enter a valid password</p>
-          </span>
+          <div *ngIf="password.errors" class="invalid-feedback">
+            <div *ngIf="password.errors?.['required']">
+              A password is required.
+            </div>
+            <div *ngIf="password.errors?.['minlength']">
+              Password must be at least 6 characters long.
+            </div>
+            <div *ngIf="password.errors?.['maxlength']">
+              Password cannot be more than 20 characters long.
+            </div>
+          </div>
         </div>
         <button
-          type="submit"
+          type="button"
           class="btn custom-btn"
           [disabled]="!signinForm.valid"
+          (click)="login()"
         >
           Sign in
         </button>

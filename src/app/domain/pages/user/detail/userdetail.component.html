@@ -24,6 +24,8 @@
         <p>{{ user.about }}</p>
         <h5 class="subtitle">Creator stats</h5>
         <p>
+          Total likes: {{ totalLikes }}<br />
+          Total subscribers: {{ totalSubs }}<br />
           Pages created: {{ pagesCreated }}<br />
           Pages:
           <a
@@ -32,9 +34,7 @@
             routerLink="/{{ page.type }}s/{{ page._id }}"
             >{{ page.name
             }}<span *ngIf="page !== pages[pages.length - 1]">, </span></a
-          ><br />
-          Total likes: {{ totalLikes }}<br />
-          Total subscribers: {{ totalSubs }}
+          >
         </p>
       </div>
     </content>
@@ -65,7 +65,7 @@
           You aren't subscribed to any creators yet.
         </p>
         <div *ngFor="let subscription of subscriptions">
-          <div class="sub-feed-box" *ngIf="subscriptions != null">
+          <div class="sub-feed-box">
             <a
               class="entity-title"
               routerLink="/users/{{ subscription._id }}"

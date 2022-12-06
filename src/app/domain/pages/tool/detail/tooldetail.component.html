@@ -94,18 +94,24 @@
         {{ tool?.name }} can mine blocks that have to be mined by
         {{ tool?.toolType }}s and have a Hardness of {{ tool?.toolLevel }} or
         lower.<br />
-        Blocks that can be mined by {{ tool?.name }}:
-        <a
-          class="reference-entity-list"
-          *ngFor="let block of blocks"
-          routerLink="/blocks/{{ block._id }}"
+        <span *ngIf="this.blocks.length != 0">
+          Blocks that can be mined by {{ tool?.name }}:
+          <a
+            class="reference-entity-list"
+            *ngFor="let block of blocks"
+            routerLink="/blocks/{{ block._id }}"
+          >
+            {{ block.name
+            }}<i
+              class="fa-solid fa-up-right-from-square reference-entity-icon"
+            ></i
+            ><span *ngIf="block !== blocks[blocks.length - 1]">, </span>
+          </a>
+        </span>
+        <span *ngIf="this.blocks.length == 0"
+          >There are no known blocks that can be broken by
+          {{ tool?.name }}.</span
         >
-          {{ block.name
-          }}<i
-            class="fa-solid fa-up-right-from-square reference-entity-icon"
-          ></i
-          ><span *ngIf="block !== blocks[blocks.length - 1]">, </span>
-        </a>
       </p>
       <p *ngIf="tool!.isWeapon == true">
         {{ tool?.name }} can damage mobs that have an armor-level of
@@ -121,6 +127,10 @@
             class="fa-solid fa-up-right-from-square reference-entity-icon"
           ></i
           ><span *ngIf="mob !== mobs[mobs.length - 1]">, </span>
+          <span *ngIf="this.mobs.length == 0"
+            >There are no known mobs that can be damaged by
+            {{ tool?.name }}.</span
+          >
         </a>
       </p>
     </content>
@@ -180,26 +190,12 @@
     </div>
     <content class="see-also">
       <div class="big-title">
-        <h5>More from {{ creator?.username }}:</h5>
-      </div>
-      <div class="content scroll">
-        <p *ngIf="userTools.length == 0" class="text-muted empty-text">
-          This creator doesn't have other pages yet.
-        </p>
-        <div *ngFor="let tools of userTools">
-          <div class="sub-feed-box">
-            <a routerLink="/tools/{{ tools._id }}" class="entity-title">{{
-              tools.name
-            }}</a>
-          </div>
-        </div>
-      </div>
-    </content>
-    <content class="see-also">
-      <div class="big-title">
         <h5>See also:</h5>
       </div>
       <div class="content scroll">
+        <p *ngIf="tools.length == 0" class="text-muted empty-text">
+          There are no other Tool-pages yet.
+        </p>
         <div *ngFor="let toolOther of tools">
           <div class="sub-feed-box">
             <a routerLink="/tools/{{ toolOther._id }}" class="entity-title">{{

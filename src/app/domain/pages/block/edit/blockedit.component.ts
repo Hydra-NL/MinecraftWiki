@@ -28,9 +28,13 @@ export class BlockEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.block = this.blockService.getBlock(this.blockId);
-
-    this.biome = this.block?.biome;
+    this.subscription = this.blockService.read(this.blockId).subscribe({
+      next: (block) => {
+        this.block = block;
+        console.log(`Block: ${this.block._id}`);
+        console.log('block stack size: ' + this.block.stackSize);
+      },
+    });
   }
 
   playAudio() {
@@ -42,15 +46,12 @@ export class BlockEditComponent implements OnInit {
   }
 
   updateBlock() {
-    if (this.block) {
-      this.block.lastUpdateDate = new Date();
-      this.blockService.updateBlock(this.block);
-      this.router.navigate(['/blocks/' + this.blockId]);
-      console.log('BlockEditComponent updateBlock');
-      console.log(this.block);
-      this.playAudio();
-    } else {
-      this.router.navigate(['/blocks/' + this.blockId + '/edit']);
-    }
+    this.subscription = this.blockService.update(this.block!).subscribe({
+      next: (block) => {
+        this.block = { ...block };
+        this.playAudio();
+        this.router.navigate(['/blocks/' + this.blockId]);
+      },
+    });
   }
 }

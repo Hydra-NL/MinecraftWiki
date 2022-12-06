@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Tool } from 'src/app/domain/models/tool/tool.model';
 import { ToolService } from '../../../models/tool/tool.service';
 
 @Component({
@@ -7,7 +8,7 @@ import { ToolService } from '../../../models/tool/tool.service';
   templateUrl: './tool.component.html',
 })
 export class ToolComponent {
-  tools: any[] = [];
+  tools: Tool[] = [];
   subscription!: Subscription;
 
   constructor(private toolService: ToolService) {
@@ -19,9 +20,10 @@ export class ToolComponent {
       next: (tools) => {
         this.tools = tools!;
         console.log(this.tools);
+        console.log("Tools length: " + this.tools.length);
       },
       error: (err) => {
-        console.log(err);
+        console.log("An error occured while retrieving the tools: " + err);
       },
     });
   }

@@ -7,6 +7,7 @@ import { User } from '../../models/user/user.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -24,7 +25,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   fyp: any[] = [];
   date: Date = new Date();
   results: boolean = false;
-  user!: User;
+  creator!: User;
   visible: boolean = true;
   subscription!: Subscription;
 
@@ -36,50 +37,62 @@ export class HomeComponent implements OnInit, OnDestroy {
     private blockService: BlockService,
     private userService: UserService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) {
     console.log('HomeComponent constructor');
   }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(() => {
-      // Moet current user worden
-      this.subscription = this.userService
-        .read('638a0fd2abf8e7b2eb1bb039')
-        .subscribe({
-          next: (currentUser) => {
-            this.currentUser = currentUser;
-          },
-          error: (err) => {
-            console.log(
-              'An error occured while retrieving the currentuser: ' + err
-            );
-          },
-        });
-
-      this.subscription = this.userService.list().subscribe({
-        next: (users) => {
-          this.users = users!;
-          for (let i = 0; i < this.users.length; i++) {
-            if (this.users[i].subscriptions.includes(this.currentUser?._id!)) {
-              this.subs.push(this.users[i]);
-            }
-          }
-        },
+    // Moet current user worden
+    this.subscription = this.authService
+      .getUserFromLocalStorage()
+      .subscribe((user) => {
+        this.currentUser = user;
+        console.log('currentUser', this.currentUser?.username);
       });
 
-      // Get all entities
+    this.subscription = this.userService.list().subscribe({
+      next: (users) => {
+        this.users = users!;
+        for (let i = 0; i < this.users.length; i++) {
+          if (this.users[i].subscriptions.includes(this.currentUser?._id!)) {
+            this.subs.push(this.users[i]);
+          }
+        }
+      },
+    });
+
+    // Get all entities
+    this.route.params.subscribe(() => {
       this.subscription = this.mobService.list().subscribe({
         next: (mobs) => {
           this.mobs = mobs!;
           for (let i = 0; i < this.mobs.length; i++) {
+            this.subscription = this.userService
+              .read(this.mobs[i].createdBy)
+              .subscribe({
+                next: (user) => {
+                  this.creator = user;
+                  this.mobs[i].creator = this.creator;
+                },
+              });
             this.feed.push(this.mobs[i]);
             this.calcTime();
           }
           this.subscription = this.toolService.list().subscribe({
             next: (tools) => {
               this.tools = tools!;
+
               for (let i = 0; i < this.tools.length; i++) {
+                this.subscription = this.userService
+                  .read(this.tools[i].createdBy)
+                  .subscribe({
+                    next: (user) => {
+                      this.creator = user;
+                      this.tools[i].creator = this.creator;
+                    },
+                  });
                 this.feed.push(this.tools[i]);
                 this.calcTime();
               }
@@ -87,13 +100,21 @@ export class HomeComponent implements OnInit, OnDestroy {
                 next: (blocks) => {
                   this.blocks = blocks!;
                   for (let i = 0; i < this.blocks.length; i++) {
+                    this.subscription = this.userService
+                      .read(this.blocks[i].createdBy)
+                      .subscribe({
+                        next: (user) => {
+                          this.creator = user;
+                          this.blocks[i].creator = this.creator;
+                        },
+                      });
                     this.feed.push(this.blocks[i]);
                     this.calcTime();
-                  }
-                  try {
-                    this.sortFeed();
-                  } catch (e) {
-                    console.log(e);
+                    try {
+                      this.sortFeed();
+                    } catch (e) {
+                      console.log(e);
+                    }
                   }
                 },
                 error: (err) => {
@@ -112,8 +133,6 @@ export class HomeComponent implements OnInit, OnDestroy {
           console.log('An error occured while retrieving the blocks: ' + err);
         },
       });
-
-      console.log(this.feed);
     });
 
     // FYP moet worden gebaseerd op de current user

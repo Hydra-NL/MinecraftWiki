@@ -186,7 +186,7 @@
               class="form-control"
               id="biome"
               placeholder="Biome name"
-              [(ngModel)]="biome!.name"
+              [(ngModel)]="block!.biome.name"
               #blockbiome="ngModel"
               name="biome"
               [ngClass]="{
@@ -194,7 +194,7 @@
                   blockbiome.invalid && (blockbiome.dirty || blockbiome.touched)
               }"
               required
-              value="{{ biome?.name }}"
+              value="{{ block!.biome.name }}"
             />
             <div *ngIf="blockbiome.invalid" class="invalid-feedback">
               <div *ngIf="blockbiome.errors?.['required']">
@@ -209,7 +209,7 @@
               id="biome"
               rows="4"
               placeholder="Biome Description"
-              [(ngModel)]="biome!.description"
+              [(ngModel)]="block!.biome.description"
               #blockbiomedescription="ngModel"
               name="biomeDescription"
               [ngClass]="{
@@ -219,7 +219,7 @@
               }"
               required
               minlength="3"
-              value="{{ biome?.description }}"
+              value="{{ block!.biome.description }}"
             ></textarea>
             <div *ngIf="blockbiomedescription.invalid" class="invalid-feedback">
               <div *ngIf="blockbiomedescription.errors?.['required']">
@@ -237,7 +237,7 @@
               class="form-control"
               id="biome"
               placeholder="Temperature"
-              [(ngModel)]="biome!.temperature"
+              [(ngModel)]="block!.biome.temperature"
               #blockbiometemperature="ngModel"
               name="biomeTemperature"
               [ngClass]="{
@@ -248,7 +248,7 @@
               required
               min="-20"
               max="50"
-              value="{{ biome?.temperature }}"
+              value="{{ block!.biome.temperature }}"
             />
             (°C)
             <div *ngIf="blockbiometemperature.invalid" class="invalid-feedback">
@@ -267,10 +267,10 @@
             <label for="biome">Dimension: </label>
             <select
               class="form-control edit-select"
-              value="{{ biome?.dimension }}"
+              value="{{ block!.biome.dimension }}"
               id="biome"
               required
-              [(ngModel)]="biome!.dimension"
+              [(ngModel)]="block!.biome.dimension"
               #blockbiomedimension="ngModel"
               name="biomeDimension"
               [ngClass]="{

@@ -29,10 +29,22 @@
     <a routerLink="/about" title="About">About</a>
   </div>
   <div id="auth">
-    <button class="btn custom-btn add-btn" routerLink="/login" title="Login">
+    <button
+      *ngIf="loggedInUser$ | async as user"
+      class="btn custom-btn add-btn"
+    >
+      Logout
+    </button>
+    <button
+      *ngIf="(loggedInUser$ | async) === undefined || null"
+      class="btn custom-btn add-btn"
+      routerLink="/login"
+      title="Login"
+    >
       <img class="btn-icon" src="../../assets/images/login-icon.png" /> Login
     </button>
     <button
+      *ngIf="(loggedInUser$ | async) === undefined || null"
       class="btn custom-btn add-btn"
       routerLink="/register"
       title="Register"

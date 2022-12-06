@@ -16,20 +16,21 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
   public currentUser$ = new BehaviorSubject<User>(undefined!);
   private readonly CURRENT_USER = 'currentuser';
-  endpoint: string = 'http://localhost:3000/';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
 
   constructor(private http: HttpClient, public router: Router) {}
 
   // Sign-up
   register(user: User): Observable<any> {
-    let api = `${environment.apiUrl}register`;
+    let api = `${environment.apiUrl}/auth/register`;
     return this.http.post(api, user).pipe(catchError(this.handleError));
   }
 
   // Sign-in
   login(email: string, password: string): Observable<any> {
-    console.log(`login at ${environment.apiUrl}auth/login`);
+    console.log(`login at ${environment.apiUrl}/auth/login`);
+    console.log(`email: ${email}`);
+    console.log(`password: ${password}`);
 
     return this.http
       .post(
@@ -39,10 +40,11 @@ export class AuthService {
       )
       .pipe(
         map((response: any) => {
-          console.log(response);
+          console.log('response: ' + response);
           this.saveUserToLocalStorage(response);
           localStorage.setItem('access_token', response.token);
           this.currentUser$.next(response);
+          console.log('currentUser$ = ' + this.currentUser$);
           console.log(localStorage);
           return response;
         }),
@@ -81,9 +83,14 @@ export class AuthService {
   }
 
   // get User
-  getUserFromLocalStorage(): Observable<User> {
-    const localUser = JSON.parse(localStorage.getItem(this.CURRENT_USER)!);
-    return of(localUser);
+  getUserFromLocalStorage(): Observable<User | undefined> {
+    const userData = localStorage.getItem(this.CURRENT_USER);
+    if (userData) {
+      const localUser = JSON.parse(userData);
+      return of(localUser);
+    } else {
+      return of(undefined);
+    }
   }
 
   // get User Id

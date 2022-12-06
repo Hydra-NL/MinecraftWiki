@@ -14,6 +14,10 @@
         </div>
       </div>
       <div class="content">
+        <p *ngIf="blocks.length == 0" class="text-muted empty-text">
+          No Blocks have been added to the wikipedia. Help fill up the wikipedia
+          by adding a new Block using the add button above!
+        </p>
         <div *ngFor="let block of blocks">
           <div class="card entity-card">
             <a class="card-click" routerLink="/blocks/{{ block._id }}"></a>

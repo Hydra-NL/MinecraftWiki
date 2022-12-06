@@ -22,7 +22,15 @@ export class ToolEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.tool = this.toolService.getTool(this.toolId);
+    this.subscription = this.toolService.read(this.toolId).subscribe({
+      next: (tool) => {
+        this.tool = tool;
+        console.log(`Tool: ${this.tool._id}`);
+      },
+      error: (err) => {
+        console.log('An error occurred while retrieving the tool: ' + err);
+      },
+    });
   }
 
   playAudio() {
@@ -34,15 +42,12 @@ export class ToolEditComponent implements OnInit {
   }
 
   updateTool() {
-    if (this.tool) {
-      this.tool.lastUpdateDate = new Date();
-      this.toolService.updateTool(this.tool);
-      this.router.navigate(['/tools/' + this.toolId]);
-      console.log('ToolEditComponent updateTool');
-      console.log(this.tool);
-      this.playAudio();
-    } else {
-      this.router.navigate(['/tools/' + this.toolId + '/edit']);
-    }
+    this.subscription = this.toolService.update(this.tool!).subscribe({
+      next: (tool) => {
+        this.tool = { ...tool };
+        this.playAudio();
+        this.router.navigate(['/tools/' + this.toolId]);
+      },
+    });
   }
 }
