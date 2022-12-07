@@ -37,6 +37,7 @@ export class MobService extends EntityService<Mob> {
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 1)),
       likes: 0,
+      dislikedBy: [],
       likedBy: [],
     },
     {
@@ -62,6 +63,7 @@ export class MobService extends EntityService<Mob> {
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 2)),
       likes: 0,
+      dislikedBy: [],
       likedBy: [],
     },
     {
@@ -87,6 +89,7 @@ export class MobService extends EntityService<Mob> {
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 3)),
       likes: 0,
+      dislikedBy: [],
       likedBy: [],
     },
     {
@@ -112,6 +115,7 @@ export class MobService extends EntityService<Mob> {
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 4)),
       likes: 0,
+      dislikedBy: [],
       likedBy: [],
     },
     {
@@ -137,6 +141,7 @@ export class MobService extends EntityService<Mob> {
       timePassed: 0,
       lastUpdateDate: new Date(),
       likes: 0,
+      dislikedBy: [],
       likedBy: [],
     },
   ];

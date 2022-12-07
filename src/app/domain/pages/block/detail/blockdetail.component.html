@@ -7,7 +7,7 @@
           }}<a
             class="edit-entity-link"
             routerLink="/blocks/{{ block?._id }}/edit"
-            *ngIf="currentUser?._id == block?.createdBy"
+            *ngIf="currentUserId == block?.createdBy"
             title="Edit block"
             ><img
               class="edit-icon"
@@ -53,9 +53,7 @@
       <h5 class="subtitle" id="stats">Stats</h5>
       <p>
         Stackable: {{ block?.stackable }}<br />
-        <span *ngIf="block?.stackable"
-          >Stacksize: {{ block?.stackSize }}<br
-        /></span>
+        Stack Size: {{ block?.stackSize }}<br />
         Hardness:
         <img
           *ngIf="block?.hardness == 0"
@@ -98,7 +96,8 @@
           class="slider-img"
           title="Unbreakable"
           src="../../../../../assets/images/unbreakable.png"
-        />
+        /><br />
+        Tool Type needed: {{ block?.tool }}<br />
       </p>
       <h5 class="subtitle" id="behavior">Behavior</h5>
       <p>
@@ -139,10 +138,12 @@
         <a routerLink="/users/{{ creator?._id }}" class="editor-title">{{
           creator?.username
         }}</a>
-        <span *ngIf="currentUser!._id !== block?.createdBy">
+        <span
+          *ngIf="currentUserId !== block?.createdBy && currentUserId != null"
+        >
           <button
             (click)="subscribe()"
-            *ngIf="!creator?.subscribers?.includes(currentUser?._id!)"
+            *ngIf="!creator?.subscribers?.includes(currentUserId!)"
             class="btn custom-btn add-btn"
             id="subscribe-detail-page"
           >
@@ -155,7 +156,7 @@
           </button>
           <button
             (click)="subscribe()"
-            *ngIf="creator?.subscribers?.includes(currentUser?._id!)"
+            *ngIf="creator?.subscribers?.includes(currentUserId!)"
             id="subscribe-detail-page"
             class="btn custom-btn delete-btn"
           >
@@ -174,7 +175,7 @@
           <b>Last updated: </b>{{ block?.lastUpdateDate | date: "medium" }}
         </p>
       </div>
-      <div class="card-footer" *ngIf="creator?._id == block?.createdBy">
+      <div class="card-footer" *ngIf="currentUserId! == block?.createdBy">
         <p>Delete page</p>
         <button class="btn custom-btn delete-btn" (click)="deleteBlock()">
           <img

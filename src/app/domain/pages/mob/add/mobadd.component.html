@@ -46,7 +46,7 @@
             <textarea
               class="form-control"
               id="description"
-              rows="4"
+              rows="5"
               placeholder="Mob Description"
               [(ngModel)]="mob.description"
               #mobdescription="ngModel"
@@ -238,7 +238,7 @@
                   (mobbiometemperature.dirty || mobbiometemperature.touched)
               }"
             />
-            (°C)
+            (°C) (-20°C - 50°C)
             <div *ngIf="mobbiometemperature.errors" class="invalid-feedback">
               <div *ngIf="mobbiometemperature.errors?.['required']">
                 A temperature is required

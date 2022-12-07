@@ -38,6 +38,7 @@ export class BlockService extends EntityService<Block> {
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 1)),
       likes: 1,
+      dislikedBy: [],
       likedBy: ['2'],
     },
     {
@@ -63,6 +64,7 @@ export class BlockService extends EntityService<Block> {
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 2)),
       likes: 0,
+      dislikedBy: [],
       likedBy: [],
     },
     {
@@ -88,6 +90,7 @@ export class BlockService extends EntityService<Block> {
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 3)),
       likes: 0,
+      dislikedBy: [],
       likedBy: [],
     },
     {
@@ -113,6 +116,7 @@ export class BlockService extends EntityService<Block> {
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 4)),
       likes: 1,
+      dislikedBy: [],
       likedBy: ['1'],
     },
     {
@@ -138,6 +142,7 @@ export class BlockService extends EntityService<Block> {
       timePassed: 0,
       lastUpdateDate: new Date(),
       likes: 0,
+      dislikedBy: [],
       likedBy: [],
     },
   ];

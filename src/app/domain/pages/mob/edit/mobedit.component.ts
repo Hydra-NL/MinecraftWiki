@@ -2,12 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Mob } from 'src/app/domain/models/mob/mob.model';
 import { MobService } from 'src/app/domain/models/mob/mob.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Tool, ToolType } from '../../../models/tool/tool.model';
-import { ToolService } from '../../../models/tool/tool.service';
-import { UserService } from 'src/app/domain/models/user/user.service';
 import { Subscription } from 'rxjs';
-import { Biome, Dimension } from 'src/app/domain/models/biome/biome.model';
+import { Biome } from 'src/app/domain/models/biome/biome.model';
 import { User } from 'src/app/domain/models/user/user.model';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-mobedit',
@@ -16,21 +14,37 @@ import { User } from 'src/app/domain/models/user/user.model';
 export class MobEditComponent implements OnInit {
   mobId: string = this.route.snapshot.params['id'];
   mob: Mob | undefined;
-  biome: Biome | undefined;
+  currentUser: User | undefined;
   subscription!: Subscription;
 
   constructor(
     private mobService: MobService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     console.log('MobEditComponent constructor');
   }
 
   ngOnInit() {
-    this.mob = this.mobService.getMob(this.mobId);
-
-    this.biome = this.mob?.biome;
+    this.subscription = this.mobService.read(this.mobId).subscribe({
+      next: (mob) => {
+        this.mob = mob;
+        console.log(`Mob: ${this.mob._id}`);
+      },
+      error: (err) => {
+        console.log('An error occurred while retrieving the mob: ' + err);
+      },
+    });
+    this.subscription = this.authService.getUserFromLocalStorage().subscribe({
+      next: (user) => {
+        if (user) {
+          this.currentUser = user;
+        } else {
+          this.router.navigate(['/']);
+        }
+      },
+    });
   }
 
   playAudio() {
@@ -42,15 +56,12 @@ export class MobEditComponent implements OnInit {
   }
 
   updateMob() {
-    if (this.mob) {
-      this.mob.lastUpdateDate = new Date();
-      this.mobService.updateMob(this.mob);
-      this.router.navigate(['/mobs/' + this.mobId]);
-      console.log('MobEditComponent updateMob');
-      console.log(this.mob);
-      this.playAudio();
-    } else {
-      this.router.navigate(['/mobs/' + this.mobId + '/edit']);
-    }
+    this.subscription = this.mobService.update(this.mob!).subscribe({
+      next: (mob) => {
+        this.mob = { ...mob };
+        this.playAudio();
+        this.router.navigate(['/mobs/' + this.mobId]);
+      },
+    });
   }
 }

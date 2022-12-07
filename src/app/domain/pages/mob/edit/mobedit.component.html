@@ -2,9 +2,9 @@
   <div class="custom-container">
     <content class="mobs">
       <form
-        #mobAddForm="ngForm"
+        #mobEditForm="ngForm"
         name="form"
-        (ngSubmit)="mobAddForm.form.valid && updateMob()"
+        (ngSubmit)="mobEditForm.form.valid && updateMob()"
       >
         <div class="big-title">
           <h1 class="edit-big-title">
@@ -20,6 +20,7 @@
                 'is-invalid':
                   mobname.invalid && (mobname.dirty || mobname.touched)
               }"
+              value="{{ mob?.name }}"
               required
               minlength="3"
               maxlength="30"
@@ -35,7 +36,11 @@
             </div>
           </div>
 
-          <a class="btn custom-btn back" routerLink="/mobs" title="Back">
+          <a
+            class="btn custom-btn back"
+            routerLink="/mobs/{{ mob?._id }}"
+            title="Back"
+          >
             <i class="fa-regular fa-square-caret-left"></i>
             Back
           </a>
@@ -46,7 +51,7 @@
             <textarea
               class="form-control"
               id="description"
-              rows="4"
+              rows="5"
               placeholder="Mob Description"
               [(ngModel)]="mob!.description"
               #mobdescription="ngModel"
@@ -56,6 +61,7 @@
                   mobdescription.invalid &&
                   (mobdescription.dirty || mobdescription.touched)
               }"
+              value="{{ mob?.description }}"
               required
               minlength="3"
               maxlength="2000"
@@ -87,6 +93,8 @@
                 'is-invalid':
                   mobhealth.invalid && (mobhealth.dirty || mobhealth.touched)
               }"
+              value="{{ mob?.health }}"
+              required
               min="1"
               max="200"
             />(1 - 200)
@@ -98,7 +106,7 @@
                 The mob's health should be atleast 1
               </div>
               <div *ngIf="mobhealth.errors?.['max']">
-                The mob's health should be atmost 200
+                The mob's health can be 200 at most
               </div>
             </div>
           </div>
@@ -115,6 +123,8 @@
                 'is-invalid':
                   mobattack.invalid && (mobattack.dirty || mobattack.touched)
               }"
+              value="{{ mob?.attack }}"
+              required
               min="0"
               max="50"
             />(0 - 50)
@@ -143,6 +153,8 @@
                 'is-invalid':
                   mobarmor.invalid && (mobarmor.dirty || mobarmor.touched)
               }"
+              value="{{ mob?.armor }}"
+              required
               min="0"
               max="20"
             />(0 - 20)
@@ -168,6 +180,7 @@
               name="mobpassive"
               (change)="(true)"
               #checkBox
+              [checked]="mob?.isPassive"
             />
           </div>
           <h5 class="subtitle" id="biome">Biome</h5>
@@ -177,18 +190,19 @@
               type="text"
               class="form-control"
               id="biome"
-              required
+              placeholder="Biome name"
               [(ngModel)]="mob!.biome.name"
-              #mobbiomename="ngModel"
-              name="name"
+              #mobbiome="ngModel"
+              name="biome"
               [ngClass]="{
                 'is-invalid':
-                  mobbiomename.errors &&
-                  (mobbiomename.dirty || mobbiomename.touched)
+                  mobbiome.invalid && (mobbiome.dirty || mobbiome.touched)
               }"
+              required
+              value="{{ mob!.biome.name }}"
             />
-            <div *ngIf="mobbiomename.errors" class="invalid-feedback">
-              <div *ngIf="mobbiomename.errors?.['required']">
+            <div *ngIf="mobbiome.invalid" class="invalid-feedback">
+              <div *ngIf="mobbiome.errors?.['required']">
                 A biome name is required
               </div>
             </div>
@@ -197,21 +211,22 @@
             <label for="biome">Description </label>
             <textarea
               class="form-control"
-              id="description"
-              required
-              [(ngModel)]="mob!.biome.description"
-              #mobbiomedescription="ngModel"
-              name="description"
+              id="biome"
               rows="4"
               placeholder="Biome Description"
-              minlength="3"
+              [(ngModel)]="mob!.biome.description"
+              #mobbiomedescription="ngModel"
+              name="biomeDescription"
               [ngClass]="{
                 'is-invalid':
-                  mobbiomedescription.errors &&
+                  mobbiomedescription.invalid &&
                   (mobbiomedescription.dirty || mobbiomedescription.touched)
               }"
+              required
+              minlength="3"
+              value="{{ mob!.biome.description }}"
             ></textarea>
-            <div *ngIf="mobbiomedescription.errors" class="invalid-feedback">
+            <div *ngIf="mobbiomedescription.invalid" class="invalid-feedback">
               <div *ngIf="mobbiomedescription.errors?.['required']">
                 A description is required
               </div>
@@ -225,29 +240,31 @@
             <input
               type="number"
               class="form-control"
-              id="temperature"
-              required
+              id="biome"
+              placeholder="Temperature"
               [(ngModel)]="mob!.biome.temperature"
               #mobbiometemperature="ngModel"
-              name="temperature"
-              min="-20"
-              max="50"
+              name="biomeTemperature"
               [ngClass]="{
                 'is-invalid':
-                  mobbiometemperature.errors &&
+                  mobbiometemperature.invalid &&
                   (mobbiometemperature.dirty || mobbiometemperature.touched)
               }"
+              required
+              min="-20"
+              max="50"
+              value="{{ mob!.biome.temperature }}"
             />
-            (°C)
-            <div *ngIf="mobbiometemperature.errors" class="invalid-feedback">
+            (°C) (-20°C - 50°C)
+            <div *ngIf="mobbiometemperature.invalid" class="invalid-feedback">
               <div *ngIf="mobbiometemperature.errors?.['required']">
                 A temperature is required
               </div>
               <div *ngIf="mobbiometemperature.errors?.['min']">
-                The temperature should be atleast -20°C
+                The biome's temperature should be atleast -20°C
               </div>
               <div *ngIf="mobbiometemperature.errors?.['max']">
-                The temperature should be atmost 50°C
+                The biome's temperature should be atmost 50°C
               </div>
             </div>
           </div>
@@ -255,25 +272,24 @@
             <label for="biome">Dimension: </label>
             <select
               class="form-control edit-select"
+              value="{{ mob!.biome.dimension }}"
+              id="biome"
+              required
               [(ngModel)]="mob!.biome.dimension"
               #mobbiomedimension="ngModel"
-              name="dimension"
-              id="dimension"
-              required
+              name="biomeDimension"
               [ngClass]="{
                 'is-invalid':
-                  mobbiomedimension.errors &&
+                  mobbiomedimension.invalid &&
                   (mobbiomedimension.dirty || mobbiomedimension.touched)
               }"
+              required
             >
-              <option value="" selected disabled hidden>
-                Pick a dimension
-              </option>
               <option value="Overworld">Overworld</option>
               <option value="Nether">Nether</option>
               <option value="End">End</option>
             </select>
-            <div *ngIf="mobbiomedimension.errors" class="invalid-feedback">
+            <div *ngIf="mobbiomedimension.invalid" class="invalid-feedback">
               <div *ngIf="mobbiomedimension.errors?.['required']">
                 A dimension is required
               </div>
@@ -285,7 +301,7 @@
           type="button"
           (click)="updateMob()"
           class="btn custom-btn edit-button"
-          [disabled]="!mobAddForm.valid"
+          [disabled]="!mobEditForm.valid"
         >
           <i class="fa-solid fa-check"></i>
           Save

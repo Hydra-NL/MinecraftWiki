@@ -4,7 +4,7 @@
       <div class="big-title">
         <h1><i class="fa fa-cube"></i> Blocks</h1>
         <div class="page-btns">
-          <a class="btn add-btn custom-btn" routerLink="/blocks/add">
+          <a class="btn add-btn custom-btn" routerLink="/blocks/add" *ngIf="currentUser != null">
             <i class="fa fa-plus"></i>
             Add Block </a
           ><a class="btn custom-btn back" routerLink=".." title="Back">

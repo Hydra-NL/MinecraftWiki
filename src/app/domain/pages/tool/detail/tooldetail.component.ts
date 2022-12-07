@@ -9,19 +9,21 @@ import { BlockService } from 'src/app/domain/models/block/block.service';
 import { Mob } from 'src/app/domain/models/mob/mob.model';
 import { MobService } from 'src/app/domain/models/mob/mob.service';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-tooldetail',
   templateUrl: './tooldetail.component.html',
 })
 export class ToolDetailComponent implements OnInit {
+  toolId: string = '';
   tool: Tool | undefined;
-  toolId!: string;
-  tools!: Tool[];
+  tools: Tool[] = [];
   blocks: Block[] = [];
   mobs: Mob[] = [];
   creator: User | undefined;
   currentUser: User | undefined;
+  currentUserId: string | undefined;
   userTools: Tool[] = [];
   subscription!: Subscription;
 
@@ -31,7 +33,8 @@ export class ToolDetailComponent implements OnInit {
     private blockService: BlockService,
     private mobService: MobService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     console.log('ToolComponent constructor');
   }
@@ -79,18 +82,22 @@ export class ToolDetailComponent implements OnInit {
       });
 
       // Current user
-      // Moet current user worden
-      this.subscription = this.userService
-        .read('638a100681c9e538c5ebd7f0')
-        .subscribe({
-          next: (currentUser) => {
-            this.currentUser = currentUser;
-          },
-          error: (err) => {
-            console.log(
-              'An error occured while retrieving the currentuser: ' + err
-            );
-          },
+      this.subscription = this.authService
+        .getUserFromLocalStorage()
+        .subscribe((user) => {
+          if (user) {
+            this.currentUserId = this.authService.getUserIdFromLocalStorage();
+            this.subscription = this.userService
+              .read(this.currentUserId)
+              .subscribe({
+                next: (user) => {
+                  this.currentUser = user;
+                  console.log(`Current user: ${this.currentUser._id}`);
+                },
+              });
+          } else {
+            console.log('No user found');
+          }
         });
 
       // Tools (see also list)
@@ -138,38 +145,38 @@ export class ToolDetailComponent implements OnInit {
   }
 
   subscribe() {
-    if (this.creator!.subscribers.includes(this.currentUser!._id!)) {
+    if (this.creator?.subscribers.includes(this.currentUserId!)) {
+      this.creator?.subscribers.splice(
+        this.creator?.subscribers.indexOf(this.currentUserId!),
+        1
+      );
       this.subscription = this.userService.update(this.creator!).subscribe({
-        next: (creator) => {
-          creator.subscribers = creator.subscribers.splice(
-            creator.subscribers.indexOf(this.currentUser!._id!),
-            1
-          );
-          this.creator = creator;
-        },
-        error: (err) => {
-          console.log(err);
+        next: () => {
+          console.log('Unsubscribed');
         },
       });
-    } else {
-      this.subscription = this.userService.update(this.creator!).subscribe({
-        next: (creator) => {
-          creator.subscribers.push(this.currentUser!._id!);
-          this.creator = creator;
-          this.subscription = this.userService
-            .update(this.currentUser!)
-            .subscribe({
-              next: (currentUser) => {
-                currentUser.subscriptions.push(this.creator!._id!);
-                this.currentUser = currentUser;
-              },
-              error: (err) => {
-                console.log(err);
-              },
-            });
+      this.currentUser?.subscriptions.splice(
+        this.currentUser?.subscriptions.indexOf(this.creator?._id!),
+        1
+      );
+      this.subscription = this.userService.update(this.currentUser!).subscribe({
+        next: () => {
+          console.log('Unsubscribed');
         },
-        error: (err) => {
-          console.log(err);
+      });
+      return;
+    } else {
+      this.creator?.subscribers.push(this.currentUserId!);
+      this.subscription = this.userService.update(this.creator!).subscribe({
+        next: () => {
+          console.log('Subscribed');
+        },
+      });
+
+      this.currentUser?.subscriptions.push(this.creator?._id!);
+      this.subscription = this.userService.update(this.currentUser!).subscribe({
+        next: () => {
+          console.log('Subscribed');
         },
       });
     }

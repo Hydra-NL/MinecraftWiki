@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Tool } from '../../../models/tool/tool.model';
 import { ToolService } from '../../../models/tool/tool.service';
 import { ToolType } from '../../../models/tool/tool.model';
-import { UserService } from 'src/app/domain/models/user/user.service';
-import { User } from 'src/app/domain/models/user/user.model';
 import { EntityType } from 'src/app/domain/models/entity/entity.model';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-tooladd',
@@ -14,14 +13,13 @@ import { Subscription } from 'rxjs';
 })
 export class ToolAddComponent implements OnInit {
   tool!: Tool;
-  currentUser!: User;
+  currentUserId!: string;
   subscription!: Subscription;
 
   constructor(
     private toolService: ToolService,
-    private userService: UserService,
-    private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     console.log('ToolAddComponent constructor');
   }
@@ -42,8 +40,16 @@ export class ToolAddComponent implements OnInit {
       creationDate: new Date(),
       lastUpdateDate: new Date(),
       likes: 0,
+      dislikedBy: [],
       likedBy: [],
     };
+    this.subscription = this.authService
+      .getUserFromLocalStorage()
+      .subscribe((user) => {
+        if (!user) {
+          this.router.navigate(['/']);
+        }
+      });
   }
 
   playAudio() {
@@ -56,32 +62,20 @@ export class ToolAddComponent implements OnInit {
   addTool() {
     this.tool;
     if (this.tool) {
-      // Moet currentUser zijn
-      this.subscription = this.userService
-        .read('638a100681c9e538c5ebd7f0')
-        .subscribe({
-          next: (currentUser) => {
-            this.currentUser = currentUser;
-            this.tool.name =
-              this.tool.name.charAt(0).toUpperCase() + this.tool.name.slice(1);
-            this.tool.createdBy = this.currentUser._id!;
+      this.tool.name =
+        this.tool.name.charAt(0).toUpperCase() + this.tool.name.slice(1);
+      this.tool.createdBy = this.currentUserId =
+        this.authService.getUserIdFromLocalStorage();
 
-            this.subscription = this.toolService.create(this.tool).subscribe({
-              next: (tool) => {
-                this.playAudio();
-                this.router.navigate(['/tools/', tool._id]);
-                console.log('ToolAddComponent Tool added');
-                console.log(this.tool);
-              },
-              error: (err) => console.error('Error: ' + err),
-            });
-          },
-          error: (err) => {
-            console.log(
-              'An error occured while retrieving the currentuser: ' + err
-            );
-          },
-        });
+      this.subscription = this.toolService.create(this.tool).subscribe({
+        next: (tool) => {
+          this.playAudio();
+          this.router.navigate(['/tools/', tool._id]);
+          console.log('ToolAddComponent Tool added');
+          console.log(this.tool);
+        },
+        error: (err) => console.error('An error occurred while trying to create a tool: ' + err),
+      });
     }
   }
 }

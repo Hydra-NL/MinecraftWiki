@@ -29,12 +29,10 @@ export class AuthService {
   // Sign-in
   login(email: string, password: string): Observable<any> {
     console.log(`login at ${environment.apiUrl}/auth/login`);
-    console.log(`email: ${email}`);
-    console.log(`password: ${password}`);
 
     return this.http
       .post(
-        `${environment.apiUrl}auth/login`,
+        `${environment.apiUrl}/auth/login`,
         { email, password },
         { headers: this.headers }
       )
@@ -85,9 +83,11 @@ export class AuthService {
   // get User
   getUserFromLocalStorage(): Observable<User | undefined> {
     const userData = localStorage.getItem(this.CURRENT_USER);
+    console.log('User form storage userData: ' + userData);
     if (userData) {
       const localUser = JSON.parse(userData);
-      return of(localUser);
+      console.log('localUser: ' + localUser.currentuser);
+      return of(localUser)
     } else {
       return of(undefined);
     }
@@ -95,8 +95,10 @@ export class AuthService {
 
   // get User Id
   getUserIdFromLocalStorage(): string {
-    const localUser = JSON.parse(localStorage.getItem(this.CURRENT_USER)!);
-    return localUser._id;
+    const userData = localStorage.getItem(this.CURRENT_USER);
+    console.log('UserId form storage userData: ' + userData);
+    const localUser = JSON.parse(userData!);
+    return localUser.currentuser._id;
   }
 
   // User profile

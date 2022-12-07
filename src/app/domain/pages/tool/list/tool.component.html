@@ -4,7 +4,7 @@
       <div class="big-title">
         <h1><i class="fa-solid fa-hammer"></i> Tools</h1>
         <div class="page-btns">
-          <a class="btn add-btn custom-btn" routerLink="/tools/add">
+          <a class="btn add-btn custom-btn" routerLink="/tools/add" *ngIf="currentUser != null">
             <i class="fa fa-plus"></i>
             Add Tool
           </a>
@@ -20,7 +20,7 @@
           by adding a new Tool using the add button above!
         </p>
         <div *ngFor="let tool of tools">
-          <div *ngIf="tools.length > 0" class="card entity-card">
+          <div class="card entity-card">
             <a class="card-click" routerLink="/tools/{{ tool._id }}"></a>
             <div class="card-header">
               <a class="entity-title">

@@ -7,7 +7,7 @@
           }}<a
             class="edit-entity-link"
             routerLink="/tools/{{ tool!._id }}/edit"
-            *ngIf="currentUser?._id == tool?.createdBy"
+            *ngIf="currentUserId == tool?.createdBy"
             title="Edit tool"
             ><img
               class="edit-icon"
@@ -87,13 +87,14 @@
           class="slider-img"
           title="Unbreakable"
           src="../../../../../assets/images/unbreakable.png"
-        />
+        /><br />
+        Tool Type: {{ tool?.toolType }}<br />
       </p>
       <h5 class="subtitle" id="usage">Usage</h5>
       <p *ngIf="tool!.isWeapon == false">
         {{ tool?.name }} can mine blocks that have to be mined by
-        {{ tool?.toolType }}s and have a Hardness of {{ tool?.toolLevel }} or
-        lower.<br />
+        <b>{{ tool?.toolType }}s</b> and have a Hardness of
+        {{ tool?.toolLevel }} or lower.<br />
         <span *ngIf="this.blocks.length != 0">
           Blocks that can be mined by {{ tool?.name }}:
           <a
@@ -143,10 +144,12 @@
         <a routerLink="/users/{{ creator?._id }}" class="editor-title">{{
           creator?.username
         }}</a>
-        <span *ngIf="currentUser!._id !== tool?.createdBy">
+        <span
+          *ngIf="currentUserId !== tool?.createdBy && currentUserId != null"
+        >
           <button
             (click)="subscribe()"
-            *ngIf="!creator?.subscribers?.includes(currentUser!._id!)"
+            *ngIf="!creator?.subscribers?.includes(currentUserId!)"
             class="btn custom-btn add-btn"
             id="subscribe-detail-page"
           >
@@ -159,7 +162,7 @@
           </button>
           <button
             (click)="subscribe()"
-            *ngIf="creator?.subscribers?.includes(currentUser!._id!)"
+            *ngIf="creator?.subscribers?.includes(currentUserId!)"
             id="subscribe-detail-page"
             class="btn custom-btn delete-btn"
           >
@@ -178,7 +181,7 @@
           <b>Last updated: </b>{{ tool?.lastUpdateDate | date: "medium" }}
         </p>
       </div>
-      <div class="card-footer" *ngIf="currentUser?._id == tool?.createdBy">
+      <div class="card-footer" *ngIf="currentUserId == tool?.createdBy">
         <p>Delete page</p>
         <button class="btn custom-btn delete-btn" (click)="deleteTool()">
           <img

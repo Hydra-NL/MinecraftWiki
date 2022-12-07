@@ -25,13 +25,12 @@
     <a routerLink="/users" title="Users"
       ><i class="fa-solid fa-users"></i> Creators</a
     >
-    |
-    <a routerLink="/about" title="About">About</a>
   </div>
   <div id="auth">
     <button
       *ngIf="loggedInUser$ | async as user"
       class="btn custom-btn add-btn"
+      (click)="logout()"
     >
       Logout
     </button>

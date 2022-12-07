@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -8,6 +9,8 @@ import { AuthService } from '../auth.service';
 })
 export class RegisterComponent implements OnInit {
   user: any = {};
+  subscription!: Subscription;
+
   constructor(
     private authService: AuthService,
     private route: ActivatedRoute,
@@ -20,6 +23,13 @@ export class RegisterComponent implements OnInit {
       password: '',
       email: '',
     };
+    this.subscription = this.authService
+      .getUserFromLocalStorage()
+      .subscribe((user) => {
+        if (user) {
+          this.router.navigate(['/']);
+        }
+      });
   }
 
   register() {

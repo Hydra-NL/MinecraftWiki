@@ -2,12 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Block } from 'src/app/domain/models/block/block.model';
 import { BlockService } from 'src/app/domain/models/block/block.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Tool, ToolType } from '../../../models/tool/tool.model';
-import { ToolService } from '../../../models/tool/tool.service';
-import { UserService } from 'src/app/domain/models/user/user.service';
 import { Subscription } from 'rxjs';
-import { Biome, Dimension } from 'src/app/domain/models/biome/biome.model';
+import { Biome } from 'src/app/domain/models/biome/biome.model';
 import { User } from 'src/app/domain/models/user/user.model';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-blockedit',
@@ -17,12 +15,14 @@ export class BlockEditComponent implements OnInit {
   blockId: string = this.route.snapshot.params['id'];
   block: Block | undefined;
   biome: Biome | undefined;
+  currentUser: User | undefined;
   subscription!: Subscription;
 
   constructor(
     private blockService: BlockService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     console.log('BlockEditComponent constructor');
   }
@@ -32,7 +32,18 @@ export class BlockEditComponent implements OnInit {
       next: (block) => {
         this.block = block;
         console.log(`Block: ${this.block._id}`);
-        console.log('block stack size: ' + this.block.stackSize);
+      },
+      error: (err) => {
+        console.log('An error occurred while retrieving the block: ' + err);
+      },
+    });
+    this.subscription = this.authService.getUserFromLocalStorage().subscribe({
+      next: (user) => {
+        if (user) {
+          this.currentUser = user;
+        } else {
+          this.router.navigate(['/']);
+        }
       },
     });
   }

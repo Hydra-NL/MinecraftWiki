@@ -1,16 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Block } from 'src/app/domain/models/block/block.model';
 import { BlockService } from 'src/app/domain/models/block/block.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Tool } from '../../../models/tool/tool.model';
-import { ToolService } from '../../../models/tool/tool.service';
+import { Router } from '@angular/router';
 import { ToolType } from '../../../models/tool/tool.model';
-import { UserService } from 'src/app/domain/models/user/user.service';
-import { User } from 'src/app/domain/models/user/user.model';
 import { Biome } from 'src/app/domain/models/biome/biome.model';
-import { BiomeAddComponent } from '../../biome/add/biomeadd.component';
 import { EntityType } from 'src/app/domain/models/entity/entity.model';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-blockadd',
@@ -18,14 +14,13 @@ import { Subscription } from 'rxjs';
 })
 export class BlockAddComponent implements OnInit {
   block!: Block;
-  currentUser!: User;
+  currentUserId: string | undefined;
   subscription!: Subscription;
 
   constructor(
     private blockService: BlockService,
-    private userService: UserService,
-    private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     console.log('BlockAddComponent constructor');
   }
@@ -46,8 +41,16 @@ export class BlockAddComponent implements OnInit {
       creationDate: new Date(),
       lastUpdateDate: new Date(),
       likes: 0,
+      dislikedBy: [],
       likedBy: [],
     };
+    this.subscription = this.authService
+      .getUserFromLocalStorage()
+      .subscribe((user) => {
+        if (!user) {
+          this.router.navigate(['/']);
+        }
+      });
   }
 
   playAudio() {
@@ -60,33 +63,30 @@ export class BlockAddComponent implements OnInit {
   addBlock() {
     this.block;
     if (this.block) {
-      // Moet currentUser zijn
-      this.subscription = this.userService
-        .read('638a0fd2abf8e7b2eb1bb039')
-        .subscribe({
-          next: (currentUser) => {
-            this.currentUser = currentUser;
-            this.block.name =
-              this.block.name.charAt(0).toUpperCase() +
-              this.block.name.slice(1);
-            this.block.createdBy = this.currentUser._id!;
+      this.block.name =
+        this.block.name.charAt(0).toUpperCase() + this.block.name.slice(1);
+      this.block.name = this.block.name.trimEnd();
 
-            this.subscription = this.blockService.create(this.block).subscribe({
-              next: (block) => {
-                this.playAudio();
-                this.router.navigate(['/blocks/', block._id]);
-                console.log('BlockAddComponent Block added');
-                console.log(this.block);
-              },
-              error: (err) => console.error('Error: ' + err),
-            });
-          },
-          error: (err) => {
-            console.log(
-              'An error occured while retrieving the currentuser: ' + err
-            );
-          },
-        });
+      this.block.biome.name =
+        this.block.biome.name.charAt(0).toUpperCase() +
+        this.block.biome.name.slice(1);
+      this.block.biome.name = this.block.biome.name.trimEnd();
+
+      this.block.createdBy = this.currentUserId =
+        this.authService.getUserIdFromLocalStorage();
+
+      this.subscription = this.blockService.create(this.block).subscribe({
+        next: (block) => {
+          this.playAudio();
+          this.router.navigate(['/blocks/', block._id]);
+          console.log('BlockAddComponent Block added');
+          console.log(this.block);
+        },
+        error: (err) =>
+          console.error(
+            'An error occurred while trying to create a block: ' + err
+          ),
+      });
     }
   }
 }

@@ -19,7 +19,6 @@ import { ToolComponent } from './domain/pages/tool/list/tool.component';
 import { BlockDetailComponent } from './domain/pages/block/detail/blockdetail.component';
 import { BlockEditComponent } from './domain/pages/block/edit/blockedit.component';
 import { BlockAddComponent } from './domain/pages/block/add/blockadd.component';
-import { BiomeAddComponent } from './domain/pages/biome/add/biomeadd.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { UserComponent } from './domain/pages/user/list/user.component';
@@ -47,7 +46,6 @@ import { MobAddComponent } from './domain/pages/mob/add/mobadd.component';
     BlockDetailComponent,
     BlockEditComponent,
     BlockAddComponent,
-    BiomeAddComponent,
     LoginComponent,
     RegisterComponent,
     UserComponent,

@@ -25,6 +25,13 @@ export class LoginComponent implements OnInit, OnDestroy {
       email: '',
       password: '',
     };
+    this.subscription = this.authService
+      .getUserFromLocalStorage()
+      .subscribe((user) => {
+        if (user) {
+          this.router.navigate(['/']);
+        }
+      });
   }
 
   ngOnDestroy(): void {}

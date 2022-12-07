@@ -19,5 +19,6 @@ export class Mob extends Entity {
   timePassed: number = 0;
   lastUpdateDate: Date = new Date();
   likes: number = 0;
+  dislikedBy: string[] = [];
   likedBy: string[] = [];
 }
