@@ -11,12 +11,6 @@ export class HomeAddComponent implements OnInit {
   subscription!: Subscription;
   constructor(private authService: AuthService, private router: Router) {}
   ngOnInit() {
-    this.subscription = this.authService
-      .getUserFromLocalStorage()
-      .subscribe((user) => {
-        if (!user) {
-          this.router.navigate(['/']);
-        }
-      });
+    
   }
 }

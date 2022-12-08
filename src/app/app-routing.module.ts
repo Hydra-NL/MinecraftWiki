@@ -21,6 +21,7 @@ import { ToolAddComponent } from './domain/pages/tool/add/tooladd.component';
 import { MobDetailComponent } from './domain/pages/mob/detail/mobdetail.component';
 import { MobAddComponent } from './domain/pages/mob/add/mobadd.component';
 import { MobEditComponent } from './domain/pages/mob/edit/mobedit.component';
+import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   {
@@ -38,34 +39,60 @@ const routes: Routes = [
       },
       {
         path: 'home',
-        children: [{ path: 'add', component: HomeAddComponent }],
+        children: [
+          {
+            path: 'add',
+            component: HomeAddComponent,
+            canActivate: [AuthGuard],
+          },
+        ],
       },
       { path: 'about', component: AboutComponent },
       { path: 'blocks', component: BlockComponent },
       {
         path: 'blocks',
         children: [
-          { path: 'add', component: BlockAddComponent },
+          {
+            path: 'add',
+            component: BlockAddComponent,
+            canActivate: [AuthGuard],
+          },
           { path: ':id', component: BlockDetailComponent },
-          { path: ':id/edit', component: BlockEditComponent },
+          {
+            path: ':id/edit',
+            component: BlockEditComponent,
+            canActivate: [AuthGuard],
+          },
         ],
       },
       { path: 'mobs', component: MobComponent },
       {
         path: 'mobs',
         children: [
-          { path: 'add', component: MobAddComponent },
+          { path: 'add', component: MobAddComponent, canActivate: [AuthGuard] },
           { path: ':id', component: MobDetailComponent },
-          { path: ':id/edit', component: MobEditComponent },
+          {
+            path: ':id/edit',
+            component: MobEditComponent,
+            canActivate: [AuthGuard],
+          },
         ],
       },
       { path: 'tools', component: ToolComponent },
       {
         path: 'tools',
         children: [
-          { path: 'add', component: ToolAddComponent },
+          {
+            path: 'add',
+            component: ToolAddComponent,
+            canActivate: [AuthGuard],
+          },
           { path: ':id', component: ToolDetailComponent },
-          { path: ':id/edit', component: ToolEditComponent },
+          {
+            path: ':id/edit',
+            component: ToolEditComponent,
+            canActivate: [AuthGuard],
+          },
         ],
       },
       {
@@ -76,7 +103,11 @@ const routes: Routes = [
         path: 'users',
         children: [
           { path: ':id', component: UserDetailComponent },
-          { path: ':id/edit', component: UserEditComponent },
+          {
+            path: ':id/edit',
+            component: UserEditComponent,
+            canActivate: [AuthGuard],
+          },
         ],
       },
       {

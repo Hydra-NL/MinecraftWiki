@@ -43,13 +43,6 @@ export class ToolAddComponent implements OnInit {
       dislikedBy: [],
       likedBy: [],
     };
-    this.subscription = this.authService
-      .getUserFromLocalStorage()
-      .subscribe((user) => {
-        if (!user) {
-          this.router.navigate(['/']);
-        }
-      });
   }
 
   playAudio() {

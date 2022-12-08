@@ -26,6 +26,7 @@ export class BlockDetailComponent implements OnInit {
   biome: Biome | undefined;
   userBlocks: Block[] = [];
   subscription!: Subscription;
+  confirmDelete: boolean = false;
 
   constructor(
     private blockService: BlockService,
@@ -121,15 +122,20 @@ export class BlockDetailComponent implements OnInit {
   }
 
   deleteBlock() {
-    this.subscription = this.blockService.delete(this.blockId).subscribe({
-      next: () => {
-        this.playAudio();
-        this.router.navigate(['/blocks']);
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
+    let text = 'Are you sure you want to delete this block?';
+    if (confirm(text) == true) {
+      this.subscription = this.blockService.delete(this.blockId).subscribe({
+        next: () => {
+          this.playAudio();
+          this.router.navigate(['/blocks']);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+    } else {
+      return;
+    }
   }
 
   subscribe() {

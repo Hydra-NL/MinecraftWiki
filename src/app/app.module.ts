@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './navbar/nav.component';
@@ -30,6 +30,7 @@ import { ToolAddComponent } from './domain/pages/tool/add/tooladd.component';
 import { MobDetailComponent } from './domain/pages/mob/detail/mobdetail.component';
 import { MobEditComponent } from './domain/pages/mob/edit/mobedit.component';
 import { MobAddComponent } from './domain/pages/mob/add/mobadd.component';
+import { AuthInterceptor } from './auth/authconfig.interceptor';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,13 @@ import { MobAddComponent } from './domain/pages/mob/add/mobadd.component';
     HttpClientModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -133,15 +133,20 @@ export class ToolDetailComponent implements OnInit {
   }
 
   deleteTool() {
-    this.subscription = this.toolService.delete(this.toolId).subscribe({
-      next: () => {
-        this.playAudio();
-        this.router.navigate(['/tools']);
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
+    let text = 'Are you sure you want to delete this mob?';
+    if (confirm(text) == true) {
+      this.subscription = this.toolService.delete(this.toolId).subscribe({
+        next: () => {
+          this.playAudio();
+          this.router.navigate(['/tools']);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+    } else {
+      return;
+    }
   }
 
   subscribe() {

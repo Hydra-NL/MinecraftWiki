@@ -35,15 +35,7 @@ export class ToolEditComponent implements OnInit {
         console.log('An error occurred while retrieving the tool: ' + err);
       },
     });
-    this.subscription = this.authService.getUserFromLocalStorage().subscribe({
-      next: (user) => {
-        if (user) {
-          this.currentUser = user;
-        } else {
-          this.router.navigate(['/']);
-        }
-      },
-    });
+    
   }
 
   playAudio() {

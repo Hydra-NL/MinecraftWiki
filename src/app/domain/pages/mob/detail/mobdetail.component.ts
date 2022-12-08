@@ -120,15 +120,20 @@ export class MobDetailComponent implements OnInit {
   }
 
   deleteMob() {
-    this.subscription = this.mobService.delete(this.mobId).subscribe({
-      next: () => {
-        this.playAudio();
-        this.router.navigate(['/mobs']);
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
+    let text = 'Are you sure you want to delete this mob?';
+    if (confirm(text) == true) {
+      this.subscription = this.mobService.delete(this.mobId).subscribe({
+        next: () => {
+          this.playAudio();
+          this.router.navigate(['/mobs']);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+    } else {
+      return;
+    }
   }
 
   subscribe() {
