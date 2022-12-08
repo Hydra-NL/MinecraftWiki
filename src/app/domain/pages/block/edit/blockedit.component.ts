@@ -37,6 +37,14 @@ export class BlockEditComponent implements OnInit {
         console.log('An error occurred while retrieving the block: ' + err);
       },
     });
+    this.authService.userMayEdit(this.block?.createdBy!).subscribe({
+      next: (mayEdit) => {
+        if (!mayEdit) {
+          window.alert('This is not your block!');
+          this.router.navigate(['/blocks/' + this.blockId]);
+        }
+      },
+    });
   }
 
   playAudio() {

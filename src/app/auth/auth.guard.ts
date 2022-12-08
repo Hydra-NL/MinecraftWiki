@@ -5,7 +5,8 @@ import {
   CanActivate,
   Router,
 } from '@angular/router';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { User } from '../domain/models/user/user.model';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -14,14 +15,18 @@ import { AuthService } from './auth.service';
 export class AuthGuard implements CanActivate {
   constructor(public authService: AuthService, public router: Router) {}
 
-  canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<boolean> | Promise<boolean> | boolean {
-    if (this.authService.isLoggedIn !== true) {
-      window.alert('Access not allowed!');
-      this.router.navigate(['..']);
-    }
-    return true;
+  canActivate(): Observable<boolean> {
+    console.log('canActivate LoggedIn');
+    return this.authService.currentUser$.pipe(
+      map((user: User | undefined) => {
+        if (user) {
+          return true;
+        } else {
+          window.alert('You are not allowed to view this page!');
+          this.router.navigate(['/']);
+          return false;
+        }
+      })
+    );
   }
 }

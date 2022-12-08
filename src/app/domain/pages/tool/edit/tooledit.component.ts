@@ -35,7 +35,14 @@ export class ToolEditComponent implements OnInit {
         console.log('An error occurred while retrieving the tool: ' + err);
       },
     });
-    
+    this.authService.userMayEdit(this.tool?.createdBy!).subscribe({
+      next: (mayEdit) => {
+        if (!mayEdit) {
+          window.alert('This is not your tool!');
+          this.router.navigate(['/tools/' + this.toolId]);
+        }
+      },
+    });
   }
 
   playAudio() {

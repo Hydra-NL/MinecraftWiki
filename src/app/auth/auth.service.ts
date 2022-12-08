@@ -87,7 +87,7 @@ export class AuthService {
     if (userData) {
       const localUser = JSON.parse(userData);
       console.log('localUser: ' + localUser.currentuser);
-      return of(localUser)
+      return of(localUser);
     } else {
       return of(undefined);
     }
@@ -109,6 +109,16 @@ export class AuthService {
         return res || {};
       }),
       catchError(this.handleError)
+    );
+  }
+
+  // Check if user may edit
+  userMayEdit(itemCreatedBy: string): Observable<boolean> {
+    console.log('userMayEdit');
+    return this.currentUser$.pipe(
+      map((user: User | undefined) =>
+        user ? user._id === itemCreatedBy : false
+      )
     );
   }
 

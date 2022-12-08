@@ -36,6 +36,14 @@ export class MobEditComponent implements OnInit {
         console.log('An error occurred while retrieving the mob: ' + err);
       },
     });
+    this.authService.userMayEdit(this.mob?.createdBy!).subscribe({
+      next: (mayEdit) => {
+        if (!mayEdit) {
+          window.alert('This is not your mob!');
+          this.router.navigate(['/mobs/' + this.mobId]);
+        }
+      }
+    });
   }
 
   playAudio() {
