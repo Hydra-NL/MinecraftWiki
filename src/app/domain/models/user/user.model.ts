@@ -9,6 +9,7 @@ export class User extends Entity {
   subscriptions: string[] = [];
   subscribers: string[] = [];
   liked: string[] = [];
+  disliked: string[] = [];
 
   constructor(_id: string) {
     super(_id);

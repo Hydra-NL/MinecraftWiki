@@ -59,6 +59,9 @@ export class ToolAddComponent implements OnInit {
         this.tool.name.charAt(0).toUpperCase() + this.tool.name.slice(1);
       this.tool.createdBy = this.currentUserId =
         this.authService.getUserIdFromLocalStorage();
+      if (this.tool.isWeapon) {
+        this.tool.toolType = ToolType.sword;
+      }
 
       this.subscription = this.toolService.create(this.tool).subscribe({
         next: (tool) => {
@@ -67,7 +70,10 @@ export class ToolAddComponent implements OnInit {
           console.log('ToolAddComponent Tool added');
           console.log(this.tool);
         },
-        error: (err) => console.error('An error occurred while trying to create a tool: ' + err),
+        error: (err) =>
+          console.error(
+            'An error occurred while trying to create a tool: ' + err
+          ),
       });
     }
   }

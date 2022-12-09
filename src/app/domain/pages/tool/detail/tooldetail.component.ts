@@ -25,6 +25,7 @@ export class ToolDetailComponent implements OnInit {
   currentUser: User | undefined;
   currentUserId: string | undefined;
   userTools: Tool[] = [];
+  numberOfAttack: number = 0;
   subscription!: Subscription;
 
   constructor(
@@ -48,19 +49,10 @@ export class ToolDetailComponent implements OnInit {
       this.subscription = this.toolService.read(this.toolId).subscribe({
         next: (tool) => {
           this.tool = tool;
+          this.numberOfAttack = this.tool?.attack / 2;
           console.log(`Tool: ${this.tool._id}`);
           // Creator of said tool
-          this.subscription = this.userService
-            .read(this.tool?.createdBy!)
-            .subscribe({
-              next: (creator) => {
-                this.creator = creator;
-                console.log(`Creator: ${this.creator._id}`);
-              },
-              error: (err) => {
-                console.log(err);
-              },
-            });
+          this.getCreator();
           // Blocks that this tool can break
           this.subscription = this.blockService.list().subscribe({
             next: (blocks) => {
@@ -82,23 +74,7 @@ export class ToolDetailComponent implements OnInit {
       });
 
       // Current user
-      this.subscription = this.authService
-        .getUserFromLocalStorage()
-        .subscribe((user) => {
-          if (user) {
-            this.currentUserId = this.authService.getUserIdFromLocalStorage();
-            this.subscription = this.userService
-              .read(this.currentUserId)
-              .subscribe({
-                next: (user) => {
-                  this.currentUser = user;
-                  console.log(`Current user: ${this.currentUser._id}`);
-                },
-              });
-          } else {
-            console.log('No user found');
-          }
-        });
+      this.getUser();
 
       // Tools (see also list)
       this.subscription = this.toolService.list().subscribe({
@@ -125,6 +101,40 @@ export class ToolDetailComponent implements OnInit {
     });
   }
 
+  getUser() {
+    this.currentUser = undefined;
+    this.currentUserId = undefined;
+    this.subscription = this.authService
+      .getUserFromLocalStorage()
+      .subscribe((user) => {
+        if (user) {
+          this.currentUserId = this.authService.getUserIdFromLocalStorage();
+          this.subscription = this.userService
+            .read(this.currentUserId)
+            .subscribe({
+              next: (user) => {
+                this.currentUser = user;
+                console.log(`Current user: ${this.currentUser._id}`);
+              },
+            });
+        } else {
+          console.log('No user found');
+        }
+      });
+  }
+
+  getCreator() {
+    this.subscription = this.userService.read(this.tool?.createdBy!).subscribe({
+      next: (creator) => {
+        this.creator = creator;
+        console.log(`Creator: ${this.creator._id}`);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+
   playAudio() {
     const audio = new Audio();
     audio.src = '/assets/audio/Explosion1.ogg';
@@ -139,6 +149,28 @@ export class ToolDetailComponent implements OnInit {
         next: () => {
           this.playAudio();
           this.router.navigate(['/tools']);
+          this.subscription = this.userService.list().subscribe({
+            next: (users) => {
+              users!.forEach((user) => {
+                if (user.liked.includes(this.toolId)) {
+                  user.liked.splice(user.liked.indexOf(this.toolId), 1);
+                  this.subscription = this.userService.update(user).subscribe({
+                    next: () => {
+                      console.log('User updated');
+                    },
+                  });
+                }
+                if (user.disliked.includes(this.toolId)) {
+                  user.disliked.splice(user.disliked.indexOf(this.toolId), 1);
+                  this.subscription = this.userService.update(user).subscribe({
+                    next: () => {
+                      console.log('User updated');
+                    },
+                  });
+                }
+              });
+            },
+          });
         },
         error: (err) => {
           console.log(err);
@@ -151,39 +183,25 @@ export class ToolDetailComponent implements OnInit {
 
   subscribe() {
     if (this.creator?.subscribers.includes(this.currentUserId!)) {
-      this.creator?.subscribers.splice(
-        this.creator?.subscribers.indexOf(this.currentUserId!),
-        1
-      );
-      this.subscription = this.userService.update(this.creator!).subscribe({
-        next: () => {
-          console.log('Unsubscribed');
-        },
-      });
-      this.currentUser?.subscriptions.splice(
-        this.currentUser?.subscriptions.indexOf(this.creator?._id!),
-        1
-      );
-      this.subscription = this.userService.update(this.currentUser!).subscribe({
-        next: () => {
-          console.log('Unsubscribed');
-        },
-      });
+      this.subscription = this.userService
+        .unsubscribe(this.currentUserId!, this.creator._id!)
+        .subscribe({
+          next: () => {
+            console.log('Unsubscribed');
+            this.getCreator();
+          },
+        });
       return;
     } else {
-      this.creator?.subscribers.push(this.currentUserId!);
-      this.subscription = this.userService.update(this.creator!).subscribe({
-        next: () => {
-          console.log('Subscribed');
-        },
-      });
-
-      this.currentUser?.subscriptions.push(this.creator?._id!);
-      this.subscription = this.userService.update(this.currentUser!).subscribe({
-        next: () => {
-          console.log('Subscribed');
-        },
-      });
+      this.subscription = this.userService
+        .subscribe(this.currentUserId!, this.creator?._id!)
+        .subscribe({
+          next: () => {
+            console.log('Subscribed');
+            this.getCreator();
+          },
+        });
+      return;
     }
   }
 }

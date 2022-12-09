@@ -138,6 +138,28 @@ export class BlockDetailComponent implements OnInit {
         next: () => {
           this.playAudio();
           this.router.navigate(['/blocks']);
+          this.subscription = this.userService.list().subscribe({
+            next: (users) => {
+              users!.forEach((user) => {
+                if (user.liked.includes(this.blockId)) {
+                  user.liked.splice(user.liked.indexOf(this.blockId), 1);
+                  this.subscription = this.userService.update(user).subscribe({
+                    next: () => {
+                      console.log('User updated');
+                    },
+                  });
+                }
+                if(user.disliked.includes(this.blockId)) {
+                  user.disliked.splice(user.disliked.indexOf(this.blockId), 1);
+                  this.subscription = this.userService.update(user).subscribe({
+                    next: () => {
+                      console.log('User updated');
+                    },
+                  });
+                }
+              });
+            },
+          });
         },
         error: (err) => {
           console.log(err);

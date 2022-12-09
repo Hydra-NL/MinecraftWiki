@@ -44,7 +44,11 @@
       <h5 class="subtitle" id="stats">Stats</h5>
       <p>
         Durability: {{ tool?.durability }}<br />
-        Attack: {{ tool?.attack }}<br />
+        Attack: {{ tool?.attack }} (<i
+          class="fa-solid fa-heart"
+          style="color: red"
+        ></i
+        >x {{ numberOfAttack }})<br />
         Tool Level:
         <img
           *ngIf="tool?.toolLevel == 0"

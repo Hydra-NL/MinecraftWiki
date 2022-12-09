@@ -25,6 +25,9 @@ export class MobDetailComponent implements OnInit {
   userMobId!: string;
   biome: Biome | undefined;
   userMobs: Mob[] = [];
+  numberOfHearts: number = 0;
+  numberOfAttack: number = 0;
+  numberOfArmor: number = 0;
   subscription!: Subscription;
 
   constructor(
@@ -48,19 +51,11 @@ export class MobDetailComponent implements OnInit {
       this.subscription = this.mobService.read(this.mobId).subscribe({
         next: (mob) => {
           this.mob = mob;
+          this.numberOfHearts = this.mob!.health / 2;
+          this.numberOfAttack = this.mob!.attack / 2;
+          this.numberOfArmor = this.mob!.armor / 2;
           console.log(`Mob: ${this.mob._id}`);
-          // Creator of said mob
-          this.subscription = this.userService
-            .read(this.mob?.createdBy!)
-            .subscribe({
-              next: (creator) => {
-                this.creator = creator;
-                console.log(`Creator: ${this.creator._id}`);
-              },
-              error: (err) => {
-                console.log(err);
-              },
-            });
+          this.getCreator();
           // Tools that can attack this mob
           this.subscription = this.toolService.list().subscribe({
             next: (tools) => {
@@ -78,24 +73,9 @@ export class MobDetailComponent implements OnInit {
           console.log(err);
         },
       });
+
       // Current user
-      this.subscription = this.authService
-        .getUserFromLocalStorage()
-        .subscribe((user) => {
-          if (user) {
-            this.currentUserId = this.authService.getUserIdFromLocalStorage();
-            this.subscription = this.userService
-              .read(this.currentUserId)
-              .subscribe({
-                next: (user) => {
-                  this.currentUser = user;
-                  console.log(`Current user: ${this.currentUser._id}`);
-                },
-              });
-          } else {
-            console.log('No user found');
-          }
-        });
+      this.getUser();
 
       // Mobs (see also list)
       this.subscription = this.mobService.list().subscribe({
@@ -109,6 +89,40 @@ export class MobDetailComponent implements OnInit {
           console.log(err);
         },
       });
+    });
+  }
+
+  getUser() {
+    this.currentUser = undefined;
+    this.currentUserId = undefined;
+    this.subscription = this.authService
+      .getUserFromLocalStorage()
+      .subscribe((user) => {
+        if (user) {
+          this.currentUserId = this.authService.getUserIdFromLocalStorage();
+          this.subscription = this.userService
+            .read(this.currentUserId)
+            .subscribe({
+              next: (user) => {
+                this.currentUser = user;
+                console.log(`Current user: ${this.currentUser._id}`);
+              },
+            });
+        } else {
+          console.log('No user found');
+        }
+      });
+  }
+
+  getCreator() {
+    this.subscription = this.userService.read(this.mob?.createdBy!).subscribe({
+      next: (creator) => {
+        this.creator = creator;
+        console.log(`Creator: ${this.creator._id}`);
+      },
+      error: (err) => {
+        console.log(err);
+      },
     });
   }
 
@@ -138,39 +152,25 @@ export class MobDetailComponent implements OnInit {
 
   subscribe() {
     if (this.creator?.subscribers.includes(this.currentUserId!)) {
-      this.creator?.subscribers.splice(
-        this.creator?.subscribers.indexOf(this.currentUserId!),
-        1
-      );
-      this.subscription = this.userService.update(this.creator!).subscribe({
-        next: () => {
-          console.log('Unsubscribed');
-        },
-      });
-      this.currentUser?.subscriptions.splice(
-        this.currentUser?.subscriptions.indexOf(this.creator?._id!),
-        1
-      );
-      this.subscription = this.userService.update(this.currentUser!).subscribe({
-        next: () => {
-          console.log('Unsubscribed');
-        },
-      });
+      this.subscription = this.userService
+        .unsubscribe(this.currentUserId!, this.creator._id!)
+        .subscribe({
+          next: () => {
+            console.log('Unsubscribed');
+            this.getCreator();
+          },
+        });
       return;
     } else {
-      this.creator?.subscribers.push(this.currentUserId!);
-      this.subscription = this.userService.update(this.creator!).subscribe({
-        next: () => {
-          console.log('Subscribed');
-        },
-      });
-
-      this.currentUser?.subscriptions.push(this.creator?._id!);
-      this.subscription = this.userService.update(this.currentUser!).subscribe({
-        next: () => {
-          console.log('Subscribed');
-        },
-      });
+      this.subscription = this.userService
+        .subscribe(this.currentUserId!, this.creator?._id!)
+        .subscribe({
+          next: () => {
+            console.log('Subscribed');
+            this.getCreator();
+          },
+        });
+      return;
     }
   }
 }

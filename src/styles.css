@@ -741,6 +741,11 @@ tbody {
   margin: 0px;
 }
 
+#datamodel-img {
+  padding: 8px;
+  border-radius: 5px;
+}
+
 /* Blocks */
 .blocks {
   width: 700px;
@@ -993,4 +998,8 @@ tbody {
 .dark select option {
   border: 1px solid #434242;
   background-color: #1f1f1f;
+}
+
+.dark #datamodel-img {
+  background-color: rgba(255, 255, 255, 0.5);
 }

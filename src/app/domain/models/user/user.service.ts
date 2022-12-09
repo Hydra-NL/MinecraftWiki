@@ -32,6 +32,7 @@ export class UserService extends EntityService<User> {
       subscriptions: [],
       subscribers: [],
       liked: ['4'],
+      disliked: [],
     },
     {
       _id: '2',
@@ -42,6 +43,7 @@ export class UserService extends EntityService<User> {
       subscriptions: [],
       subscribers: [],
       liked: [],
+      disliked: [],
     },
     {
       _id: '3',
@@ -52,6 +54,7 @@ export class UserService extends EntityService<User> {
       subscriptions: [],
       subscribers: [],
       liked: [],
+      disliked: [],
     },
     {
       _id: '4',
@@ -62,6 +65,7 @@ export class UserService extends EntityService<User> {
       subscriptions: [],
       subscribers: [],
       liked: [],
+      disliked: [],
     },
     {
       _id: '5',
@@ -72,6 +76,7 @@ export class UserService extends EntityService<User> {
       subscriptions: [],
       subscribers: [],
       liked: [],
+      disliked: [],
     },
     {
       _id: '6',
@@ -82,6 +87,7 @@ export class UserService extends EntityService<User> {
       subscriptions: [],
       subscribers: [],
       liked: [],
+      disliked: [],
     },
     {
       _id: '7',
@@ -92,6 +98,7 @@ export class UserService extends EntityService<User> {
       subscriptions: [],
       subscribers: [],
       liked: [],
+      disliked: [],
     },
     {
       _id: '8',
@@ -102,6 +109,7 @@ export class UserService extends EntityService<User> {
       subscriptions: ['1'],
       subscribers: ['1'],
       liked: [],
+      disliked: [],
     },
     {
       _id: '9',
@@ -112,6 +120,7 @@ export class UserService extends EntityService<User> {
       subscriptions: [],
       subscribers: [],
       liked: [],
+      disliked: [],
     },
   ];
 

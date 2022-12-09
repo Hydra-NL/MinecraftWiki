@@ -48,9 +48,21 @@
       </div>
       <h5 class="subtitle" id="stats">Stats</h5>
       <p>
-        Health: {{ mob?.health }}<br />
-        Attack: {{ mob?.attack }}<br />
-        Armor: {{ mob?.armor }}<br />
+        Health: {{ mob?.health }} (<i
+          class="fa-solid fa-heart"
+          style="color: red"
+        ></i
+        >x {{ numberOfHearts }})<br />
+        Attack: {{ mob?.attack }} (<i
+          class="fa-solid fa-heart"
+          style="color: red"
+        ></i
+        >x {{ numberOfAttack }})<br />
+        Armor: {{ mob?.armor }} (<i
+          class="fa-solid fa-heart"
+          style="color: rgb(53, 198, 246)"
+        ></i
+        >x {{ numberOfArmor }})<br />
       </p>
       <h5 class="subtitle" id="behavior">Behavior</h5>
       <p>
