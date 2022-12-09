@@ -3,11 +3,11 @@
     <content class="tools">
       <div class="big-title">
         <h1>
-          <i class="fa fa-cube"></i> {{ tool?.name
+          <i class="fa-solid fa-hammer"></i> {{ tool?.name
           }}<a
             class="edit-entity-link"
-            routerLink="/tools/{{ tool?._id }}/edit"
-            *ngIf="currentUser?._id == '1'"
+            routerLink="/tools/{{ tool!._id }}/edit"
+            *ngIf="currentUserId == tool?.createdBy"
             title="Edit tool"
             ><img
               class="edit-icon"
@@ -44,7 +44,11 @@
       <h5 class="subtitle" id="stats">Stats</h5>
       <p>
         Durability: {{ tool?.durability }}<br />
-        Attack: {{ tool?.attack }}<br />
+        Attack: {{ tool?.attack }} (<i
+          class="fa-solid fa-heart"
+          style="color: red"
+        ></i
+        >x {{ numberOfAttack }})<br />
         Tool Level:
         <img
           *ngIf="tool?.toolLevel == 0"
@@ -87,27 +91,34 @@
           class="slider-img"
           title="Unbreakable"
           src="../../../../../assets/images/unbreakable.png"
-        />
+        /><br />
+        Tool Type: {{ tool?.toolType }}<br />
       </p>
       <h5 class="subtitle" id="usage">Usage</h5>
-      <p *ngIf="!tool!.isWeapon">
+      <p *ngIf="tool!.isWeapon == false">
         {{ tool?.name }} can mine blocks that have to be mined by
-        {{ tool?.toolType }}s and have a Hardness of {{ tool?.toolLevel }} or
-        lower.<br />
-        Blocks that can be mined by {{ tool?.name }}:
-        <a
-          class="reference-entity-list"
-          *ngFor="let block of blocks"
-          routerLink="/blocks/{{ block._id }}"
+        <b>{{ tool?.toolType }}s</b> and have a Hardness of
+        {{ tool?.toolLevel }} or lower.<br />
+        <span *ngIf="this.blocks.length != 0">
+          Blocks that can be mined by {{ tool?.name }}:
+          <a
+            class="reference-entity-list"
+            *ngFor="let block of blocks"
+            routerLink="/blocks/{{ block._id }}"
+          >
+            {{ block.name
+            }}<i
+              class="fa-solid fa-up-right-from-square reference-entity-icon"
+            ></i
+            ><span *ngIf="block !== blocks[blocks.length - 1]">, </span>
+          </a>
+        </span>
+        <span *ngIf="this.blocks.length == 0"
+          >There are no known blocks that can be broken by
+          {{ tool?.name }}.</span
         >
-          {{ block.name
-          }}<i
-            class="fa-solid fa-up-right-from-square reference-entity-icon"
-          ></i
-          ><span *ngIf="block !== blocks[blocks.length - 1]">, </span>
-        </a>
       </p>
-      <p *ngIf="tool!.isWeapon">
+      <p *ngIf="tool!.isWeapon == true">
         {{ tool?.name }} can damage mobs that have an armor-level of
         {{ tool?.attack }} or lower.<br />
         Mobs that can be damages by {{ tool?.name }}:
@@ -121,6 +132,10 @@
             class="fa-solid fa-up-right-from-square reference-entity-icon"
           ></i
           ><span *ngIf="mob !== mobs[mobs.length - 1]">, </span>
+          <span *ngIf="this.mobs.length == 0"
+            >There are no known mobs that can be damaged by
+            {{ tool?.name }}.</span
+          >
         </a>
       </p>
     </content>
@@ -130,13 +145,15 @@
     <div class="card">
       <div class="card-header">
         <span>Creator</span>
-        <a routerLink="/users/{{ user?._id }}" class="editor-title">{{
-          user?.username
+        <a routerLink="/users/{{ creator?._id }}" class="editor-title">{{
+          creator?.username
         }}</a>
-        <span *ngIf="currentUser!._id !== user!._id">
+        <span
+          *ngIf="currentUserId !== tool?.createdBy && currentUserId != null"
+        >
           <button
             (click)="subscribe()"
-            *ngIf="!user?.subscribers?.includes(currentUser!)"
+            *ngIf="!creator?.subscribers?.includes(currentUserId!)"
             class="btn custom-btn add-btn"
             id="subscribe-detail-page"
           >
@@ -149,7 +166,7 @@
           </button>
           <button
             (click)="subscribe()"
-            *ngIf="user?.subscribers?.includes(currentUser!)"
+            *ngIf="creator?.subscribers?.includes(currentUserId!)"
             id="subscribe-detail-page"
             class="btn custom-btn delete-btn"
           >
@@ -168,7 +185,7 @@
           <b>Last updated: </b>{{ tool?.lastUpdateDate | date: "medium" }}
         </p>
       </div>
-      <div class="card-footer" *ngIf="user?._id == '1'">
+      <div class="card-footer" *ngIf="currentUserId == tool?.createdBy">
         <p>Delete page</p>
         <button class="btn custom-btn delete-btn" (click)="deleteTool()">
           <img
@@ -180,26 +197,12 @@
     </div>
     <content class="see-also">
       <div class="big-title">
-        <h5>More from {{ user?.username }}:</h5>
-      </div>
-      <div class="content scroll">
-        <p *ngIf="userTools.length == 0" class="text-muted empty-text">
-          This creator doesn't have other pages yet.
-        </p>
-        <div *ngFor="let tools of userTools">
-          <div class="sub-feed-box">
-            <a routerLink="/tools/{{ tools._id }}" class="entity-title">{{
-              tools.name
-            }}</a>
-          </div>
-        </div>
-      </div>
-    </content>
-    <content class="see-also">
-      <div class="big-title">
         <h5>See also:</h5>
       </div>
       <div class="content scroll">
+        <p *ngIf="tools.length == 0" class="text-muted empty-text">
+          There are no other Tool-pages yet.
+        </p>
         <div *ngFor="let toolOther of tools">
           <div class="sub-feed-box">
             <a routerLink="/tools/{{ toolOther._id }}" class="entity-title">{{

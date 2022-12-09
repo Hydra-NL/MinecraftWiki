@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Mob } from 'src/app/domain/models/mob/mob.model';
 import { MobService } from 'src/app/domain/models/mob/mob.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Tool } from '../../../models/tool/tool.model';
-import { ToolService } from '../../../models/tool/tool.service';
-import { ToolType } from '../../../models/tool/tool.model';
+import { Router } from '@angular/router';
 import { UserService } from 'src/app/domain/models/user/user.service';
-import { User } from 'src/app/domain/models/user/user.model';
 import { Biome } from 'src/app/domain/models/biome/biome.model';
-import { BiomeAddComponent } from '../../biome/add/biomeadd.component';
 import { EntityType } from 'src/app/domain/models/entity/entity.model';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-mobadd',
@@ -17,12 +14,14 @@ import { EntityType } from 'src/app/domain/models/entity/entity.model';
 })
 export class MobAddComponent implements OnInit {
   mob!: Mob;
+  currentUserId: string | undefined;
+  subscription!: Subscription;
 
   constructor(
     private mobService: MobService,
     private userService: UserService,
-    private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     console.log('MobAddComponent constructor');
   }
@@ -38,11 +37,12 @@ export class MobAddComponent implements OnInit {
       armor: 0,
       isPassive: false,
       biome: new Biome(''),
-      createdBy: new User(''),
+      createdBy: '',
       timePassed: 0,
       creationDate: new Date(),
       lastUpdateDate: new Date(),
       likes: 0,
+      dislikedBy: [],
       likedBy: [],
     };
   }
@@ -59,14 +59,26 @@ export class MobAddComponent implements OnInit {
     if (this.mob) {
       this.mob.name =
         this.mob.name.charAt(0).toUpperCase() + this.mob.name.slice(1);
-      this.mob.createdBy = this.userService.getUserById('8');
-      this.mob.creationDate = new Date();
-      this.mob.lastUpdateDate = new Date();
-      this.mobService.addMob(this.mob);
-      this.playAudio();
-      this.router.navigate(['/mobs/' + this.mob._id]);
-      console.log('MobAddComponent Mob added');
-      console.log(this.mob);
+      this.mob.name = this.mob.name.trimEnd();
+
+      this.mob.biome.name = this.mob.biome.name.charAt(0).toUpperCase() + this.mob.biome.name.slice(1);
+      this.mob.biome.name = this.mob.biome.name.trimEnd();
+      
+        this.mob.createdBy = this.currentUserId =
+        this.authService.getUserIdFromLocalStorage();
+
+      this.subscription = this.mobService.create(this.mob).subscribe({
+        next: (mob) => {
+          this.playAudio();
+          this.router.navigate(['/mobs/', mob._id]);
+          console.log('MobAddComponent Mob added');
+          console.log(this.mob);
+        },
+        error: (err) =>
+          console.error(
+            'An error occurred while trying to create a mob: ' + err
+          ),
+      });
     }
   }
 }

@@ -7,69 +7,122 @@ import { ToolService } from '../../../models/tool/tool.service';
 import { UserService } from 'src/app/domain/models/user/user.service';
 import { User } from 'src/app/domain/models/user/user.model';
 import { Biome } from 'src/app/domain/models/biome/biome.model';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-mobdetail',
   templateUrl: './mobdetail.component.html',
 })
 export class MobDetailComponent implements OnInit {
+  mobId: string = '';
   mob: Mob | undefined;
   mobs: Mob[] = [];
   tools: Tool[] = [];
-  user: User | undefined;
+  creator: User | undefined;
   currentUser: User | undefined;
+  currentUserId: string | undefined;
   userMobId!: string;
   biome: Biome | undefined;
   userMobs: Mob[] = [];
+  numberOfHearts: number = 0;
+  numberOfAttack: number = 0;
+  numberOfArmor: number = 0;
+  subscription!: Subscription;
 
   constructor(
     private mobService: MobService,
     private toolService: ToolService,
     private userService: UserService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     console.log('MobComponent constructor');
   }
 
   ngOnInit() {
-    this.route.paramMap.subscribe((params: any) => {
+    this.route.paramMap.subscribe(() => {
       // Mob for this page
-      this.mob = this.mobService.getMob(this.route.snapshot.params['id']);
-      this.biome = this.mob?.biome;
-      console.log(this.route.snapshot.params['id']);
+      this.mobId = this.route.snapshot.params['id'];
+      console.log(this.mobId);
 
       // Creator of said mob
-      this.userMobId = this.mob?.createdBy['_id'] || '';
-      this.user = this.userService.getUserById(this.userMobId);
-
-      // Current user
-      // Moet current user worden
-      this.currentUser = this.userService.getUserById('1');
-
-      // Mobs of the creator (see also from creator list)
-      this.userMobs = this.mobService.getMobsByUser(this.userMobId);
-      this.userMobs = this.userMobs.filter((mob) => mob._id !== this.mob?._id);
-      this.userMobs.sort((a, b) => {
-        return a.creationDate.getTime() - b.creationDate.getTime();
+      this.subscription = this.mobService.read(this.mobId).subscribe({
+        next: (mob) => {
+          this.mob = mob;
+          this.numberOfHearts = this.mob!.health / 2;
+          this.numberOfAttack = this.mob!.attack / 2;
+          this.numberOfArmor = this.mob!.armor / 2;
+          console.log(`Mob: ${this.mob._id}`);
+          this.getCreator();
+          // Tools that can attack this mob
+          this.subscription = this.toolService.list().subscribe({
+            next: (tools) => {
+              this.tools = tools!;
+              this.tools = this.tools.filter(
+                (t) => t.toolType === 'Sword' && t.attack >= this.mob!.armor
+              );
+            },
+            error: (err) => {
+              console.log(err);
+            },
+          });
+        },
+        error: (err) => {
+          console.log(err);
+        },
       });
 
+      // Current user
+      this.getUser();
+
       // Mobs (see also list)
-      this.mobs = this.mobService.getMobs();
-      this.mobs = this.mobs.filter((mob) => mob._id !== this.mob?._id);
-      this.mobs.sort((a, b) => a.health - b.health);
+      this.subscription = this.mobService.list().subscribe({
+        next: (mobs) => {
+          this.mobs = mobs!;
+          this.mobs = this.mobs.filter((m) => m._id !== this.mob?._id);
+          this.mobs.sort((a, b) => b.health - a.health);
+          console.log(`Mobs: ${this.mobs.length}`);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+    });
+  }
 
-      // Tools that can attack this mob
-      this.tools = this.toolService
-        .getTools()
-        .filter((tool) => tool.toolType == 'Sword')
-        .filter((tool) => tool.attack >= this.mob!.armor);
+  getUser() {
+    this.currentUser = undefined;
+    this.currentUserId = undefined;
+    this.subscription = this.authService
+      .getUserFromLocalStorage()
+      .subscribe((user) => {
+        if (user) {
+          this.currentUserId = this.authService.getUserIdFromLocalStorage();
+          this.subscription = this.userService
+            .read(this.currentUserId)
+            .subscribe({
+              next: (user) => {
+                this.currentUser = user;
+                console.log(`Current user: ${this.currentUser._id}`);
+              },
+            });
+        } else {
+          console.log('No user found');
+        }
+      });
+  }
 
-      console.log('current: ' + this.currentUser._id);
-      console.log('user: ' + this.user._id);
-      console.log(
-        'includes: ' + this.user?.subscriptions?.includes(this.currentUser!)
-      );
+  getCreator() {
+    this.subscription = this.userService.read(this.mob?.createdBy!).subscribe({
+      next: (creator) => {
+        this.creator = creator;
+        console.log(`Creator: ${this.creator._id}`);
+      },
+      error: (err) => {
+        console.log(err);
+      },
     });
   }
 
@@ -81,13 +134,43 @@ export class MobDetailComponent implements OnInit {
   }
 
   deleteMob() {
-    this.mobService.deleteMob(this.mob!._id!);
-    this.playAudio();
-    this.router.navigate(['/mobs']);
+    let text = 'Are you sure you want to delete this mob?';
+    if (confirm(text) == true) {
+      this.subscription = this.mobService.delete(this.mobId).subscribe({
+        next: () => {
+          this.playAudio();
+          this.router.navigate(['/mobs']);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+    } else {
+      return;
+    }
   }
 
   subscribe() {
-    this.userService.subscribeToUser(this.currentUser!, this.user!);
-    this.router.navigate(['/mobs', this.mob?._id]);
+    if (this.creator?.subscribers.includes(this.currentUserId!)) {
+      this.subscription = this.userService
+        .unsubscribe(this.currentUserId!, this.creator._id!)
+        .subscribe({
+          next: () => {
+            console.log('Unsubscribed');
+            this.getCreator();
+          },
+        });
+      return;
+    } else {
+      this.subscription = this.userService
+        .subscribe(this.currentUserId!, this.creator?._id!)
+        .subscribe({
+          next: () => {
+            console.log('Subscribed');
+            this.getCreator();
+          },
+        });
+      return;
+    }
   }
 }

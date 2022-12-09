@@ -63,6 +63,7 @@
               value="{{ tool?.description }}"
               required
               minlength="3"
+              maxlength="2000"
             ></textarea>
             <div *ngIf="tooldescription.invalid" class="invalid-feedback">
               <div *ngIf="tooldescription.errors?.['required']">
@@ -70,6 +71,9 @@
               </div>
               <div *ngIf="tooldescription.errors?.['minlength']">
                 The tool's description should be atleast 3 characters long
+              </div>
+              <div *ngIf="tooldescription.errors?.['maxlength']">
+                The tool's description should be atmost 2000 characters long
               </div>
             </div>
           </div>
@@ -103,7 +107,7 @@
                 The tool's durability should be atleast 1
               </div>
               <div *ngIf="tooldurability.errors?.['max']">
-                The tool's durability can atmost be 3000
+                The tool's durability can be 3000 at most
               </div>
             </div>
           </div>

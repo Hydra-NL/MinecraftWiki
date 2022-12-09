@@ -6,7 +6,13 @@
           <button [disabled]="visible" (click)="toggle()" title="Feed">
             Feed
           </button>
-          <button [disabled]="!visible" (click)="toggle()" title="For You Feed">
+          <button
+            [disabled]="!visible"
+            
+            title="For You Feed"
+            *ngIf="currentUser != null"
+          >
+          <!-- (click)="toggle()" -->
             For you
           </button>
         </div>
@@ -14,6 +20,7 @@
           class="btn add-btn custom-btn"
           routerLink="/home/add"
           title="New Page"
+          *ngIf="currentUser != null"
         >
           <img class="btn-icon" src="../../../../assets/images/add-icon.png" />
           New Page
@@ -43,12 +50,18 @@
         />
       </div>
       <div class="content scroll">
-        <p class="text-muted empty-text" *ngIf="subs.length == 0 && !results">
-          You are not subscribed to any creators.
+        <p class="text-align-center" *ngIf="currentUser == null">
+          You are not logged in!<br />
+          Login <a routerLink="/login">here</a>.
         </p>
-        <p class="text-muted empty-text" *ngIf="subs.length == 0 && results">
-          No creators found.
-        </p>
+        <div *ngIf="currentUser != null">
+          <p class="text-muted empty-text" *ngIf="subs.length == 0 && !results">
+            You are not subscribed to any creators.
+          </p>
+          <p class="text-muted empty-text" *ngIf="subs.length == 0 && results">
+            No creators found.
+          </p>
+        </div>
         <div *ngFor="let sub of subs">
           <div class="sub-feed-box">
             <a routerLink="/users/{{ sub._id }}">{{ sub.username }}</a>
@@ -119,31 +132,38 @@
           </div>
         </div>
         <div class="card-body">
-          <p>Posted by: {{ card.createdBy.username }}</p>
+          <p>Posted by: {{ card.creator.username }}</p>
         </div>
       </div>
-      <div class="likes">
-        <a (click)="like(card._id, true)" class="like-button"
+      <div class="likes" *ngIf="currentUser != null">
+        <a (click)="like(card._id)" class="like-button"
           ><i
-            *ngIf="card.likedBy.includes(currentUser!._id)"
+            *ngIf="card.likedBy.includes(currentUserId)"
             class="fa-solid fa-circle-up"
           ></i
           ><i
-            *ngIf="!card.likedBy.includes(currentUser!._id)"
+            *ngIf="!card.likedBy.includes(currentUserId)"
             class="fa-regular fa-circle-up"
           ></i
         ></a>
         <span>{{ card.likes }}</span>
-        <a (click)="like(card._id, false)" class="like-button"
+        <a (click)="dislike(card._id)" class="like-button"
           ><i
-            *ngIf="card.likedBy.includes(currentUser!._id)"
+            *ngIf="card.dislikedBy.includes(currentUserId)"
             class="fa-solid fa-circle-down"
           ></i
           ><i
-            *ngIf="!card.likedBy.includes(currentUser!._id)"
+            *ngIf="!card.dislikedBy.includes(currentUserId)"
             class="fa-regular fa-circle-down"
           ></i
         ></a>
+      </div>
+      <div class="likes" *ngIf="currentUser == null">
+        <a class="like-button-disabled"><i class="fa-regular fa-circle-up"></i></a>
+        <span>{{ card.likes }}</span>
+        <a class="like-button-disabled">
+          <i class="fa-regular fa-circle-down"></i>
+        </a>
       </div>
     </div>
   </div>
@@ -151,7 +171,7 @@
 
 <ng-template #foryoupage>
   <p class="text-muted empty-text" *ngIf="fyp.length == 0">
-    It appears that your feed is empty.
+    It appears that the feed is empty.
   </p>
   <div *ngFor="let card of fyp">
     <div class="card-grid">
@@ -199,32 +219,40 @@
           </div>
         </div>
         <div class="card-body">
-          <p>Posted by: {{ card.createdBy.username }}</p>
+          <p>Posted by: {{ card.creator.username }}</p>
         </div>
       </div>
-      <div class="likes">
-        <a (click)="like(card._id, true)" class="like-button">
-          <i
-            *ngIf="card.likedBy.includes(currentUser!._id)"
+      <div class="likes" *ngIf="currentUser != null">
+        <a (click)="like(card._id)" class="like-button"
+          ><i
+            *ngIf="card.likedBy.includes(currentUserId)"
             class="fa-solid fa-circle-up"
           ></i
           ><i
-            *ngIf="!card.likedBy.includes(currentUser!._id)"
+            *ngIf="!card.likedBy.includes(currentUserId)"
             class="fa-regular fa-circle-up"
           ></i
         ></a>
         <span>{{ card.likes }}</span>
-        <a (click)="like(card._id, false)"
+        <a (click)="dislike(card._id)" class="like-button"
           ><i
-            *ngIf="card.likedBy.includes(currentUser!._id)"
+            *ngIf="card.dislikedBy.includes(currentUserId)"
             class="fa-solid fa-circle-down"
           ></i
           ><i
-            *ngIf="!card.likedBy.includes(currentUser!._id)"
+            *ngIf="!card.dislikedBy.includes(currentUserId)"
             class="fa-regular fa-circle-down"
           ></i
         ></a>
       </div>
+      <div class="likes" *ngIf="currentUser == null">
+        <a class="like-button-disabled"><i class="fa-regular fa-circle-up"></i></a>
+        <span>{{ card.likes }}</span>
+        <a class="like-button-disabled">
+          <i class="fa-regular fa-circle-down"></i>
+        </a>
+      </div>
     </div>
   </div>
+  
 </ng-template>

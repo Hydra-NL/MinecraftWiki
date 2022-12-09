@@ -7,7 +7,7 @@
           }}<a
             class="edit-entity-link"
             routerLink="/mobs/{{ mob?._id }}/edit"
-            *ngIf="currentUser?._id == '1'"
+            *ngIf="currentUserId == mob?.createdBy"
             title="Edit mob"
             ><img
               class="edit-icon"
@@ -48,9 +48,21 @@
       </div>
       <h5 class="subtitle" id="stats">Stats</h5>
       <p>
-        Health: {{ mob?.health }}<br />
-        Attack: {{ mob?.attack }}<br />
-        Armor: {{ mob?.armor }}<br />
+        Health: {{ mob?.health }} (<i
+          class="fa-solid fa-heart"
+          style="color: red"
+        ></i
+        >x {{ numberOfHearts }})<br />
+        Attack: {{ mob?.attack }} (<i
+          class="fa-solid fa-heart"
+          style="color: red"
+        ></i
+        >x {{ numberOfAttack }})<br />
+        Armor: {{ mob?.armor }} (<i
+          class="fa-solid fa-heart"
+          style="color: rgb(53, 198, 246)"
+        ></i
+        >x {{ numberOfArmor }})<br />
       </p>
       <h5 class="subtitle" id="behavior">Behavior</h5>
       <p>
@@ -71,23 +83,24 @@
           </a>
         </span>
         <span *ngIf="this.tools.length == 0"
-          >There are no known tools that can break {{ mob?.name }}.</span
+          >There are no known weapons that can deal damage to
+          {{ mob?.name }}.</span
         ><br /><br />
         <span *ngIf="mob?.isPassive"
-          >Since the {{ mob?.name }} is a Passive mob, it won't attack the
-          player automatically. It will either run away, or if it deems it
+          >Since the {{ mob?.name }} is a <b>Passive</b> mob, it won't attack
+          the player automatically. It will either run away, or if it deems it
           necessary it will defend itself and attack the player.
         </span>
         <span *ngIf="!mob?.isPassive"
-          >Since the {{ mob?.name }} is not an Passive mob, it will attack the
-          player automatically.
+          >Since the {{ mob?.name }} is <b>not</b> a <b>Passive</b> mob, it will
+          attack the player automatically.
         </span>
       </p>
       <h5 class="subtitle" id="biome">Biome</h5>
-      <p>{{ mob?.name }} can be found in the {{ biome?.name }} biome.</p>
-      <p>{{ biome?.description }}</p>
-      <p>Average temperatures: {{ biome?.temperature }}°C</p>
-      <p>Dimension: {{ biome?.dimension }}</p>
+      <p>{{ mob?.name }} can be found in the {{ mob?.biome?.name }} biome.</p>
+      <p>{{ mob?.biome?.description }}</p>
+      <p>Average temperatures: {{ mob?.biome?.temperature }}°C</p>
+      <p>Dimension: {{ mob?.biome?.dimension }}</p>
     </content>
   </div>
 
@@ -95,13 +108,13 @@
     <div class="card">
       <div class="card-header">
         <span>Creator</span>
-        <a routerLink="/users/{{ user?._id }}" class="editor-title">{{
-          user?.username
+        <a routerLink="/users/{{ creator?._id }}" class="editor-title">{{
+          creator?.username
         }}</a>
-        <span *ngIf="currentUser!._id !== user!._id">
+        <span *ngIf="currentUserId !== mob?.createdBy && currentUserId != null">
           <button
             (click)="subscribe()"
-            *ngIf="!user?.subscribers?.includes(currentUser!)"
+            *ngIf="!creator?.subscribers?.includes(currentUserId!)"
             class="btn custom-btn add-btn"
             id="subscribe-detail-page"
           >
@@ -114,7 +127,7 @@
           </button>
           <button
             (click)="subscribe()"
-            *ngIf="user?.subscribers?.includes(currentUser!)"
+            *ngIf="creator?.subscribers?.includes(currentUserId!)"
             id="subscribe-detail-page"
             class="btn custom-btn delete-btn"
           >
@@ -133,7 +146,7 @@
           <b>Last updated: </b>{{ mob?.lastUpdateDate | date: "medium" }}
         </p>
       </div>
-      <div class="card-footer" *ngIf="user?._id == '1'">
+      <div class="card-footer" *ngIf="currentUserId! == mob?.createdBy">
         <p>Delete page</p>
         <button class="btn custom-btn delete-btn" (click)="deleteMob()">
           <img
@@ -143,28 +156,15 @@
         </button>
       </div>
     </div>
-    <content class="see-also">
-      <div class="big-title">
-        <h5>More from {{ user?.username }}:</h5>
-      </div>
-      <div class="content scroll">
-        <p *ngIf="userMobs.length == 0" class="text-muted empty-text">
-          This creator doesn't have other pages yet.
-        </p>
-        <div *ngFor="let mobs of userMobs">
-          <div class="sub-feed-box">
-            <a routerLink="/mobs/{{ mobs._id }}" class="entity-title">{{
-              mobs.name
-            }}</a>
-          </div>
-        </div>
-      </div>
-    </content>
+
     <content class="see-also">
       <div class="big-title">
         <h5>See also:</h5>
       </div>
       <div class="content scroll">
+        <p *ngIf="mobs.length == 0" class="text-muted empty-text">
+          There are no other Mob-pages yet.
+        </p>
         <div *ngFor="let mobOther of mobs">
           <div class="sub-feed-box">
             <a routerLink="/mobs/{{ mobOther._id }}" class="entity-title">{{

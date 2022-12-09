@@ -10,7 +10,7 @@ import { Tool, ToolType } from './tool.model';
 })
 export class ToolService extends EntityService<Tool> {
   constructor(protected override http: HttpClient) {
-    super(environment.apiUrl, http, 'tools');
+    super(environment.apiUrl, http, 'tool');
   }
   tools: Tool[] = [
     {
@@ -24,20 +24,12 @@ export class ToolService extends EntityService<Tool> {
       attack: 2,
       toolLevel: 1,
       toolType: ToolType.pickaxe,
-      createdBy: {
-        _id: '8',
-        username: 'FerdinandPierre',
-        email: 'ender@mc.com',
-        password: 'secret', about: 'I am a Minecraft player',
-        
-        subscriptions: [],
-        subscribers: [],
-        liked: [],
-      },
+      createdBy: '4',
       creationDate: new Date(new Date().setDate(new Date().getDate() - 1)),
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 1)),
       likes: 0,
+      dislikedBy: [],
       likedBy: [],
     },
     {
@@ -51,20 +43,12 @@ export class ToolService extends EntityService<Tool> {
       attack: 3,
       toolLevel: 2,
       toolType: ToolType.pickaxe,
-      createdBy: {
-        _id: '8',
-        username: 'FerdinandPierre',
-        email: 'ender@mc.com',
-        password: 'secret', about: 'I am a Minecraft player',
-        
-        subscriptions: [],
-        subscribers: [],
-        liked: [],
-      },
+      createdBy: '8',
       creationDate: new Date(new Date().setDate(new Date().getDate() - 2)),
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 2)),
       likes: 0,
+      dislikedBy: [],
       likedBy: [],
     },
     {
@@ -78,20 +62,12 @@ export class ToolService extends EntityService<Tool> {
       attack: 7,
       toolLevel: 3,
       toolType: ToolType.sword,
-      createdBy: {
-        _id: '8',
-        username: 'FerdinandPierre',
-        email: 'ender@mc.com',
-        password: 'secret', about: 'I am a Minecraft player',
-        
-        subscriptions: [],
-        subscribers: [],
-        liked: [],
-      },
+      createdBy: '8',
       creationDate: new Date(new Date().setDate(new Date().getDate() - 3)),
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 3)),
       likes: 0,
+      dislikedBy: [],
       likedBy: [],
     },
     {
@@ -105,20 +81,12 @@ export class ToolService extends EntityService<Tool> {
       attack: 1,
       toolLevel: 4,
       toolType: ToolType.shovel,
-      createdBy: {
-        _id: '4',
-        username: 'Herobrine',
-        email: 'ender@mc.com',
-        password: 'secret', about: 'I am a Minecraft player',
-        
-        subscriptions: [],
-        subscribers: [],
-        liked: [],
-      },
+      createdBy: '8',
       creationDate: new Date(),
       timePassed: 0,
       lastUpdateDate: new Date(),
       likes: 0,
+      dislikedBy: [],
       likedBy: [],
     },
     {
@@ -132,20 +100,12 @@ export class ToolService extends EntityService<Tool> {
       attack: 9,
       toolLevel: 5,
       toolType: ToolType.axe,
-      createdBy: {
-        _id: '4',
-        username: 'Herobrine',
-        email: 'ender@mc.com',
-        password: 'secret', about: 'I am a Minecraft player',
-        
-        subscriptions: [],
-        subscribers: [],
-        liked: [],
-      },
+      createdBy: '4',
       creationDate: new Date(),
       timePassed: 0,
       lastUpdateDate: new Date(),
       likes: 0,
+      dislikedBy: [],
       likedBy: [],
     },
   ];
@@ -167,7 +127,7 @@ export class ToolService extends EntityService<Tool> {
   }
 
   getToolsByUser(userId: string) {
-    return this.tools.filter((tool) => tool.createdBy._id === userId);
+    return this.tools.filter((tool) => tool.createdBy === userId);
   }
 
   addTool(tool: Tool) {

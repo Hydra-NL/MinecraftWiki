@@ -46,7 +46,7 @@
             <textarea
               class="form-control"
               id="description"
-              rows="4"
+              rows="5"
               placeholder="Mob Description"
               [(ngModel)]="mob.description"
               #mobdescription="ngModel"
@@ -115,15 +115,15 @@
                 'is-invalid':
                   mobattack.invalid && (mobattack.dirty || mobattack.touched)
               }"
-              min="1"
+              min="0"
               max="50"
-            />(1 - 50)
+            />(0 - 50)
             <div *ngIf="mobattack.invalid" class="invalid-feedback">
               <div *ngIf="mobattack.errors?.['required']">
                 Attack is required
               </div>
               <div *ngIf="mobattack.errors?.['min']">
-                The mob's attack should be atleast 1
+                The mob's attack should be atleast 0
               </div>
               <div *ngIf="mobattack.errors?.['max']">
                 The mob's attack should be atmost 50
@@ -143,13 +143,13 @@
                 'is-invalid':
                   mobarmor.invalid && (mobarmor.dirty || mobarmor.touched)
               }"
-              min="1"
+              min="0"
               max="20"
-            />(1 - 20)
+            />(0 - 20)
             <div *ngIf="mobarmor.invalid" class="invalid-feedback">
               <div *ngIf="mobarmor.errors?.['required']">Armor is required</div>
               <div *ngIf="mobarmor.errors?.['min']">
-                The mob's armor should be atleast 1
+                The mob's armor should be atleast 0
               </div>
               <div *ngIf="mobarmor.errors?.['max']">
                 The mob's armor should be atmost 20
@@ -238,7 +238,7 @@
                   (mobbiometemperature.dirty || mobbiometemperature.touched)
               }"
             />
-            (°C)
+            (°C) (-20°C - 50°C)
             <div *ngIf="mobbiometemperature.errors" class="invalid-feedback">
               <div *ngIf="mobbiometemperature.errors?.['required']">
                 A temperature is required

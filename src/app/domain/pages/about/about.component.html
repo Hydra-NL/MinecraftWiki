@@ -34,6 +34,23 @@
               />
             </div>
           </div>
+
+          <div class="card">
+            <div class="card-header">
+              <p class="editor-title" id="content">Contents</p>
+            </div>
+            <div class="card-body" id="content-box">
+              <li>
+                <a class="totext" href="/about#entiteiten">Entiteiten</a>
+              </li>
+              <li>
+                <a class="totext" href="/about#datamodel">DataModel</a>
+              </li>
+              <li>
+                <a class="totext" href="/about#userstories">User stories</a>
+              </li>
+            </div>
+          </div>
         </div>
       </div>
       <div class="about-body col-md-12">
@@ -66,6 +83,7 @@
                 <ul>
                   <li>name: string</li>
                   <li>description: string</li>
+                  <li>type: EntityType</li>
                   <li>stackable: boolean</li>
                   <li>stackSize: number</li>
                   <li>hardness: number</li>
@@ -75,12 +93,16 @@
                   <li>creationDate: Date</li>
                   <li>timePassed: number</li>
                   <li>lastUpdateDate: Date</li>
+                  <li>likes: number</li>
+                  <li>likedBy: string[]</li>
+                  <li>dislikedBy: string[]</li>
                 </ul>
               </td>
               <td>
                 <ul>
                   <li>name: string</li>
                   <li>description: string</li>
+                  <li>type: EntityType</li>
                   <li>durability: number</li>
                   <li>isWeapon: boolean</li>
                   <li>attack: number</li>
@@ -90,12 +112,16 @@
                   <li>creationDate: Date</li>
                   <li>timePassed: number</li>
                   <li>lastUpdateDate: Date</li>
+                  <li>likes: number</li>
+                  <li>likedBy: string[]</li>
+                  <li>dislikedBy: string[]</li>
                 </ul>
               </td>
               <td>
                 <ul>
                   <li>name: string</li>
                   <li>description: string</li>
+                  <li>type: EntityType</li>
                   <li>health: number</li>
                   <li>attack: number</li>
                   <li>armor: number</li>
@@ -105,6 +131,9 @@
                   <li>creationDate: Date</li>
                   <li>timePassed: number</li>
                   <li>lastUpdateDate: Date</li>
+                  <li>likes: number</li>
+                  <li>likedBy: string[]</li>
+                  <li>dislikedBy: string[]</li>
                 </ul>
               </td>
               <td>
@@ -119,26 +148,28 @@
           </tbody>
         </table>
         <h5 class="subtitle" id="datamodel">Datamodel</h5>
-        <img src="assets/images/datamodel.png" alt="Datamodel" /><br />
+        <img
+          src="assets/images/datamodel.png"
+          alt="Datamodel"
+          id="datamodel-img"
+        /><br />
+        <h5 class="subtitle" id="userstories">User stories</h5>
         <p>
-          <b>Voorbeelden:</b><br /><i
-            >Tool.attack = 3; Mob.armor = 1; Kan 2 'health' schade
-            aanrichten.</i
-          ><br />
-          <i>Tool.attack = 1; Mob.armor = 3; Kan geen 'schade aanrichten.</i
-          ><br />
-          <i>
-            Tool.typeTool = "Pickaxe"; Block.tool = "Shovel"; Kan het block niet
-            breken. </i
-          ><br />
-          <i>
-            Tool.typeTool = "Shovel", Tool.typeLevel = 3; Block.tool = "Shovel",
-            Block.hardness = 5; Kan het block niet breken. </i
-          ><br />
-          <i
-            >Tool.typeTool = "Axe", Tool.typeLevel = 2; Block.tool = "Axe",
-            Block.hardness = 1; Kan het block breken.</i
-          ><br />
+          Als een gebruiker wil ik: <br />
+          <li>
+            Een account kunnen aanmaken zodat ik kan inloggen en content kan
+            aanmaken, bewerken en eventueel verwijderen
+          </li>
+          <li>Block-pagina's aan kunnen maken</li>
+          <li>Mob-pagina's aan kunnen maken</li>
+          <li>Tool-pagina's aan kunnen maken</li>
+          <li>
+            Kunnen subscriben op andere gebruikers zodat ik hun content kan zien
+          </li>
+          <li>
+            Kunnen liken en disliken op content zodat ik kan laten zien wat ik
+            er van vind
+          </li>
         </p>
       </div>
     </content>

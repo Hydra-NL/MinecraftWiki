@@ -4,7 +4,7 @@
       <div class="big-title">
         <h1><i class="fa-solid fa-dragon"></i> Mobs</h1>
         <div class="page-btns">
-          <a class="btn add-btn custom-btn">
+          <a class="btn add-btn custom-btn" routerLink="/mobs/add" *ngIf="currentUser != null">
             <i class="fa fa-plus"></i>
             Add Mob
           </a>
@@ -15,6 +15,10 @@
         </div>
       </div>
       <div class="content">
+        <p *ngIf="mobs.length == 0" class="text-muted empty-text">
+          No Mobs have been added to the wikipedia. Help fill up the wikipedia
+          by adding a new Mob using the add button above!
+        </p>
         <div *ngFor="let mob of mobs">
           <div class="card entity-card">
             <a class="card-click" routerLink="/mobs/{{ mob._id }}"></a>

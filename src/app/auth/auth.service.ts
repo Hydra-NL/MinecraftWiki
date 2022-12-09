@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { User } from '../domain/models/user/user.model';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
@@ -16,41 +16,40 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
   public currentUser$ = new BehaviorSubject<User>(undefined!);
   private readonly CURRENT_USER = 'currentuser';
-  endpoint: string = 'http://localhost:3000/';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
 
   constructor(private http: HttpClient, public router: Router) {}
 
   // Sign-up
   register(user: User): Observable<any> {
-    let api = `${environment.apiUrl}register`;
+    let api = `${environment.apiUrl}/auth/register`;
     return this.http.post(api, user).pipe(catchError(this.handleError));
   }
 
   // Sign-in
-  login(email: string, password: string): Observable<any> {
-    console.log(`login at ${environment.apiUrl}auth/login`);
+  login(email: string, password: string) {
+    console.log(`login at ${environment.apiUrl}/auth/login`);
 
     return this.http
-      .post(
-        `${environment.apiUrl}auth/login`,
+      .post<any>(
+        `${environment.apiUrl}/auth/login`,
         { email, password },
         { headers: this.headers }
       )
-      .pipe(
-        map((response: any) => {
-          console.log(response);
+      .subscribe((response) => {
+        if (!response) {
+          window.alert('Invalid credentials');
+        } else {
+          console.log('response: ' + response);
           this.saveUserToLocalStorage(response);
           localStorage.setItem('access_token', response.token);
+          localStorage.setItem('currentuser', JSON.stringify(response));
           this.currentUser$.next(response);
+          console.log('currentUser$ = ' + this.currentUser$);
           console.log(localStorage);
-          return response;
-        }),
-        catchError((error: any) => {
-          console.log('error:', error);
-          return of(undefined);
-        })
-      );
+          this.router.navigate(['home']);
+        }
+      });
   }
 
   private saveUserToLocalStorage(user: User): void {
@@ -81,15 +80,24 @@ export class AuthService {
   }
 
   // get User
-  getUserFromLocalStorage(): Observable<User> {
-    const localUser = JSON.parse(localStorage.getItem(this.CURRENT_USER)!);
-    return of(localUser);
+  getUserFromLocalStorage(): Observable<User | undefined> {
+    const userData = localStorage.getItem(this.CURRENT_USER);
+    console.log('User form storage userData: ' + userData);
+    if (userData) {
+      const localUser = JSON.parse(userData);
+      console.log('localUser: ' + localUser.currentuser);
+      return of(localUser);
+    } else {
+      return of(undefined);
+    }
   }
 
   // get User Id
   getUserIdFromLocalStorage(): string {
-    const localUser = JSON.parse(localStorage.getItem(this.CURRENT_USER)!);
-    return localUser._id;
+    const userData = localStorage.getItem(this.CURRENT_USER);
+    console.log('UserId form storage userData: ' + userData);
+    const localUser = JSON.parse(userData!);
+    return localUser.currentuser._id;
   }
 
   // User profile
@@ -101,6 +109,22 @@ export class AuthService {
       }),
       catchError(this.handleError)
     );
+  }
+
+  // Check if user may edit
+  userMayEdit(itemCreatedBy: string): Observable<boolean> {
+    console.log('userMayEdit');
+    return this.currentUser$.pipe(
+      map((user: User | undefined) =>
+        user ? user._id === itemCreatedBy : false
+      )
+    );
+  }
+
+  getUserByEmail(email: string): Observable<User> {
+    return this.http
+      .get<User>(`${environment.apiUrl}/user/email/${email}`)
+      .pipe(catchError(this.handleError));
   }
 
   // Error

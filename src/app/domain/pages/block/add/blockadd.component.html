@@ -46,7 +46,7 @@
             <textarea
               class="form-control"
               id="description"
-              rows="4"
+              rows="5"
               placeholder="Block Description"
               [(ngModel)]="block.description"
               #blockdescription="ngModel"
@@ -279,7 +279,7 @@
                   (blockbiometemperature.dirty || blockbiometemperature.touched)
               }"
             />
-            (°C)
+            (°C) (-20°C - 50°C)
             <div *ngIf="blockbiometemperature.errors" class="invalid-feedback">
               <div *ngIf="blockbiometemperature.errors?.['required']">
                 A temperature is required

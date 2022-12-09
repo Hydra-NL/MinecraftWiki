@@ -33,7 +33,6 @@
   grid-area: 🔗;
   display: flex;
   flex-direction: row;
-  justify-content: center;
   align-items: flex-end;
   flex-wrap: wrap;
   align-content: center;
@@ -190,6 +189,10 @@ footer a {
 
 .empty-text {
   font-style: italic;
+  text-align: center;
+}
+
+.text-align-center {
   text-align: center;
 }
 
@@ -660,14 +663,16 @@ tbody {
   background-color: #f2fffd;
   border: 1px rgb(172, 172, 172) solid;
   font-size: 16px;
-  cursor: pointer;
+  cursor: not-allowed;
   color: #969696;
 }
 
-.feed-nav button:disabled {
+.feed-nav button:disabled,
+.feed-nav button:disabled:hover {
   color: black;
   font-size: 22px;
   background: linear-gradient(rgb(158, 235, 239), rgba(99, 199, 205, 1));
+  cursor: default;
 }
 
 .feed .big-title {
@@ -736,24 +741,33 @@ tbody {
   margin: 0px;
 }
 
+#datamodel-img {
+  padding: 8px;
+  border-radius: 5px;
+}
+
 /* Blocks */
 .blocks {
   width: 700px;
+  min-height: 450px;
 }
 
 /* Mobs */
 .mobs {
   width: 700px;
+  min-height: 450px;
 }
 
 /* Tools */
 .tools {
   width: 700px;
+  min-height: 450px;
 }
 
 /* Users */
 .users {
   width: 600px;
+  min-height: 450px;
 }
 
 /* Add page */
@@ -825,6 +839,13 @@ tbody {
   color: black;
 }
 
+.like-button-disabled,
+.like-button-disabled:hover {
+  cursor: default;
+  color: black;
+  opacity: 20%;
+}
+
 .card-grid {
   display: flex;
   flex-direction: row;
@@ -844,7 +865,9 @@ tbody {
 .dark .custom-btn,
 .dark .sub-feed-box a,
 .dark .editor-title,
-.dark .like-button {
+.dark .like-button,
+.dark .like-button-disabled,
+.dark .like-button-disabled:hover {
   color: #eaeaea;
   transition: all 0.2s;
 }
@@ -971,7 +994,12 @@ tbody {
   border: rgb(154, 69, 20) 1px solid;
 }
 
-.dark .likes {
+.dark .likes,
+.dark select option {
   border: 1px solid #434242;
   background-color: #1f1f1f;
+}
+
+.dark #datamodel-img {
+  background-color: rgba(255, 255, 255, 0.5);
 }

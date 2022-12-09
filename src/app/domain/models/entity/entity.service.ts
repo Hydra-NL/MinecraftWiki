@@ -19,11 +19,11 @@ export class EntityService<T extends Entity> {
   ) {}
 
   public list(options?: any): Observable<T[] | null> {
-    const endpoint = `${this.url}${this.endpoint}`;
+    const endpoint = `${this.url}/${this.endpoint}`;
     console.log(`list ${this.endpoint}`);
     return this.http.get<T[]>(endpoint, { ...options, ...httpOptions }).pipe(
       tap(console.log),
-      // map((response) => response.body),
+      //map((response) => response.body),
       catchError(this.handleError)
     );
   }
@@ -65,6 +65,44 @@ export class EntityService<T extends Entity> {
       // map((response: any) => response.result),
       catchError(this.handleError)
     );
+  }
+
+  // User only requests
+  public subscribe(id: string, subToId: string, options?: any): Observable<T> {
+    const endpoint = `${this.url}/${this.endpoint}/${id}/subscribe/${subToId}`;
+    console.log(`subscribe ${endpoint}`);
+    return this.http
+      .put(endpoint, id, { ...options, ...httpOptions })
+      .pipe(catchError(this.handleError));
+  }
+
+  public unsubscribe(
+    id: string,
+    unsubFromId: string,
+    options?: any
+  ): Observable<T> {
+    const endpoint = `${this.url}/${this.endpoint}/${id}/unsubscribe/${unsubFromId}`;
+    console.log(`unsubscribe ${endpoint}`);
+    return this.http
+      .put(endpoint, id, { ...options, ...httpOptions })
+      .pipe(catchError(this.handleError));
+  }
+
+  public like(id: string, itemId: string, options?: any): Observable<T> {
+    const endpoint = `${this.url}/${this.endpoint}/${id}/like/${itemId}`;
+    console.log(`like ${endpoint}`);
+    return this.http
+      .put(endpoint, id, { ...options, ...httpOptions })
+      .pipe(catchError(this.handleError));
+  }
+
+  public dislike(id: string, itemId: string, options?: any): Observable<T> {
+    const endpoint = `${this.url}/${this.endpoint}/${id}/dislike/${itemId}`;
+    console.log(`dislike ${endpoint}`);
+    return this.http
+      .put(endpoint, id, { ...options, ...httpOptions })
+      .pipe(catchError(this.handleError));
+      
   }
 
   public handleError(error: HttpErrorResponse): Observable<any> {

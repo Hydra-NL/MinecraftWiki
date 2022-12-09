@@ -1,10 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-  FormBuilder,
-} from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../auth.service';
@@ -16,42 +10,44 @@ import { AuthService } from '../auth.service';
 })
 export class LoginComponent implements OnInit, OnDestroy {
   subscription!: Subscription;
-  signinForm!: FormGroup;
-  error: string | undefined;
+  user: any = {};
 
-  constructor(
-    private router: Router,
-    private authService: AuthService,
-    private fb: FormBuilder
-  ) {
-    this.signinForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
-    });
+  constructor(private router: Router, private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.user = {
+      email: '',
+      password: '',
+    };
+    this.subscription = this.authService
+      .getUserFromLocalStorage()
+      .subscribe((user) => {
+        if (user) {
+          this.router.navigate(['/']);
+        }
+      });
   }
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {}
 
-  loginUser(): void {
-    if (this.signinForm.valid) {
-      const email = this.signinForm.value.email;
-      const password = this.signinForm.value.password;
-
-      this.subscription = this.authService
-        .login(email, password)
-        .subscribe((result) => {
-          if (result !== undefined) {
-            this.router.navigate(['/']);
-            console.log(result + ' logged in');
+  login() {
+    this.subscription = this.authService
+      .getUserByEmail(this.user.email)
+      .subscribe({
+        next: (user) => {
+          if (user) {
+            if (user.email === this.user.email) {
+              this.authService.login(this.user.email, this.user.password);
+            } else {
+              window.alert('Invalid credentials!');
+            }
           } else {
-            this.error = 'Login information is not correct';
+            window.alert('User not found!');
           }
-        });
-    } else {
-      console.log('Form is not valid');
-      return;
-    }
+        },
+        error: (err) => {
+          console.log('An error occurred while retrieving the user: ' + err);
+        },
+      });
   }
 }

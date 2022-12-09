@@ -4,7 +4,7 @@
       <div class="big-title">
         <h1><i class="fa fa-cube"></i> Blocks</h1>
         <div class="page-btns">
-          <a class="btn add-btn custom-btn" routerLink="/blocks/add">
+          <a class="btn add-btn custom-btn" routerLink="/blocks/add" *ngIf="currentUser != null">
             <i class="fa fa-plus"></i>
             Add Block </a
           ><a class="btn custom-btn back" routerLink=".." title="Back">
@@ -14,6 +14,10 @@
         </div>
       </div>
       <div class="content">
+        <p *ngIf="blocks.length == 0" class="text-muted empty-text">
+          No Blocks have been added to the wikipedia. Help fill up the wikipedia
+          by adding a new Block using the add button above!
+        </p>
         <div *ngFor="let block of blocks">
           <div class="card entity-card">
             <a class="card-click" routerLink="/blocks/{{ block._id }}"></a>

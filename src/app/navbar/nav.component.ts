@@ -1,4 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
+import { User } from '../domain/models/user/user.model';
 
 @Component({
   selector: 'app-nav',
@@ -7,13 +10,16 @@ import { Component, Input, OnInit } from '@angular/core';
 export class NavComponent implements OnInit {
   darkTheme: boolean = false;
   currentTime: Date = new Date();
+  loggedInUser$: Observable<User> | undefined;
 
-  constructor() {
+  constructor(private authService: AuthService) {
     console.log('NavComponent constructor');
   }
 
   ngOnInit() {
     console.log('NavComponent ngOnInit');
+    this.loggedInUser$ = this.authService.currentUser$;
+
     if (this.currentTime.getHours() >= 18 || this.currentTime.getHours() <= 6) {
       this.switchTheme();
     }
@@ -28,5 +34,10 @@ export class NavComponent implements OnInit {
       this.darkTheme = false;
     }
     console.log(this.darkTheme);
+  }
+
+  logout() {
+    this.authService.logout();
+    console.log('Logged out');
   }
 }

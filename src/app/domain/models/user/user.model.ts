@@ -6,9 +6,10 @@ export class User extends Entity {
   email: string = '';
   password: string = '';
   about: string = '';
-  subscriptions: Array<User> = [];
-  subscribers: Array<User> = [];
-  liked: Array<Block> = [];
+  subscriptions: string[] = [];
+  subscribers: string[] = [];
+  liked: string[] = [];
+  disliked: string[] = [];
 
   constructor(_id: string) {
     super(_id);

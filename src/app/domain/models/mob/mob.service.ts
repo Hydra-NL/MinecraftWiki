@@ -11,7 +11,7 @@ import { EntityType } from '../entity/entity.model';
 })
 export class MobService extends EntityService<Mob> {
   constructor(protected override http: HttpClient) {
-    super(environment.apiUrl, http, 'mobs');
+    super(environment.apiUrl, http, 'mob');
   }
   mobs: Mob[] = [
     {
@@ -32,20 +32,12 @@ export class MobService extends EntityService<Mob> {
         temperature: 16,
         dimension: Dimension.overworld,
       },
-      createdBy: {
-        _id: '2',
-        username: 'AlexTheBuilder',
-        email: 'alex@mc.com',
-        password: 'secret', about: 'I am a Minecraft player',
-        
-        subscriptions: [],
-        subscribers: [],
-        liked: [],
-      },
+      createdBy: '2',
       creationDate: new Date(new Date().setDate(new Date().getDate() - 3)),
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 1)),
       likes: 0,
+      dislikedBy: [],
       likedBy: [],
     },
     {
@@ -66,20 +58,12 @@ export class MobService extends EntityService<Mob> {
         temperature: 16,
         dimension: Dimension.overworld,
       },
-      createdBy: {
-        _id: '2',
-        username: 'AlexTheBuilder',
-        email: 'alex@mc.com',
-        password: 'secret', about: 'I am a Minecraft player',
-        
-        subscriptions: [],
-        subscribers: [],
-        liked: [],
-      },
+      createdBy: '2',
       creationDate: new Date(new Date().setDate(new Date().getDate() - 2)),
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 2)),
       likes: 0,
+      dislikedBy: [],
       likedBy: [],
     },
     {
@@ -100,20 +84,12 @@ export class MobService extends EntityService<Mob> {
         temperature: 16,
         dimension: Dimension.overworld,
       },
-      createdBy: {
-        _id: '3',
-        username: 'EnderDragon',
-        email: 'ender@mc.com',
-        password: 'secret', about: 'I am a Minecraft player',
-        
-        subscriptions: [],
-        subscribers: [],
-        liked: [],
-      },
+      createdBy: '3',
       creationDate: new Date(new Date().setDate(new Date().getDate() - 1)),
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 3)),
       likes: 0,
+      dislikedBy: [],
       likedBy: [],
     },
     {
@@ -134,20 +110,12 @@ export class MobService extends EntityService<Mob> {
         temperature: 12,
         dimension: Dimension.overworld,
       },
-      createdBy: {
-        _id: '3',
-        username: 'EnderDragon',
-        email: 'ender@mc.com',
-        password: 'secret', about: 'I am a Minecraft player',
-        
-        subscriptions: [],
-        subscribers: [],
-        liked: [],
-      },
+      createdBy: '3',
       creationDate: new Date(new Date().setDate(new Date().getDate() - 4)),
       timePassed: 0,
       lastUpdateDate: new Date(new Date().setDate(new Date().getDate() - 4)),
       likes: 0,
+      dislikedBy: [],
       likedBy: [],
     },
     {
@@ -168,20 +136,12 @@ export class MobService extends EntityService<Mob> {
         temperature: 0,
         dimension: Dimension.end,
       },
-      createdBy: {
-        _id: '3',
-        username: 'EnderDragon',
-        email: 'ender@mc.com',
-        password: 'secret', about: 'I am a Minecraft player',
-        
-        subscriptions: [],
-        subscribers: [],
-        liked: [],
-      },
+      createdBy: '3',
       creationDate: new Date(),
       timePassed: 0,
       lastUpdateDate: new Date(),
       likes: 0,
+      dislikedBy: [],
       likedBy: [],
     },
   ];
@@ -195,7 +155,7 @@ export class MobService extends EntityService<Mob> {
   }
 
   getMobsByUser(userId: string) {
-    return this.mobs.filter((mob) => mob.createdBy._id === userId);
+    return this.mobs.filter((mob) => mob.createdBy === userId);
   }
 
   addMob(mob: Mob) {

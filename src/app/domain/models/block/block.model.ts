@@ -15,10 +15,11 @@ export class Block extends Entity {
   hardness: number = 0; // 0 = hand, 1 = wood, 2 = stone, 3 = iron, 4 = diamond, 5 = netherite, 6 = unbreakable
   tool: ToolType = ToolType.pickaxe;
   biome: Biome = new Biome('');
-  createdBy: User = new User('');
+  createdBy: string = '';
   creationDate: Date = new Date();
   timePassed: number = 0;
   lastUpdateDate: Date = new Date();
   likes: number = 0;
-  likedBy: User[] = [];
+  dislikedBy: string[] = [];
+  likedBy: string[] = [];
 }

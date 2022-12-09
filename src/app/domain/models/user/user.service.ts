@@ -31,80 +31,8 @@ export class UserService extends EntityService<User> {
       about: 'I am a Minecraft player',
       subscriptions: [],
       subscribers: [],
-      liked: [
-        {
-          _id: '4',
-          name: 'Cobblestone',
-          description:
-            'Cobblestone is a common block, obtained from mining stone. It is mainly used for crafting or as a building block.',
-          type: EntityType.block,
-          hardness: 1,
-          stackable: true,
-          stackSize: 64,
-          tool: ToolType.pickaxe,
-          biome: {
-            _id: '4',
-            name: 'Mountains',
-            description:
-              'Mountains are a biome found in the Overworld. They are characterized by tall mountains and steep cliffs.',
-            temperature: 10,
-            dimension: Dimension.overworld,
-          },
-          createdBy: {
-            _id: '2',
-            username: 'AlexTheBuilder',
-            email: 'alex@mc.com',
-            password: 'secret',
-            about: 'I am a Minecraft player',
-
-            subscriptions: [],
-            subscribers: [],
-            liked: [],
-          },
-          creationDate: new Date(new Date().setDate(new Date().getDate() - 4)),
-          timePassed: 0,
-          lastUpdateDate: new Date(
-            new Date().setDate(new Date().getDate() - 4)
-          ),
-          likes: 1,
-          likedBy: [
-            {
-              _id: '1',
-              username: 'SteveTheMiner',
-              email: 'steve@mc.com',
-              password: 'secret',
-              about: 'I am a Minecraft player',
-              subscriptions: [
-                {
-                  _id: '2',
-                  username: 'AlexTheBuilder',
-                  email: 'alex@mc.com',
-                  password: 'secret',
-                  about: 'I am a Minecraft player',
-
-                  subscriptions: [],
-                  subscribers: [],
-                  liked: [],
-                },
-              ],
-              subscribers: [
-                {
-                  _id: '2',
-                  username: 'AlexTheBuilder',
-                  email: 'alex@mc.com',
-                  password: 'secret',
-                  about: 'I am a Minecraft player',
-
-                  subscriptions: [],
-                  subscribers: [],
-                  liked: [],
-                },
-              ],
-              liked: [],
-            },
-          ],
-        },
-      ],
+      liked: ['4'],
+      disliked: [],
     },
     {
       _id: '2',
@@ -112,10 +40,10 @@ export class UserService extends EntityService<User> {
       email: 'alex@mc.com',
       password: 'secret',
       about: 'I am a Minecraft player',
-
       subscriptions: [],
       subscribers: [],
       liked: [],
+      disliked: [],
     },
     {
       _id: '3',
@@ -123,10 +51,10 @@ export class UserService extends EntityService<User> {
       email: 'ender@mc.com',
       password: 'secret',
       about: 'I am a Minecraft player',
-
       subscriptions: [],
       subscribers: [],
       liked: [],
+      disliked: [],
     },
     {
       _id: '4',
@@ -134,10 +62,10 @@ export class UserService extends EntityService<User> {
       email: 'herobrine@mc.com',
       password: 'secret',
       about: 'I am a Minecraft player',
-
       subscriptions: [],
       subscribers: [],
       liked: [],
+      disliked: [],
     },
     {
       _id: '5',
@@ -145,10 +73,10 @@ export class UserService extends EntityService<User> {
       email: 'notch@mc.com',
       password: 'secret',
       about: 'I am a Minecraft player',
-
       subscriptions: [],
       subscribers: [],
       liked: [],
+      disliked: [],
     },
     {
       _id: '6',
@@ -156,10 +84,10 @@ export class UserService extends EntityService<User> {
       email: 'wither@mc.com',
       password: 'secret',
       about: 'I am a Minecraft player',
-
       subscriptions: [],
       subscribers: [],
       liked: [],
+      disliked: [],
     },
     {
       _id: '7',
@@ -167,10 +95,10 @@ export class UserService extends EntityService<User> {
       email: 'jesse@mc.com',
       password: 'secret',
       about: 'I am a Minecraft player',
-
       subscriptions: [],
       subscribers: [],
       liked: [],
+      disliked: [],
     },
     {
       _id: '8',
@@ -178,34 +106,10 @@ export class UserService extends EntityService<User> {
       email: 'ferdinand@mc.com',
       password: 'secret',
       about: 'I am a Minecraft player',
-
-      subscriptions: [
-        {
-          _id: '1',
-          username: 'SteveTheMiner',
-          email: 'steve@mc.com',
-          password: 'secret',
-          about: 'I am a Minecraft player',
-
-          subscriptions: [],
-          subscribers: [],
-          liked: [],
-        },
-      ],
-      subscribers: [
-        {
-          _id: '1',
-          username: 'SteveTheMiner',
-          email: 'steve@mc.com',
-          password: 'secret',
-          about: 'I am a Minecraft player',
-
-          subscriptions: [],
-          subscribers: [],
-          liked: [],
-        },
-      ],
+      subscriptions: ['1'],
+      subscribers: ['1'],
       liked: [],
+      disliked: [],
     },
     {
       _id: '9',
@@ -213,10 +117,10 @@ export class UserService extends EntityService<User> {
       email: 'xay@mc.com',
       password: 'secret',
       about: 'I am a Minecraft player',
-
       subscriptions: [],
       subscribers: [],
       liked: [],
+      disliked: [],
     },
   ];
 
@@ -239,17 +143,17 @@ export class UserService extends EntityService<User> {
   deleteUser(id: string): void {
     console.log('deleteUser aangeroepen');
     this.mobService.getMobs().forEach((m) => {
-      if (m.createdBy._id === id) {
+      if (m.createdBy === id) {
         this.mobService.deleteMob(m._id!);
       }
     });
     this.blockService.getBlocks().forEach((b) => {
-      if (b.createdBy._id === id) {
+      if (b.createdBy === id) {
         this.blockService.deleteBlock(b._id!);
       }
     });
     this.toolService.getTools().forEach((t) => {
-      if (t.createdBy._id === id) {
+      if (t.createdBy === id) {
         this.toolService.deleteTool(t._id!);
       }
     });
@@ -259,23 +163,19 @@ export class UserService extends EntityService<User> {
     );
   }
 
-  subscribeToUser(subscriber: User, subscribedTo: User): void {
+  subscribeToUser(subscriber: User, subscribedTo: string): void {
     console.log('subscribeToUser aangeroepen');
-    if (
-      !subscriber.subscriptions.find((user) => user._id === subscribedTo._id)
-    ) {
+    if (!subscriber.subscriptions.find((user) => user === subscribedTo)) {
       subscriber.subscriptions.push(subscribedTo);
-      subscribedTo.subscribers.push(subscriber);
+      this.getUserById(subscribedTo).subscribers.push(subscriber._id!);
     } else {
       subscriber.subscriptions.splice(
-        subscriber.subscriptions.findIndex(
-          (user) => user._id === subscribedTo._id
-        ),
+        subscriber.subscriptions.findIndex((user) => user === subscribedTo),
         1
       );
-      subscribedTo.subscribers.splice(
-        subscribedTo.subscribers.findIndex(
-          (user) => user._id === subscriber._id
+      this.getUserById(subscribedTo).subscribers.splice(
+        this.getUserById(subscribedTo).subscribers.findIndex(
+          (user) => user === subscriber._id
         ),
         1
       );

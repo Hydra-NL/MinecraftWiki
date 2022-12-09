@@ -7,7 +7,7 @@
           }}<a
             class="edit-entity-link"
             routerLink="/blocks/{{ block?._id }}/edit"
-            *ngIf="currentUser?._id == '1'"
+            *ngIf="currentUserId == block?.createdBy"
             title="Edit block"
             ><img
               class="edit-icon"
@@ -53,9 +53,7 @@
       <h5 class="subtitle" id="stats">Stats</h5>
       <p>
         Stackable: {{ block?.stackable }}<br />
-        <span *ngIf="block?.stackable"
-          >Stacksize: {{ block?.stackSize }}<br
-        /></span>
+        Stack Size: {{ block?.stackSize }}<br />
         Hardness:
         <img
           *ngIf="block?.hardness == 0"
@@ -98,12 +96,13 @@
           class="slider-img"
           title="Unbreakable"
           src="../../../../../assets/images/unbreakable.png"
-        />
+        /><br />
+        Tool Type needed: {{ block?.tool }}<br />
       </p>
       <h5 class="subtitle" id="behavior">Behavior</h5>
       <p>
-        {{ block?.name }} can be mined by {{ block?.tool }}s that have a Tool
-        Level of {{ block?.hardness }} or higher.<br />
+        {{ block?.name }} can be mined by <b>{{ block?.tool }}s</b> that have a
+        Tool Level of {{ block?.hardness }} or higher.<br />
         <span *ngIf="this.tools.length != 0">
           Tools that can mine {{ block?.name }}:
           <a
@@ -123,10 +122,12 @@
         >
       </p>
       <h5 class="subtitle" id="biome">Biome</h5>
-      <p>{{ block?.name }} can be found in the {{ biome?.name }} biome.</p>
-      <p>{{ biome?.description }}</p>
-      <p>Average temperatures: {{ biome?.temperature }}°C</p>
-      <p>Dimension: {{ biome?.dimension }}</p>
+      <p>
+        {{ block?.name }} can be found in the {{ block?.biome?.name }} biome.
+      </p>
+      <p>{{ block?.biome?.description }}</p>
+      <p>Average temperatures: {{ block?.biome?.temperature }}°C</p>
+      <p>Dimension: {{ block?.biome?.dimension }}</p>
     </content>
   </div>
 
@@ -134,13 +135,15 @@
     <div class="card">
       <div class="card-header">
         <span>Creator</span>
-        <a routerLink="/users/{{ user?._id }}" class="editor-title">{{
-          user?.username
+        <a routerLink="/users/{{ creator?._id }}" class="editor-title">{{
+          creator?.username
         }}</a>
-        <span *ngIf="currentUser!._id !== user!._id">
+        <span
+          *ngIf="currentUserId !== block?.createdBy && currentUserId != null"
+        >
           <button
             (click)="subscribe()"
-            *ngIf="!user?.subscribers?.includes(currentUser!)"
+            *ngIf="!creator?.subscribers?.includes(currentUserId!)"
             class="btn custom-btn add-btn"
             id="subscribe-detail-page"
           >
@@ -153,7 +156,7 @@
           </button>
           <button
             (click)="subscribe()"
-            *ngIf="user?.subscribers?.includes(currentUser!)"
+            *ngIf="creator?.subscribers!.includes(this.currentUserId!)"
             id="subscribe-detail-page"
             class="btn custom-btn delete-btn"
           >
@@ -172,7 +175,7 @@
           <b>Last updated: </b>{{ block?.lastUpdateDate | date: "medium" }}
         </p>
       </div>
-      <div class="card-footer" *ngIf="user?._id == '1'">
+      <div class="card-footer" *ngIf="currentUserId! == block?.createdBy">
         <p>Delete page</p>
         <button class="btn custom-btn delete-btn" (click)="deleteBlock()">
           <img
@@ -184,26 +187,12 @@
     </div>
     <content class="see-also">
       <div class="big-title">
-        <h5>More from {{ user?.username }}:</h5>
-      </div>
-      <div class="content scroll">
-        <p *ngIf="userBlocks.length == 0" class="text-muted empty-text">
-          This creator doesn't have other pages yet.
-        </p>
-        <div *ngFor="let blocks of userBlocks">
-          <div class="sub-feed-box">
-            <a routerLink="/blocks/{{ blocks._id }}" class="entity-title">{{
-              blocks.name
-            }}</a>
-          </div>
-        </div>
-      </div>
-    </content>
-    <content class="see-also">
-      <div class="big-title">
         <h5>See also:</h5>
       </div>
       <div class="content scroll">
+        <p *ngIf="blocks.length == 0" class="text-muted empty-text">
+          There are no other Block-pages yet.
+        </p>
         <div *ngFor="let blockOther of blocks">
           <div class="sub-feed-box">
             <a routerLink="/blocks/{{ blockOther._id }}" class="entity-title">{{

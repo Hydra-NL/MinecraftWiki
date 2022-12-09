@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Tool } from '../../../models/tool/tool.model';
 import { ToolService } from '../../../models/tool/tool.service';
 import { Subscription } from 'rxjs';
+import { User } from 'src/app/domain/models/user/user.model';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-tooledit',
@@ -11,18 +13,36 @@ import { Subscription } from 'rxjs';
 export class ToolEditComponent implements OnInit {
   toolId: string = this.route.snapshot.params['id'];
   tool: Tool | undefined;
+  currentUser: User | undefined;
   subscription!: Subscription;
 
   constructor(
     private toolService: ToolService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     console.log('ToolEditComponent constructor');
   }
 
   ngOnInit() {
-    this.tool = this.toolService.getTool(this.toolId);
+    this.subscription = this.toolService.read(this.toolId).subscribe({
+      next: (tool) => {
+        this.tool = tool;
+        console.log(`Tool: ${this.tool._id}`);
+      },
+      error: (err) => {
+        console.log('An error occurred while retrieving the tool: ' + err);
+      },
+    });
+    this.authService.userMayEdit(this.tool?.createdBy!).subscribe({
+      next: (mayEdit) => {
+        if (!mayEdit) {
+          window.alert('This is not your tool!');
+          this.router.navigate(['/tools/' + this.toolId]);
+        }
+      },
+    });
   }
 
   playAudio() {
@@ -34,15 +54,12 @@ export class ToolEditComponent implements OnInit {
   }
 
   updateTool() {
-    if (this.tool) {
-      this.tool.lastUpdateDate = new Date();
-      this.toolService.updateTool(this.tool);
-      this.router.navigate(['/tools/' + this.toolId]);
-      console.log('ToolEditComponent updateTool');
-      console.log(this.tool);
-      this.playAudio();
-    } else {
-      this.router.navigate(['/tools/' + this.toolId + '/edit']);
-    }
+    this.subscription = this.toolService.update(this.tool!).subscribe({
+      next: (tool) => {
+        this.tool = { ...tool };
+        this.playAudio();
+        this.router.navigate(['/tools/' + this.toolId]);
+      },
+    });
   }
 }

@@ -24,6 +24,8 @@
         <p>{{ user.about }}</p>
         <h5 class="subtitle">Creator stats</h5>
         <p>
+          Total likes: {{ totalLikes }}<br />
+          Total subscribers: {{ totalSubs }}<br />
           Pages created: {{ pagesCreated }}<br />
           Pages:
           <a
@@ -32,44 +34,27 @@
             routerLink="/{{ page.type }}s/{{ page._id }}"
             >{{ page.name
             }}<span *ngIf="page !== pages[pages.length - 1]">, </span></a
-          ><br />
-          Total likes: {{ totalLikes }}<br />
-          Total subscribers: {{ totalSubs }}
+          >
         </p>
       </div>
     </content>
   </div>
   <div class="custom-container" *ngIf="currentUser?._id == user._id">
-    <div class="card">
-      <div class="card-header">
-        <span>Profile management</span>
-      </div>
-      <div class="card-footer" *ngIf="user?._id == '1'">
-        <p>Delete profile</p>
-        <button class="btn custom-btn delete-btn" (click)="deleteProfile()">
-          <img
-            class="btn-icon"
-            src="../../../../../assets/images/delete-icon.png"
-          />
-        </button>
-      </div>
-    </div>
-
     <content class="see-also">
       <div class="big-title">
         <h5>Subscriptions:</h5>
       </div>
 
       <div class="content scroll">
-        <p *ngIf="user.subscriptions.length == 0" class="text-muted empty-text">
+        <p *ngIf="subs.length == 0" class="text-muted empty-text">
           You aren't subscribed to any creators yet.
         </p>
-        <div *ngFor="let subscription of user.subscriptions">
+        <div *ngFor="let sub of subs">
           <div class="sub-feed-box">
             <a
               class="entity-title"
-              routerLink="/users/{{ subscription._id }}"
-              >{{ subscription.username }}</a
+              routerLink="/users/{{ sub._id }}"
+              >{{ sub.username }}</a
             >
           </div>
         </div>
@@ -84,7 +69,7 @@
         <p *ngIf="user.liked.length == 0" class="text-muted empty-text">
           You haven't liked any pages yet.
         </p>
-        <div *ngFor="let like of user.liked">
+        <div *ngFor="let like of likes">
           <div class="sub-feed-box">
             <a
               class="entity-title"

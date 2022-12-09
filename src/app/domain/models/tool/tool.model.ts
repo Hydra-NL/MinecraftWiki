@@ -20,10 +20,11 @@ export class Tool extends Entity {
   attack: number = 0;
   toolLevel: number = 0; // 0 = hand, 1 = wood, 2 = stone, 3 = iron, 4 = diamond, 5 = netherite
   toolType: ToolType = ToolType.pickaxe;
-  createdBy: User = new User('');
+  createdBy: string = '';
   creationDate: Date = new Date();
   timePassed: number = 0;
   lastUpdateDate: Date = new Date();
   likes: number = 0;
-  likedBy: User[] = [];
+  dislikedBy: string[] = [];
+  likedBy: string[] = [];
 }

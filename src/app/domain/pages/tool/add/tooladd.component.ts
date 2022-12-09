@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Tool } from '../../../models/tool/tool.model';
 import { ToolService } from '../../../models/tool/tool.service';
 import { ToolType } from '../../../models/tool/tool.model';
-import { UserService } from 'src/app/domain/models/user/user.service';
-import { User } from 'src/app/domain/models/user/user.model';
 import { EntityType } from 'src/app/domain/models/entity/entity.model';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-tooladd',
@@ -13,12 +13,13 @@ import { EntityType } from 'src/app/domain/models/entity/entity.model';
 })
 export class ToolAddComponent implements OnInit {
   tool!: Tool;
+  currentUserId!: string;
+  subscription!: Subscription;
 
   constructor(
     private toolService: ToolService,
-    private userService: UserService,
-    private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     console.log('ToolAddComponent constructor');
   }
@@ -34,11 +35,12 @@ export class ToolAddComponent implements OnInit {
       attack: 0,
       toolLevel: 0,
       toolType: ToolType.pickaxe,
-      createdBy: new User(''),
+      createdBy: '',
       timePassed: 0,
       creationDate: new Date(),
       lastUpdateDate: new Date(),
       likes: 0,
+      dislikedBy: [],
       likedBy: [],
     };
   }
@@ -55,15 +57,24 @@ export class ToolAddComponent implements OnInit {
     if (this.tool) {
       this.tool.name =
         this.tool.name.charAt(0).toUpperCase() + this.tool.name.slice(1);
-        // Moet currentUser zijn
-      this.tool.createdBy = this.userService.getUserById('8');
-      this.tool.creationDate = new Date();
-      this.tool.lastUpdateDate = new Date();
-      this.toolService.addTool(this.tool);
-      this.playAudio();
-      this.router.navigate(['/tools/' + this.tool._id]);
-      console.log('ToolAddComponent Tool added');
-      console.log(this.tool);
+      this.tool.createdBy = this.currentUserId =
+        this.authService.getUserIdFromLocalStorage();
+      if (this.tool.isWeapon) {
+        this.tool.toolType = ToolType.sword;
+      }
+
+      this.subscription = this.toolService.create(this.tool).subscribe({
+        next: (tool) => {
+          this.playAudio();
+          this.router.navigate(['/tools/', tool._id]);
+          console.log('ToolAddComponent Tool added');
+          console.log(this.tool);
+        },
+        error: (err) =>
+          console.error(
+            'An error occurred while trying to create a tool: ' + err
+          ),
+      });
     }
   }
 }

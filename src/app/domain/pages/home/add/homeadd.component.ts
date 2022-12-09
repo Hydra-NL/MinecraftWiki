@@ -1,13 +1,16 @@
-import { Component } from '@angular/core';
-import { MobService } from '../../../models/mob/mob.service';
-import { ToolService } from '../../../models/tool/tool.service';
-import { BlockService } from '../../../models/block/block.service';
-import { UserService } from '../../../models/user/user.service';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/auth/auth.service';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home-add',
   templateUrl: './homeadd.component.html',
 })
-export class HomeAddComponent {
+export class HomeAddComponent implements OnInit {
+  subscription!: Subscription;
+  constructor(private authService: AuthService, private router: Router) {}
+  ngOnInit() {
     
+  }
 }

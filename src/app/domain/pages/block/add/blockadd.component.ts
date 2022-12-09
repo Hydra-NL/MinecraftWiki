@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Block } from 'src/app/domain/models/block/block.model';
 import { BlockService } from 'src/app/domain/models/block/block.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Tool } from '../../../models/tool/tool.model';
-import { ToolService } from '../../../models/tool/tool.service';
+import { Router } from '@angular/router';
 import { ToolType } from '../../../models/tool/tool.model';
-import { UserService } from 'src/app/domain/models/user/user.service';
-import { User } from 'src/app/domain/models/user/user.model';
 import { Biome } from 'src/app/domain/models/biome/biome.model';
-import { BiomeAddComponent } from '../../biome/add/biomeadd.component';
 import { EntityType } from 'src/app/domain/models/entity/entity.model';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-blockadd',
@@ -17,12 +14,13 @@ import { EntityType } from 'src/app/domain/models/entity/entity.model';
 })
 export class BlockAddComponent implements OnInit {
   block!: Block;
+  currentUserId: string | undefined;
+  subscription!: Subscription;
 
   constructor(
     private blockService: BlockService,
-    private userService: UserService,
-    private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     console.log('BlockAddComponent constructor');
   }
@@ -38,11 +36,12 @@ export class BlockAddComponent implements OnInit {
       hardness: 0,
       tool: ToolType.pickaxe,
       biome: new Biome(''),
-      createdBy: new User(''),
+      createdBy: '',
       timePassed: 0,
       creationDate: new Date(),
       lastUpdateDate: new Date(),
       likes: 0,
+      dislikedBy: [],
       likedBy: [],
     };
   }
@@ -59,14 +58,29 @@ export class BlockAddComponent implements OnInit {
     if (this.block) {
       this.block.name =
         this.block.name.charAt(0).toUpperCase() + this.block.name.slice(1);
-      this.block.createdBy = this.userService.getUserById('8');
-      this.block.creationDate = new Date();
-      this.block.lastUpdateDate = new Date();
-      this.blockService.addBlock(this.block);
-      this.playAudio();
-      this.router.navigate(['/blocks/' + this.block._id]);
-      console.log('BlockAddComponent Block added');
-      console.log(this.block);
+      this.block.name = this.block.name.trimEnd();
+
+      this.block.biome.name =
+        this.block.biome.name.charAt(0).toUpperCase() +
+        this.block.biome.name.slice(1);
+      this.block.biome.name = this.block.biome.name.trimEnd();
+
+      this.block.createdBy = this.currentUserId =
+        this.authService.getUserIdFromLocalStorage();
+
+      this.subscription = this.blockService.create(this.block).subscribe({
+        next: (block) => {
+          this.playAudio();
+
+          console.log('BlockAddComponent Block added');
+          console.log(this.block);
+          this.router.navigate(['/blocks/', block._id]);
+        },
+        error: (err) =>
+          console.error(
+            'An error occurred while trying to create a block: ' + err
+          ),
+      });
     }
   }
 }
