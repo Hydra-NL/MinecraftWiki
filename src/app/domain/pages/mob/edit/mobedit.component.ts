@@ -39,7 +39,6 @@ export class MobEditComponent implements OnInit {
     this.authService.userMayEdit(this.mob?.createdBy!).subscribe({
       next: (mayEdit) => {
         if (!mayEdit) {
-          window.alert('This is not your mob!');
           this.router.navigate(['/mobs/' + this.mobId]);
         }
       }
