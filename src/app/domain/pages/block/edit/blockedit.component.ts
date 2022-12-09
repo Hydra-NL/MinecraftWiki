@@ -40,7 +40,6 @@ export class BlockEditComponent implements OnInit {
     this.authService.userMayEdit(this.block?.createdBy!).subscribe({
       next: (mayEdit) => {
         if (!mayEdit) {
-          window.alert('This is not your block!');
           this.router.navigate(['/blocks/' + this.blockId]);
         }
       },

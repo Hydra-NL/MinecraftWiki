@@ -38,7 +38,6 @@ export class ToolEditComponent implements OnInit {
     this.authService.userMayEdit(this.tool?.createdBy!).subscribe({
       next: (mayEdit) => {
         if (!mayEdit) {
-          window.alert('This is not your tool!');
           this.router.navigate(['/tools/' + this.toolId]);
         }
       },
