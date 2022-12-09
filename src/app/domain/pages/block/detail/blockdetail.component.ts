@@ -50,17 +50,7 @@ export class BlockDetailComponent implements OnInit {
           this.block = block;
           console.log(`Block: ${this.block._id}`);
           // Creator of said block
-          this.subscription = this.userService
-            .read(this.block?.createdBy!)
-            .subscribe({
-              next: (creator) => {
-                this.creator = creator;
-                console.log(`Creator: ${this.creator._id}`);
-              },
-              error: (err) => {
-                console.log(err);
-              },
-            });
+          this.getCreator();
           // Tools that can break this block
           this.subscription = this.toolService.list().subscribe({
             next: (tools) => {
@@ -82,23 +72,7 @@ export class BlockDetailComponent implements OnInit {
       });
 
       // Current user
-      this.subscription = this.authService
-        .getUserFromLocalStorage()
-        .subscribe((user) => {
-          if (user) {
-            this.currentUserId = this.authService.getUserIdFromLocalStorage();
-            this.subscription = this.userService
-              .read(this.currentUserId)
-              .subscribe({
-                next: (user) => {
-                  this.currentUser = user;
-                  console.log(`Current user: ${this.currentUser._id}`);
-                },
-              });
-          } else {
-            console.log('No user found');
-          }
-        });
+      this.getUser();
 
       // Blocks (see also list)
       this.subscription = this.blockService.list().subscribe({
@@ -121,6 +95,42 @@ export class BlockDetailComponent implements OnInit {
     audio.play();
   }
 
+  getUser() {
+    this.currentUser = undefined;
+    this.currentUserId = undefined;
+    this.subscription = this.authService
+      .getUserFromLocalStorage()
+      .subscribe((user) => {
+        if (user) {
+          this.currentUserId = this.authService.getUserIdFromLocalStorage();
+          this.subscription = this.userService
+            .read(this.currentUserId)
+            .subscribe({
+              next: (user) => {
+                this.currentUser = user;
+                console.log(`Current user: ${this.currentUser._id}`);
+              },
+            });
+        } else {
+          console.log('No user found');
+        }
+      });
+  }
+
+  getCreator() {
+    this.subscription = this.userService
+      .read(this.block?.createdBy!)
+      .subscribe({
+        next: (creator) => {
+          this.creator = creator;
+          console.log(`Creator: ${this.creator._id}`);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
+
   deleteBlock() {
     let text = 'Are you sure you want to delete this block?';
     if (confirm(text) == true) {
@@ -140,39 +150,25 @@ export class BlockDetailComponent implements OnInit {
 
   subscribe() {
     if (this.creator?.subscribers.includes(this.currentUserId!)) {
-      this.creator?.subscribers.splice(
-        this.creator?.subscribers.indexOf(this.currentUserId!),
-        1
-      );
-      this.subscription = this.userService.update(this.creator!).subscribe({
-        next: () => {
-          console.log('Unsubscribed');
-        },
-      });
-      this.currentUser?.subscriptions.splice(
-        this.currentUser?.subscriptions.indexOf(this.creator?._id!),
-        1
-      );
-      this.subscription = this.userService.update(this.currentUser!).subscribe({
-        next: () => {
-          console.log('Unsubscribed');
-        },
-      });
+      this.subscription = this.userService
+        .unsubscribe(this.currentUserId!, this.creator._id!)
+        .subscribe({
+          next: () => {
+            console.log('Unsubscribed');
+            this.getCreator();
+          },
+        });
       return;
     } else {
-      this.creator?.subscribers.push(this.currentUserId!);
-      this.subscription = this.userService.update(this.creator!).subscribe({
-        next: () => {
-          console.log('Subscribed');
-        },
-      });
-
-      this.currentUser?.subscriptions.push(this.creator?._id!);
-      this.subscription = this.userService.update(this.currentUser!).subscribe({
-        next: () => {
-          console.log('Subscribed');
-        },
-      });
+      this.subscription = this.userService
+        .subscribe(this.currentUserId!, this.creator?._id!)
+        .subscribe({
+          next: () => {
+            console.log('Subscribed');
+            this.getCreator();
+          },
+        });
+      return;
     }
   }
 }

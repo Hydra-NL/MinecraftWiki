@@ -11,10 +11,6 @@ export class NavComponent implements OnInit {
   darkTheme: boolean = false;
   currentTime: Date = new Date();
   loggedInUser$: Observable<User> | undefined;
-  currentUserId$: string = '';
-  currentUser: User | undefined;
-  subscription!: Subscription;
-  currentUserId: string | undefined;
 
   constructor(private authService: AuthService) {
     console.log('NavComponent constructor');
@@ -23,7 +19,6 @@ export class NavComponent implements OnInit {
   ngOnInit() {
     console.log('NavComponent ngOnInit');
     this.loggedInUser$ = this.authService.currentUser$;
-    
 
     if (this.currentTime.getHours() >= 18 || this.currentTime.getHours() <= 6) {
       this.switchTheme();

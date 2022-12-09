@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { User } from '../domain/models/user/user.model';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
@@ -27,30 +27,29 @@ export class AuthService {
   }
 
   // Sign-in
-  login(email: string, password: string): Observable<any> {
+  login(email: string, password: string) {
     console.log(`login at ${environment.apiUrl}/auth/login`);
 
     return this.http
-      .post(
+      .post<any>(
         `${environment.apiUrl}/auth/login`,
         { email, password },
         { headers: this.headers }
       )
-      .pipe(
-        map((response: any) => {
+      .subscribe((response) => {
+        if (!response) {
+          window.alert('Invalid credentials');
+        } else {
           console.log('response: ' + response);
           this.saveUserToLocalStorage(response);
           localStorage.setItem('access_token', response.token);
+          localStorage.setItem('currentuser', JSON.stringify(response));
           this.currentUser$.next(response);
           console.log('currentUser$ = ' + this.currentUser$);
           console.log(localStorage);
-          return response;
-        }),
-        catchError((error: any) => {
-          console.log('error:', error);
-          return of(undefined);
-        })
-      );
+          this.router.navigate(['home']);
+        }
+      });
   }
 
   private saveUserToLocalStorage(user: User): void {
@@ -120,6 +119,12 @@ export class AuthService {
         user ? user._id === itemCreatedBy : false
       )
     );
+  }
+
+  getUserByEmail(email: string): Observable<User> {
+    return this.http
+      .get<User>(`${environment.apiUrl}/user/email/${email}`)
+      .pipe(catchError(this.handleError));
   }
 
   // Error

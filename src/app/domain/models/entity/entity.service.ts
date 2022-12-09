@@ -67,6 +67,44 @@ export class EntityService<T extends Entity> {
     );
   }
 
+  // User only requests
+  public subscribe(id: string, subToId: string, options?: any): Observable<T> {
+    const endpoint = `${this.url}/${this.endpoint}/${id}/subscribe/${subToId}`;
+    console.log(`subscribe ${endpoint}`);
+    return this.http
+      .put(endpoint, id, { ...options, ...httpOptions })
+      .pipe(catchError(this.handleError));
+  }
+
+  public unsubscribe(
+    id: string,
+    unsubFromId: string,
+    options?: any
+  ): Observable<T> {
+    const endpoint = `${this.url}/${this.endpoint}/${id}/unsubscribe/${unsubFromId}`;
+    console.log(`unsubscribe ${endpoint}`);
+    return this.http
+      .put(endpoint, id, { ...options, ...httpOptions })
+      .pipe(catchError(this.handleError));
+  }
+
+  public like(id: string, itemId: string, options?: any): Observable<T> {
+    const endpoint = `${this.url}/${this.endpoint}/${id}/like/${itemId}`;
+    console.log(`like ${endpoint}`);
+    return this.http
+      .put(endpoint, id, { ...options, ...httpOptions })
+      .pipe(catchError(this.handleError));
+  }
+
+  public dislike(id: string, itemId: string, options?: any): Observable<T> {
+    const endpoint = `${this.url}/${this.endpoint}/${id}/dislike/${itemId}`;
+    console.log(`dislike ${endpoint}`);
+    return this.http
+      .put(endpoint, id, { ...options, ...httpOptions })
+      .pipe(catchError(this.handleError));
+      
+  }
+
   public handleError(error: HttpErrorResponse): Observable<any> {
     console.log(error);
 

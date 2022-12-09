@@ -135,20 +135,11 @@ export class HomeComponent implements OnInit, OnDestroy {
                     });
                   this.feed.push(this.blocks[i]);
                   this.calcTime(true);
-                  try {
-                    this.sortFeed();
-                  } catch (e) {
-                    console.log(e);
-                  }
-                  for (let i = 0; i < this.feed.length; i++) {
-                    if (
-                      this.feed[i].creator.subscribers.includes(
-                        this.currentUserId
-                      )
-                    ) {
-                      this.fyp.push(this.feed[i]);
-                    }
-                  }
+                }
+                try {
+                  this.sortFeed();
+                } catch (e) {
+                  console.log(e);
                 }
               },
               error: (err) => {
@@ -167,6 +158,11 @@ export class HomeComponent implements OnInit, OnDestroy {
         console.log('An error occured while retrieving the blocks: ' + err);
       },
     });
+    for (let i = 0; i < this.feed.length; i++) {
+      if (this.feed[i].creator.subscribers.includes(this.currentUserId)) {
+        this.fyp.push(this.feed[i]);
+      }
+    }
   }
 
   refreshFeed() {
@@ -210,30 +206,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   unsubscribe(id: string) {
     console.log('Unsubscribing from: ' + id);
-    this.subscription = this.userService.read(id).subscribe({
-      next: (user) => {
-        this.creator = user;
-        this.currentUser!.subscriptions.splice(
-          this.currentUser!.subscriptions.indexOf(id),
-          1
-        );
-        this.creator.subscribers.splice(
-          this.creator.subscribers.indexOf(this.currentUser!._id!),
-          1
-        );
-        this.userService.update(this.currentUser!).subscribe({
-          next: (user) => {
-            this.currentUser = user;
-            this.userService.update(this.creator).subscribe({
-              next: (user) => {
-                this.creator = user;
-                this.refreshSubscriptions();
-              },
-            });
-          },
-        });
-      },
-    });
+    this.subscription = this.userService
+      .unsubscribe(this.currentUserId, id)
+      .subscribe({
+        next: (user) => {
+          this.currentUser = user;
+          this.refreshSubscriptions();
+        },
+      });
   }
 
   toggle() {
@@ -299,205 +279,211 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  like(id: string) {
-    this.subscription = this.mobService.read(id).subscribe({
-      next: (mob) => {
-        if (mob) {
-          if (!mob.likedBy.includes(this.currentUserId)) {
-            mob.likes++;
-            mob.likedBy.push(this.currentUserId);
-            if (mob.dislikedBy.includes(this.currentUserId)) {
-              mob.likes++;
-              mob.dislikedBy.splice(
-                mob.dislikedBy.indexOf(this.currentUserId),
-                1
-              );
-            }
-            this.mobService.update(mob).subscribe({
-              next: () => {
-                this.refreshFeed();
-              },
-            });
-          } else {
-            mob.likes--;
-            mob.likedBy.splice(mob.likedBy.indexOf(this.currentUserId), 1);
-            this.mobService.update(mob).subscribe({
-              next: () => {
-                this.refreshFeed();
-              },
-            });
-          }
-        } else {
-          this.subscription = this.toolService.read(id).subscribe({
-            next: (tool) => {
-              if (tool) {
-                if (!tool.likedBy.includes(this.currentUserId)) {
-                  tool.likes++;
-                  tool.likedBy.push(this.currentUserId);
-                  if (tool.dislikedBy.includes(this.currentUserId)) {
-                    tool.likes++;
-                    tool.dislikedBy.splice(
-                      tool.dislikedBy.indexOf(this.currentUserId),
-                      1
-                    );
-                  }
-                  this.toolService.update(tool).subscribe({
-                    next: () => {
-                      this.refreshFeed();
-                    },
-                  });
-                } else {
-                  tool.likes--;
-                  tool.likedBy.splice(
-                    tool.likedBy.indexOf(this.currentUserId),
+  like(itemId: string) {
+    this.subscription = this.userService
+      .like(this.currentUserId, itemId)
+      .subscribe({
+        next: () => {
+          this.subscription = this.mobService.read(itemId).subscribe({
+            next: (mob) => {
+              if (mob && !mob.likedBy.includes(this.currentUserId)) {
+                mob.likes++;
+                mob.likedBy.push(this.currentUserId);
+                if (mob.dislikedBy.includes(this.currentUserId)) {
+                  mob.dislikedBy.splice(
+                    mob.dislikedBy.indexOf(this.currentUserId),
                     1
                   );
-                  this.toolService.update(tool).subscribe({
-                    next: () => {
-                      this.refreshFeed();
-                    },
-                  });
+                  mob.likes++;
                 }
-              } else {
-                this.subscription = this.blockService.read(id).subscribe({
-                  next: (block) => {
-                    if (block) {
-                      if (!block.likedBy.includes(this.currentUserId)) {
-                        block.likes++;
-                        block.likedBy.push(this.currentUserId);
-                        if (block.dislikedBy.includes(this.currentUserId)) {
-                          block.likes++;
-                          block.dislikedBy.splice(
-                            block.dislikedBy.indexOf(this.currentUserId),
-                            1
-                          );
-                        }
-                        this.blockService.update(block).subscribe({
-                          next: () => {
-                            this.refreshFeed();
-                          },
-                        });
-                      } else {
-                        block.likes--;
-                        block.likedBy.splice(
-                          block.likedBy.indexOf(this.currentUserId),
-                          1
-                        );
-                        this.blockService.update(block).subscribe({
-                          next: () => {
-                            this.refreshFeed();
-                          },
-                        });
-                      }
-                    }
+                this.subscription = this.mobService.update(mob).subscribe({
+                  next: () => {
+                    this.refreshFeed();
+                  },
+                });
+              } else if (mob && mob.likedBy.includes(this.currentUserId)) {
+                mob.likes--;
+                mob.likedBy.splice(mob.likedBy.indexOf(this.currentUserId), 1);
+                this.subscription = this.mobService.update(mob).subscribe({
+                  next: () => {
+                    this.refreshFeed();
                   },
                 });
               }
             },
           });
-        }
-      },
-    });
-  }
 
-  dislike(id: string) {
-    this.subscription = this.mobService.read(id).subscribe({
-      next: (mob) => {
-        if (mob) {
-          if (!mob.dislikedBy.includes(this.currentUserId)) {
-            mob.likes--;
-            mob.dislikedBy.push(this.currentUserId);
-            if (mob.likedBy.includes(this.currentUserId)) {
-              mob.likes--;
-              mob.likedBy.splice(mob.likedBy.indexOf(this.currentUserId), 1);
-            }
-            this.mobService.update(mob).subscribe({
-              next: () => {
-                this.refreshFeed();
-              },
-            });
-          } else {
-            mob.likes++;
-            mob.dislikedBy.splice(
-              mob.dislikedBy.indexOf(this.currentUserId),
-              1
-            );
-            this.mobService.update(mob).subscribe({
-              next: () => {
-                this.refreshFeed();
-              },
-            });
-          }
-        } else {
-          this.subscription = this.toolService.read(id).subscribe({
+          this.subscription = this.blockService.read(itemId).subscribe({
+            next: (block) => {
+              if (block && !block.likedBy.includes(this.currentUserId)) {
+                block.likes++;
+                block.likedBy.push(this.currentUserId);
+                if (block.dislikedBy.includes(this.currentUserId)) {
+                  block.dislikedBy.splice(
+                    block.dislikedBy.indexOf(this.currentUserId),
+                    1
+                  );
+                  block.likes++;
+                }
+                this.subscription = this.blockService.update(block).subscribe({
+                  next: () => {
+                    this.refreshFeed();
+                  },
+                });
+              } else if (block && block.likedBy.includes(this.currentUserId)) {
+                block.likes--;
+                block.likedBy.splice(
+                  block.likedBy.indexOf(this.currentUserId),
+                  1
+                );
+                this.subscription = this.blockService.update(block).subscribe({
+                  next: () => {
+                    this.refreshFeed();
+                  },
+                });
+              }
+            },
+          });
+
+          this.subscription = this.toolService.read(itemId).subscribe({
             next: (tool) => {
-              if (tool) {
-                if (!tool.dislikedBy.includes(this.currentUserId)) {
-                  tool.likes--;
-                  tool.dislikedBy.push(this.currentUserId);
-                  if (tool.likedBy.includes(this.currentUserId)) {
-                    tool.likes--;
-                    tool.likedBy.splice(
-                      tool.likedBy.indexOf(this.currentUserId),
-                      1
-                    );
-                  }
-                  this.toolService.update(tool).subscribe({
-                    next: () => {
-                      this.refreshFeed();
-                    },
-                  });
-                } else {
-                  tool.likes++;
+              if (tool && !tool.likedBy.includes(this.currentUserId)) {
+                tool.likes++;
+                tool.likedBy.push(this.currentUserId);
+                if (tool.dislikedBy.includes(this.currentUserId)) {
                   tool.dislikedBy.splice(
                     tool.dislikedBy.indexOf(this.currentUserId),
                     1
                   );
-                  this.toolService.update(tool).subscribe({
-                    next: () => {
-                      this.refreshFeed();
-                    },
-                  });
+                  tool.likes++;
                 }
-              } else {
-                this.subscription = this.blockService.read(id).subscribe({
-                  next: (block) => {
-                    if (block) {
-                      if (!block.dislikedBy.includes(this.currentUserId)) {
-                        block.likes--;
-                        block.dislikedBy.push(this.currentUserId);
-                        if (block.likedBy.includes(this.currentUserId)) {
-                          block.likes--;
-                          block.likedBy.splice(
-                            block.likedBy.indexOf(this.currentUserId),
-                            1
-                          );
-                        }
-                        this.blockService.update(block).subscribe({
-                          next: () => {
-                            this.refreshFeed();
-                          },
-                        });
-                      } else {
-                        block.likes++;
-                        block.dislikedBy.splice(
-                          block.dislikedBy.indexOf(this.currentUserId),
-                          1
-                        );
-                        this.blockService.update(block).subscribe({
-                          next: () => {
-                            this.refreshFeed();
-                          },
-                        });
-                      }
-                    }
+                this.subscription = this.toolService.update(tool).subscribe({
+                  next: () => {
+                    this.refreshFeed();
+                  },
+                });
+              } else if (tool && tool.likedBy.includes(this.currentUserId)) {
+                tool.likes--;
+                tool.likedBy.splice(
+                  tool.likedBy.indexOf(this.currentUserId),
+                  1
+                );
+                this.subscription = this.toolService.update(tool).subscribe({
+                  next: () => {
+                    this.refreshFeed();
                   },
                 });
               }
             },
           });
-        }
-      },
-    });
+        },
+      });
+  }
+
+  dislike(itemId: string) {
+    this.subscription = this.userService
+      .dislike(this.currentUserId, itemId)
+      .subscribe({
+        next: () => {
+          this.subscription = this.mobService.read(itemId).subscribe({
+            next: (mob) => {
+              if (mob && !mob.dislikedBy.includes(this.currentUserId)) {
+                mob.likes--;
+                mob.dislikedBy.push(this.currentUserId);
+                if (mob.likedBy.includes(this.currentUserId)) {
+                  mob.likedBy.splice(
+                    mob.likedBy.indexOf(this.currentUserId),
+                    1
+                  );
+                  mob.likes--;
+                }
+                this.subscription = this.mobService.update(mob).subscribe({
+                  next: () => {
+                    this.refreshFeed();
+                  },
+                });
+              } else if (mob && mob.dislikedBy.includes(this.currentUserId)) {
+                mob.likes++;
+                mob.dislikedBy.splice(
+                  mob.dislikedBy.indexOf(this.currentUserId),
+                  1
+                );
+                this.subscription = this.mobService.update(mob).subscribe({
+                  next: () => {
+                    this.refreshFeed();
+                  },
+                });
+              }
+            },
+          });
+
+          this.subscription = this.blockService.read(itemId).subscribe({
+            next: (block) => {
+              if (block && !block.dislikedBy.includes(this.currentUserId)) {
+                block.likes--;
+                block.dislikedBy.push(this.currentUserId);
+                if (block.likedBy.includes(this.currentUserId)) {
+                  block.likedBy.splice(
+                    block.likedBy.indexOf(this.currentUserId),
+                    1
+                  );
+                  block.likes--;
+                }
+                this.subscription = this.blockService.update(block).subscribe({
+                  next: () => {
+                    this.refreshFeed();
+                  },
+                });
+              } else if (
+                block &&
+                block.dislikedBy.includes(this.currentUserId)
+              ) {
+                block.likes++;
+                block.dislikedBy.splice(
+                  block.dislikedBy.indexOf(this.currentUserId),
+                  1
+                );
+                this.subscription = this.blockService.update(block).subscribe({
+                  next: () => {
+                    this.refreshFeed();
+                  },
+                });
+              }
+            },
+          });
+
+          this.subscription = this.toolService.read(itemId).subscribe({
+            next: (tool) => {
+              if (tool && !tool.dislikedBy.includes(this.currentUserId)) {
+                tool.likes--;
+                tool.dislikedBy.push(this.currentUserId);
+                if (tool.likedBy.includes(this.currentUserId)) {
+                  tool.likedBy.splice(
+                    tool.likedBy.indexOf(this.currentUserId),
+                    1
+                  );
+                  tool.likes--;
+                }
+                this.subscription = this.toolService.update(tool).subscribe({
+                  next: () => {
+                    this.refreshFeed();
+                  },
+                });
+              } else if (tool && tool.dislikedBy.includes(this.currentUserId)) {
+                tool.likes++;
+                tool.dislikedBy.splice(
+                  tool.dislikedBy.indexOf(this.currentUserId),
+                  1
+                );
+                this.subscription = this.toolService.update(tool).subscribe({
+                  next: () => {
+                    this.refreshFeed();
+                  },
+                });
+              }
+            },
+          });
+        },
+      });
   }
 }

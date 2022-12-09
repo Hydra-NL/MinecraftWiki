@@ -1,10 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-  FormBuilder,
-} from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../auth.service';
@@ -38,10 +32,21 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   login() {
     this.subscription = this.authService
-      .login(this.user.email, this.user.password)
+      .getUserByEmail(this.user.email)
       .subscribe({
-        next: () => {
-          this.router.navigate(['/']);
+        next: (user) => {
+          if (user) {
+            if (user.email === this.user.email) {
+              this.authService.login(this.user.email, this.user.password);
+            } else {
+              window.alert('Invalid credentials!');
+            }
+          } else {
+            window.alert('User not found!');
+          }
+        },
+        error: (err) => {
+          console.log('An error occurred while retrieving the user: ' + err);
         },
       });
   }

@@ -71,9 +71,10 @@ export class BlockAddComponent implements OnInit {
       this.subscription = this.blockService.create(this.block).subscribe({
         next: (block) => {
           this.playAudio();
-          this.router.navigate(['/blocks/', block._id]);
+
           console.log('BlockAddComponent Block added');
           console.log(this.block);
+          this.router.navigate(['/blocks/', block._id]);
         },
         error: (err) =>
           console.error(

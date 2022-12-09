@@ -40,36 +40,21 @@
     </content>
   </div>
   <div class="custom-container" *ngIf="currentUser?._id == user._id">
-    <div class="card">
-      <div class="card-header">
-        <span>Profile management</span>
-      </div>
-      <div class="card-footer">
-        <p>Delete profile</p>
-        <button class="btn custom-btn delete-btn" (click)="deleteProfile()">
-          <img
-            class="btn-icon"
-            src="../../../../../assets/images/delete-icon.png"
-          />
-        </button>
-      </div>
-    </div>
-
     <content class="see-also">
       <div class="big-title">
         <h5>Subscriptions:</h5>
       </div>
 
       <div class="content scroll">
-        <p *ngIf="subscriptions.length == 0" class="text-muted empty-text">
+        <p *ngIf="subs.length == 0" class="text-muted empty-text">
           You aren't subscribed to any creators yet.
         </p>
-        <div *ngFor="let subscription of subscriptions">
+        <div *ngFor="let sub of subs">
           <div class="sub-feed-box">
             <a
               class="entity-title"
-              routerLink="/users/{{ subscription._id }}"
-              >{{ subscription.username }}</a
+              routerLink="/users/{{ sub._id }}"
+              >{{ sub.username }}</a
             >
           </div>
         </div>

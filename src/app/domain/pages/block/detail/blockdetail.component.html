@@ -156,7 +156,7 @@
           </button>
           <button
             (click)="subscribe()"
-            *ngIf="creator?.subscribers?.includes(currentUserId!)"
+            *ngIf="creator?.subscribers!.includes(this.currentUserId!)"
             id="subscribe-detail-page"
             class="btn custom-btn delete-btn"
           >

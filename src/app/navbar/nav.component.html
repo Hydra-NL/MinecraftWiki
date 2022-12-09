@@ -32,10 +32,10 @@
       class="btn custom-btn add-btn"
       (click)="logout()"
     >
-      Logout
+      <i class="fa-solid fa-door-open"></i> Logout
     </button>
     <button
-      *ngIf="(loggedInUser$ | async) === undefined || null"
+      *ngIf="(loggedInUser$ | async) === undefined"
       class="btn custom-btn add-btn"
       routerLink="/login"
       title="Login"
@@ -43,7 +43,7 @@
       <img class="btn-icon" src="../../assets/images/login-icon.png" /> Login
     </button>
     <button
-      *ngIf="(loggedInUser$ | async) === undefined || null"
+      *ngIf="(loggedInUser$ | async) === undefined"
       class="btn custom-btn add-btn"
       routerLink="/register"
       title="Register"
